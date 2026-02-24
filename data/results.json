@@ -1,38 +1,38 @@
 {
-  "updatedAt": "2026-02-24T02:27:09.766413+00:00",
+  "updatedAt": "2026-02-24T02:49:43.885456+00:00",
   "companies": [
     {
       "name": "OpenAI",
       "tosUrl": "",
-      "lastChecked": "2026-02-24T02:27:09.766429+00:00",
+      "lastChecked": "2026-02-24T02:49:43.885478+00:00",
       "changed": false,
       "summary": "Connection Error: Invalid URL '': No scheme supplied. Perhaps you meant https://?"
     },
     {
       "name": "Meta",
       "tosUrl": "",
-      "lastChecked": "2026-02-24T02:27:09.767112+00:00",
+      "lastChecked": "2026-02-24T02:49:43.886644+00:00",
       "changed": false,
       "summary": "Connection Error: Invalid URL '': No scheme supplied. Perhaps you meant https://?"
     },
     {
       "name": "Zoom",
       "tosUrl": "",
-      "lastChecked": "2026-02-24T02:27:09.767259+00:00",
+      "lastChecked": "2026-02-24T02:49:43.886873+00:00",
       "changed": false,
       "summary": "Connection Error: Invalid URL '': No scheme supplied. Perhaps you meant https://?"
     },
     {
       "name": "Slack",
       "tosUrl": "",
-      "lastChecked": "2026-02-24T02:27:09.767375+00:00",
+      "lastChecked": "2026-02-24T02:49:43.887087+00:00",
       "changed": false,
       "summary": "Connection Error: Invalid URL '': No scheme supplied. Perhaps you meant https://?"
     },
     {
       "name": "X (Twitter)",
       "tosUrl": "",
-      "lastChecked": "2026-02-24T02:27:09.767494+00:00",
+      "lastChecked": "2026-02-24T02:49:43.887296+00:00",
       "changed": false,
       "summary": "Connection Error: Invalid URL '': No scheme supplied. Perhaps you meant https://?"
     }
