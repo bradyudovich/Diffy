@@ -1,8 +1,24 @@
 {
   "companies": [
     {
-      "name": "Example Corp",
-      "tosUrl": "https://example.com/terms"
+      "name": "OpenAI",
+      "url": "https://openai.com/policies/terms-of-use"
+    },
+    {
+      "name": "Meta",
+      "url": "https://www.facebook.com/terms.php"
+    },
+    {
+      "name": "Zoom",
+      "url": "https://explore.zoom.us/en/terms/"
+    },
+    {
+      "name": "Slack",
+      "url": "https://slack.com/terms-of-service"
+    },
+    {
+      "name": "X (Twitter)",
+      "url": "https://x.com/en/tos"
     }
   ]
 }
