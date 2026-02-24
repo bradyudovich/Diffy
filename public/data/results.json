@@ -1,4 +1,40 @@
 {
-  "updatedAt": "2026-02-24T00:00:00.000Z",
-  "companies": []
+  "updatedAt": "2026-02-24T03:21:50.848864+00:00",
+  "companies": [
+    {
+      "name": "OpenAI",
+      "tosUrl": "https://openai.com/policies/terms-of-use",
+      "lastChecked": "2026-02-24T03:21:50.848880+00:00",
+      "changed": false,
+      "summary": "Connection Error: Playwright failed to fetch https://openai.com/policies/terms-of-use: Page.goto: Timeout 60000ms exceeded.\nCall log:\n  - navigating to \"https://openai.com/policies/terms-of-use\", waiting until \"networkidle\"\n"
+    },
+    {
+      "name": "Meta",
+      "tosUrl": "https://www.facebook.com/terms.php",
+      "lastChecked": "2026-02-24T03:22:54.011492+00:00",
+      "changed": false,
+      "summary": "Initial snapshot created. Monitoring active."
+    },
+    {
+      "name": "Zoom",
+      "tosUrl": "https://explore.zoom.us/en/terms/",
+      "lastChecked": "2026-02-24T03:22:59.452132+00:00",
+      "changed": false,
+      "summary": "Connection Error: Playwright failed to fetch https://explore.zoom.us/en/terms/: Page.goto: Timeout 60000ms exceeded.\nCall log:\n  - navigating to \"https://explore.zoom.us/en/terms/\", waiting until \"networkidle\"\n"
+    },
+    {
+      "name": "Slack",
+      "tosUrl": "https://slack.com/terms-of-service",
+      "lastChecked": "2026-02-24T03:24:01.828283+00:00",
+      "changed": false,
+      "summary": "Initial snapshot created. Monitoring active."
+    },
+    {
+      "name": "X (Twitter)",
+      "tosUrl": "https://x.com/en/tos",
+      "lastChecked": "2026-02-24T03:24:08.515978+00:00",
+      "changed": false,
+      "summary": "Initial snapshot created. Monitoring active."
+    }
+  ]
 }
