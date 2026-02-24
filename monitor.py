@@ -144,6 +144,7 @@ def monitor() -> dict:
     for company in companies_config:
         name: str = company.get("name", "")
         tos_url: str = company.get("tosUrl", "")
+        category: str = company.get("category", "")
         last_checked = datetime.now(timezone.utc).isoformat()
 
         print(f"Scanning {name}...")
@@ -154,6 +155,7 @@ def monitor() -> dict:
             print(f"Error fetching {name}: {exc}")
             company_results.append({
                 "name": name,
+                "category": category,
                 "tosUrl": tos_url,
                 "lastChecked": last_checked,
                 "changed": False,
@@ -167,6 +169,7 @@ def monitor() -> dict:
         if old_text is None or old_text == new_text:
             company_results.append({
                 "name": name,
+                "category": category,
                 "tosUrl": tos_url,
                 "lastChecked": last_checked,
                 "changed": False,
@@ -183,6 +186,7 @@ def monitor() -> dict:
 
         company_results.append({
             "name": name,
+            "category": category,
             "tosUrl": tos_url,
             "lastChecked": last_checked,
             "changed": True,
