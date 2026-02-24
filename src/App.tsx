@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 interface CompanyResult {
   name: string;
+  category?: string;
   tosUrl: string;
   lastChecked?: string;
   changed?: boolean;
@@ -16,10 +17,23 @@ interface Results {
 const RESULTS_URL =
   "https://raw.githubusercontent.com/bradyudovich/Diffy/main/data/results.json";
 
+const CATEGORY_ICONS: Record<string, string> = {
+  AI: "🤖",
+  Social: "💬",
+  Productivity: "⚡",
+  Retail: "🛒",
+  Streaming: "🎬",
+  Services: "🛎️",
+  Finance: "💳",
+  Auto: "🚘",
+  Travel: "✈️",
+};
+
 export default function App() {
   const [results, setResults] = useState<Results | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
   useEffect(() => {
     const url = `${RESULTS_URL}?t=${Date.now()}`;
@@ -37,6 +51,16 @@ export default function App() {
         setLoading(false);
       });
   }, []);
+
+  const categories = results
+    ? [...new Set(results.companies.map((c) => c.category).filter(Boolean) as string[])]
+    : [];
+
+  const visibleCompanies = results
+    ? activeCategory
+      ? results.companies.filter((c) => c.category === activeCategory)
+      : results.companies
+    : [];
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900">
@@ -90,53 +114,89 @@ export default function App() {
                 {new Date(results.updatedAt).toLocaleString()}
               </p>
             )}
-            {results.companies.length === 0 ? (
+
+            {/* Category filter bar */}
+            {categories.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-6">
+                {activeCategory && (
+                  <button
+                    onClick={() => setActiveCategory(null)}
+                    className="rounded-full px-4 py-1.5 text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors"
+                  >
+                    ← Back to All
+                  </button>
+                )}
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() =>
+                      setActiveCategory(activeCategory === cat ? null : cat)
+                    }
+                    className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+                      activeCategory === cat
+                        ? "bg-indigo-600 text-white"
+                        : "bg-white border border-gray-300 text-gray-700 hover:bg-indigo-50"
+                    }`}
+                  >
+                    {CATEGORY_ICONS[cat] ?? "🏢"} {cat}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {visibleCompanies.length === 0 ? (
               <p className="text-gray-500">No results yet.</p>
             ) : (
               <ul className="space-y-4">
-                {results.companies.map((company) => (
+                {visibleCompanies.map((company) => (
                   <li
                     key={company.name}
-                    className={`rounded-lg border p-5 shadow-sm ${
+                    className={`relative rounded-lg border shadow-sm ${
                       company.changed
                         ? "border-yellow-400 bg-yellow-50"
                         : "border-gray-200 bg-white"
                     }`}
+                    style={{ padding: "1.25rem" }}
                   >
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <h2 className="text-lg font-semibold">
-                          {company.name}
-                        </h2>
-                        <a
-                          href={company.tosUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sm text-indigo-600 hover:underline break-all"
-                        >
-                          {company.tosUrl}
-                        </a>
-                        {company.summary && (
-                          <p className="mt-2 text-sm text-gray-700">
-                            {company.summary}
-                          </p>
-                        )}
-                        {company.lastChecked && (
-                          <p className="mt-1 text-xs text-gray-400">
-                            Checked:{" "}
-                            {new Date(company.lastChecked).toLocaleString()}
-                          </p>
-                        )}
-                      </div>
-                      <span
-                        className={`shrink-0 rounded-full px-3 py-1 text-xs font-medium ${
-                          company.changed
-                            ? "bg-yellow-200 text-yellow-800"
-                            : "bg-green-100 text-green-700"
-                        }`}
+                    {/* Badge absolutely positioned at top-right */}
+                    <span
+                      className={`absolute top-4 right-4 rounded-full px-3 py-1 text-xs font-medium ${
+                        company.changed
+                          ? "bg-yellow-200 text-yellow-800"
+                          : "bg-green-100 text-green-700"
+                      }`}
+                    >
+                      {company.changed ? "Changed" : "No change"}
+                    </span>
+
+                    {/* Card content – right padding ensures text doesn't overlap badge */}
+                    <div className="pr-28" style={{ minWidth: 0 }}>
+                      <h2 className="text-lg font-semibold">{company.name}</h2>
+                      {company.category && (
+                        <span className="inline-block text-xs text-indigo-600 font-medium mb-1">
+                          {CATEGORY_ICONS[company.category] ?? "🏢"}{" "}
+                          {company.category}
+                        </span>
+                      )}
+                      <a
+                        href={company.tosUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block text-sm text-indigo-600 hover:underline break-all"
                       >
-                        {company.changed ? "Changed" : "No change"}
-                      </span>
+                        {company.tosUrl}
+                      </a>
+                      {company.summary && (
+                        <p className="mt-2 text-sm text-gray-700">
+                          {company.summary}
+                        </p>
+                      )}
+                      {company.lastChecked && (
+                        <p className="mt-1 text-xs text-gray-400">
+                          Checked:{" "}
+                          {new Date(company.lastChecked).toLocaleString()}
+                        </p>
+                      )}
                     </div>
                   </li>
                 ))}
