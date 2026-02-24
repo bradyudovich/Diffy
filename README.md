@@ -6,6 +6,8 @@
 
 The app is deployed at: **https://bradyudovich.github.io/Diffy/**
 
+![Diffy screenshot](docs/screenshot.png)
+
 ## How it works
 
 1. `config.json` at the repo root lists the companies and their ToS URLs to monitor.
