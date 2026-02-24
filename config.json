@@ -2,23 +2,23 @@
   "companies": [
     {
       "name": "OpenAI",
-      "url": "https://openai.com/policies/terms-of-use"
+      "tosUrl": "https://openai.com/policies/terms-of-use"
     },
     {
       "name": "Meta",
-      "url": "https://www.facebook.com/terms.php"
+      "tosUrl": "https://www.facebook.com/terms.php"
     },
     {
       "name": "Zoom",
-      "url": "https://explore.zoom.us/en/terms/"
+      "tosUrl": "https://explore.zoom.us/en/terms/"
     },
     {
       "name": "Slack",
-      "url": "https://slack.com/terms-of-service"
+      "tosUrl": "https://slack.com/terms-of-service"
     },
     {
       "name": "X (Twitter)",
-      "url": "https://x.com/en/tos"
+      "tosUrl": "https://x.com/en/tos"
     }
   ]
 }
