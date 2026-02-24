@@ -16,7 +16,7 @@ from pathlib import Path
 from bs4 import BeautifulSoup
 import requests
 from playwright.sync_api import sync_playwright
-from playwright_stealth import stealth_sync
+from playwright_stealth import Stealth  # Updated import
 
 # ---------------------------------------------------------------------------
 # Paths
@@ -57,7 +57,7 @@ def snapshot_path(company_name: str) -> Path:
     return SNAPSHOTS_DIR / f"{safe}.txt"
 
 def fetch_text(url: str) -> str:
-    """Fetch URL using a headless browser to bypass 403 Forbidden errors."""
+    """Fetch URL using a headless browser with updated stealth patterns."""
     with sync_playwright() as p:
         # Launch Chromium
         browser = p.chromium.launch(headless=True)
@@ -69,8 +69,9 @@ def fetch_text(url: str) -> str:
         
         page = context.new_page()
         
-        # Apply stealth to hide Playwright signals
-        stealth_sync(page)
+        # NEW VERSION: Use the Stealth class to apply evasion patterns
+        stealth = Stealth()
+        stealth.apply_stealth_sync(page)
         
         try:
             # Human-like delay
