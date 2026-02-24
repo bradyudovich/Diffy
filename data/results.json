@@ -1,40 +1,40 @@
 {
-  "updatedAt": "2026-02-24T02:52:53.784365+00:00",
+  "updatedAt": "2026-02-24T02:58:19.334628+00:00",
   "companies": [
     {
       "name": "OpenAI",
       "tosUrl": "https://openai.com/policies/terms-of-use",
-      "lastChecked": "2026-02-24T02:52:53.784377+00:00",
+      "lastChecked": "2026-02-24T02:58:19.334646+00:00",
       "changed": false,
       "summary": "Connection Error: 403 Client Error: Forbidden for url: https://openai.com/policies/terms-of-use"
     },
     {
       "name": "Meta",
       "tosUrl": "https://www.facebook.com/terms.php",
-      "lastChecked": "2026-02-24T02:52:53.902762+00:00",
+      "lastChecked": "2026-02-24T02:58:19.410280+00:00",
       "changed": false,
-      "summary": null
+      "summary": "Initial snapshot created. Monitoring active."
     },
     {
       "name": "Zoom",
       "tosUrl": "https://explore.zoom.us/en/terms/",
-      "lastChecked": "2026-02-24T02:52:54.201616+00:00",
+      "lastChecked": "2026-02-24T02:58:21.074931+00:00",
       "changed": false,
-      "summary": null
+      "summary": "Initial snapshot created. Monitoring active."
     },
     {
       "name": "Slack",
       "tosUrl": "https://slack.com/terms-of-service",
-      "lastChecked": "2026-02-24T02:52:55.149649+00:00",
+      "lastChecked": "2026-02-24T02:58:21.580629+00:00",
       "changed": false,
-      "summary": null
+      "summary": "Initial snapshot created. Monitoring active."
     },
     {
       "name": "X (Twitter)",
       "tosUrl": "https://x.com/en/tos",
-      "lastChecked": "2026-02-24T02:52:55.793656+00:00",
+      "lastChecked": "2026-02-24T02:58:21.854238+00:00",
       "changed": false,
-      "summary": null
+      "summary": "Initial snapshot created. Monitoring active."
     }
   ]
 }
