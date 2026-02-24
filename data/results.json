@@ -1,4 +1,12 @@
 {
-  "updatedAt": "2026-02-24T00:00:00.000Z",
-  "companies": []
+  "updatedAt": "2026-02-24T02:24:04.065437+00:00",
+  "companies": [
+    {
+      "name": "Example Corp",
+      "tosUrl": "https://example.com/terms",
+      "lastChecked": "2026-02-24T02:24:04.065447+00:00",
+      "changed": false,
+      "summary": "Connection Error: HTTPSConnectionPool(host='example.com', port=443): Max retries exceeded with url: /terms (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)')))"
+    }
+  ]
 }
