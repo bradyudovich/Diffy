@@ -27,6 +27,7 @@ const CATEGORY_ICONS: Record<string, string> = {
   Finance: "💳",
   Auto: "🚘",
   Travel: "✈️",
+  Tech: "💻",
 };
 
 export default function App() {
@@ -34,6 +35,7 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const url = `${RESULTS_URL}?t=${Date.now()}`;
@@ -57,9 +59,14 @@ export default function App() {
     : [];
 
   const visibleCompanies = results
-    ? activeCategory
-      ? results.companies.filter((c) => c.category === activeCategory)
-      : results.companies
+    ? results.companies.filter((c) => {
+        const matchesCategory = !activeCategory || c.category === activeCategory;
+        const matchesSearch =
+          !searchQuery ||
+          c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          (c.category ?? "").toLowerCase().includes(searchQuery.toLowerCase());
+        return matchesCategory && matchesSearch;
+      })
     : [];
 
   return (
@@ -114,6 +121,17 @@ export default function App() {
                 {new Date(results.updatedAt).toLocaleString()}
               </p>
             )}
+
+            {/* Search input */}
+            <div className="mb-4">
+              <input
+                type="text"
+                placeholder="Search companies…"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+              />
+            </div>
 
             {/* Category filter bar */}
             {categories.length > 0 && (
