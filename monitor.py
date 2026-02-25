@@ -72,8 +72,10 @@ def fetch_text(url: str, max_retries: int = 3) -> str:
 
     for attempt in range(1, max_retries + 1):
         with sync_playwright() as p:
-            # Launch Chromium
-            browser = p.chromium.launch(headless=True)
+            # Launch Chromium with HTTP/2 disabled to avoid
+            # ERR_HTTP2_PROTOCOL_ERROR on sites like Adobe, Ford, and
+            # United Airlines that have aggressive HTTP/2 configurations.
+            browser = p.chromium.launch(headless=True, args=["--disable-http2"])
 
             # Set a realistic user agent
             context = browser.new_context(
