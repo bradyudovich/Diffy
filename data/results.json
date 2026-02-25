@@ -1,40 +1,205 @@
 {
-  "updatedAt": "2026-02-24T18:36:37.490252+00:00",
+  "updatedAt": "2026-02-24T19:16:17.253382+00:00",
   "companies": [
     {
       "name": "OpenAI",
+      "category": "AI",
       "tosUrl": "https://openai.com/policies/terms-of-use",
-      "lastChecked": "2026-02-24T18:36:37.490268+00:00",
+      "lastChecked": "2026-02-24T19:16:17.253399+00:00",
       "changed": false,
       "summary": "Connection Error: Playwright failed to fetch https://openai.com/policies/terms-of-use: Page.goto: Timeout 60000ms exceeded.\nCall log:\n  - navigating to \"https://openai.com/policies/terms-of-use\", waiting until \"networkidle\"\n"
     },
     {
+      "name": "Anthropic",
+      "category": "AI",
+      "tosUrl": "https://www.anthropic.com/legal/consumer-terms",
+      "lastChecked": "2026-02-24T19:17:21.818305+00:00",
+      "changed": false,
+      "summary": "Connection Error: Playwright failed to fetch https://www.anthropic.com/legal/consumer-terms: Page.goto: Timeout 60000ms exceeded.\nCall log:\n  - navigating to \"https://www.anthropic.com/legal/consumer-terms\", waiting until \"networkidle\"\n"
+    },
+    {
+      "name": "Midjourney",
+      "category": "AI",
+      "tosUrl": "https://docs.midjourney.com/docs/terms-of-service",
+      "lastChecked": "2026-02-24T19:18:23.987547+00:00",
+      "changed": false,
+      "summary": "Initial snapshot created. Monitoring active."
+    },
+    {
       "name": "Meta",
+      "category": "Social",
       "tosUrl": "https://www.facebook.com/terms.php",
-      "lastChecked": "2026-02-24T18:37:40.882025+00:00",
+      "lastChecked": "2026-02-24T19:18:29.316579+00:00",
+      "changed": false,
+      "summary": "Initial snapshot created. Monitoring active."
+    },
+    {
+      "name": "X (Twitter)",
+      "category": "Social",
+      "tosUrl": "https://x.com/en/tos",
+      "lastChecked": "2026-02-24T19:18:35.109144+00:00",
+      "changed": false,
+      "summary": "Initial snapshot created. Monitoring active."
+    },
+    {
+      "name": "TikTok",
+      "category": "Social",
+      "tosUrl": "https://www.tiktok.com/legal/page/us/terms-of-service/en",
+      "lastChecked": "2026-02-24T19:18:38.339504+00:00",
+      "changed": false,
+      "summary": "Initial snapshot created. Monitoring active."
+    },
+    {
+      "name": "Slack",
+      "category": "Productivity",
+      "tosUrl": "https://slack.com/terms-of-service",
+      "lastChecked": "2026-02-24T19:18:44.659257+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
     {
       "name": "Zoom",
+      "category": "Productivity",
       "tosUrl": "https://explore.zoom.us/en/terms/",
-      "lastChecked": "2026-02-24T18:37:45.786417+00:00",
+      "lastChecked": "2026-02-24T19:18:52.489585+00:00",
       "changed": false,
       "summary": "Connection Error: Playwright failed to fetch https://explore.zoom.us/en/terms/: Page.goto: Timeout 60000ms exceeded.\nCall log:\n  - navigating to \"https://explore.zoom.us/en/terms/\", waiting until \"networkidle\"\n"
     },
     {
-      "name": "Slack",
-      "tosUrl": "https://slack.com/terms-of-service",
-      "lastChecked": "2026-02-24T18:38:47.718951+00:00",
+      "name": "Notion",
+      "category": "Productivity",
+      "tosUrl": "https://www.notion.com/terms",
+      "lastChecked": "2026-02-24T19:19:54.116770+00:00",
       "changed": false,
-      "summary": "Connection Error: Playwright failed to fetch https://slack.com/terms-of-service: Page.goto: Timeout 60000ms exceeded.\nCall log:\n  - navigating to \"https://slack.com/terms-of-service\", waiting until \"networkidle\"\n"
+      "summary": "Connection Error: Playwright failed to fetch https://www.notion.com/terms: Page.goto: Timeout 60000ms exceeded.\nCall log:\n  - navigating to \"https://www.notion.com/terms\", waiting until \"networkidle\"\n"
     },
     {
-      "name": "X (Twitter)",
-      "tosUrl": "https://x.com/en/tos",
-      "lastChecked": "2026-02-24T18:39:49.648705+00:00",
+      "name": "Amazon",
+      "category": "Retail",
+      "tosUrl": "https://www.amazon.com/gp/help/customer/display.html?nodeId=508088",
+      "lastChecked": "2026-02-24T19:20:57.410048+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
+    },
+    {
+      "name": "Walmart",
+      "category": "Retail",
+      "tosUrl": "https://www.walmart.com/help/article/walmart-com-terms-of-use/3b75080af40340d6bbd596f116fae5a2",
+      "lastChecked": "2026-02-24T19:21:00.633984+00:00",
+      "changed": false,
+      "summary": "Connection Error: Playwright failed to fetch https://www.walmart.com/help/article/walmart-com-terms-of-use/3b75080af40340d6bbd596f116fae5a2: Page.goto: Timeout 60000ms exceeded.\nCall log:\n  - navigating to \"https://www.walmart.com/help/article/walmart-com-terms-of-use/3b75080af40340d6bbd596f116fae5a2\", waiting until \"networkidle\"\n"
+    },
+    {
+      "name": "Shopify",
+      "category": "Retail",
+      "tosUrl": "https://www.shopify.com/legal/terms",
+      "lastChecked": "2026-02-24T19:22:03.475487+00:00",
+      "changed": false,
+      "summary": "Initial snapshot created. Monitoring active."
+    },
+    {
+      "name": "Netflix",
+      "category": "Streaming",
+      "tosUrl": "https://help.netflix.com/legal/termsofuse",
+      "lastChecked": "2026-02-24T19:22:08.587681+00:00",
+      "changed": false,
+      "summary": "Initial snapshot created. Monitoring active."
+    },
+    {
+      "name": "Disney+",
+      "category": "Streaming",
+      "tosUrl": "https://www.disneyplus.com/en-gb/legal/subscriber-agreement",
+      "lastChecked": "2026-02-24T19:22:12.044763+00:00",
+      "changed": false,
+      "summary": "Initial snapshot created. Monitoring active."
+    },
+    {
+      "name": "Spotify",
+      "category": "Streaming",
+      "tosUrl": "https://www.spotify.com/us/legal/end-user-agreement/",
+      "lastChecked": "2026-02-24T19:22:17.774953+00:00",
+      "changed": false,
+      "summary": "Initial snapshot created. Monitoring active."
+    },
+    {
+      "name": "Uber",
+      "category": "Services",
+      "tosUrl": "https://www.uber.com/legal/en/document/?name=general-terms-of-use&country=united-states&lang=en",
+      "lastChecked": "2026-02-24T19:22:24.772101+00:00",
+      "changed": false,
+      "summary": "Initial snapshot created. Monitoring active."
+    },
+    {
+      "name": "Airbnb",
+      "category": "Services",
+      "tosUrl": "https://www.airbnb.com/help/article/2908",
+      "lastChecked": "2026-02-24T19:22:28.075996+00:00",
+      "changed": false,
+      "summary": "Initial snapshot created. Monitoring active."
+    },
+    {
+      "name": "DoorDash",
+      "category": "Services",
+      "tosUrl": "https://help.doordash.com/consumers/s/terms-and-conditions",
+      "lastChecked": "2026-02-24T19:22:33.373551+00:00",
+      "changed": false,
+      "summary": "Initial snapshot created. Monitoring active."
+    },
+    {
+      "name": "JPMorgan Chase",
+      "category": "Finance",
+      "tosUrl": "https://www.chase.com/digital/resources/terms-of-use",
+      "lastChecked": "2026-02-24T19:22:40.748227+00:00",
+      "changed": false,
+      "summary": "Connection Error: Playwright failed to fetch https://www.chase.com/digital/resources/terms-of-use: Page.goto: Timeout 60000ms exceeded.\nCall log:\n  - navigating to \"https://www.chase.com/digital/resources/terms-of-use\", waiting until \"networkidle\"\n"
+    },
+    {
+      "name": "PayPal",
+      "category": "Finance",
+      "tosUrl": "https://www.paypal.com/us/legalhub/useragreement-full",
+      "lastChecked": "2026-02-24T19:23:42.863732+00:00",
+      "changed": false,
+      "summary": "Initial snapshot created. Monitoring active."
+    },
+    {
+      "name": "Stripe",
+      "category": "Finance",
+      "tosUrl": "https://stripe.com/legal/ssa",
+      "lastChecked": "2026-02-24T19:23:48.678675+00:00",
+      "changed": false,
+      "summary": "Initial snapshot created. Monitoring active."
+    },
+    {
+      "name": "Tesla",
+      "category": "Auto",
+      "tosUrl": "https://www.tesla.com/legal/additional-resources/tesla-legal",
+      "lastChecked": "2026-02-24T19:23:55.264989+00:00",
+      "changed": false,
+      "summary": "Initial snapshot created. Monitoring active."
+    },
+    {
+      "name": "Ford",
+      "category": "Auto",
+      "tosUrl": "https://www.ford.com/help/privacy/",
+      "lastChecked": "2026-02-24T19:23:58.083499+00:00",
+      "changed": false,
+      "summary": "Connection Error: Playwright failed to fetch https://www.ford.com/help/privacy/: Page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.ford.com/help/privacy/\nCall log:\n  - navigating to \"https://www.ford.com/help/privacy/\", waiting until \"networkidle\"\n"
+    },
+    {
+      "name": "United Airlines",
+      "category": "Travel",
+      "tosUrl": "https://www.united.com/ual/en/us/fly/legal/legal-notices.html",
+      "lastChecked": "2026-02-24T19:24:01.758537+00:00",
+      "changed": false,
+      "summary": "Connection Error: Playwright failed to fetch https://www.united.com/ual/en/us/fly/legal/legal-notices.html: Page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.united.com/ual/en/us/fly/legal/legal-notices.html\nCall log:\n  - navigating to \"https://www.united.com/ual/en/us/fly/legal/legal-notices.html\", waiting until \"networkidle\"\n"
+    },
+    {
+      "name": "Marriott",
+      "category": "Travel",
+      "tosUrl": "https://www.marriott.com/about/terms-of-use.mi",
+      "lastChecked": "2026-02-24T19:24:03.975842+00:00",
+      "changed": false,
+      "summary": "Connection Error: Playwright failed to fetch https://www.marriott.com/about/terms-of-use.mi: Page.goto: Timeout 60000ms exceeded.\nCall log:\n  - navigating to \"https://www.marriott.com/about/terms-of-use.mi\", waiting until \"networkidle\"\n"
     }
   ]
 }
