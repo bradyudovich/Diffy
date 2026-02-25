@@ -17,6 +17,19 @@ interface Results {
 const RESULTS_URL =
   "https://raw.githubusercontent.com/bradyudovich/Diffy/main/data/results.json";
 
+const HUNTER_LOGO_BASE = "https://hunter.io/api/logo?domain=";
+
+function getLogoUrl(tosUrl: string): string {
+  try {
+    const { hostname } = new URL(tosUrl);
+    // Strip leading "www." so hunter.io returns the root-domain logo
+    const domain = hostname.replace(/^www\./, "");
+    return `${HUNTER_LOGO_BASE}${domain}`;
+  } catch {
+    return "";
+  }
+}
+
 const CATEGORY_ICONS: Record<string, string> = {
   AI: "🤖",
   Social: "💬",
@@ -189,7 +202,19 @@ export default function App() {
 
                     {/* Card content – right padding ensures text doesn't overlap badge */}
                     <div className="pr-28" style={{ minWidth: 0 }}>
-                      <h2 className="text-lg font-semibold">{company.name}</h2>
+                      <div className="flex items-center gap-3 mb-1">
+                        {getLogoUrl(company.tosUrl) && (
+                          <img
+                            src={getLogoUrl(company.tosUrl)}
+                            alt={`${company.name} logo`}
+                            className="h-6 w-6 object-contain flex-shrink-0"
+                            onError={(e) => {
+                              (e.currentTarget as HTMLImageElement).style.display = "none";
+                            }}
+                          />
+                        )}
+                        <h2 className="text-lg font-semibold">{company.name}</h2>
+                      </div>
                       {company.category && (
                         <span className="inline-block text-xs text-indigo-600 font-medium mb-1">
                           {CATEGORY_ICONS[company.category] ?? "🏢"}{" "}
