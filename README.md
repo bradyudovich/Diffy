@@ -52,7 +52,12 @@ If the favicon fails to load, a 🏢 fallback icon is shown instead.
 
 ## ToS summary click-through
 
-Clicking any company card opens a modal dialog showing a plain-English summary of that company's Terms of Service. The summary is sourced from the `summary` field in `data/results.json`. If no summary is present, the modal displays "No summary available." The modal also includes a direct link to the full Terms of Service page.
+Clicking any company card opens a modal dialog showing a plain-English summary of that company's Terms of Service. The summary is sourced from the `summary` field in `data/results.json`.
+
+- **When changes are detected** between versions, the summary describes what changed and its privacy/data implications, with a severity rating (High, Medium, or Low).
+- **When no changes are detected** (or on the first snapshot), a high-level plain-English overview of the current TOS is still generated, covering key user obligations, data privacy implications, and notable risks or restrictions.
+
+The modal also includes a direct link to the full Terms of Service page.
 
 ## Local development
 
