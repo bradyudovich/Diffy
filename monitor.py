@@ -56,44 +56,69 @@ def snapshot_path(company_name: str) -> Path:
     safe = re.sub(r"[^\w\-]", "_", company_name)
     return SNAPSHOTS_DIR / f"{safe}.txt"
 
-def fetch_text(url: str) -> str:
-    """Fetch URL using a headless browser with updated stealth patterns."""
-    with sync_playwright() as p:
-        # Launch Chromium
-        browser = p.chromium.launch(headless=True)
-        
-        # Set a realistic user agent
-        context = browser.new_context(
-            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
-        )
-        
-        page = context.new_page()
-        
-        # NEW VERSION: Use the Stealth class to apply evasion patterns
-        stealth = Stealth()
-        stealth.apply_stealth_sync(page)
-        
-        try:
-            # Human-like delay
-            time.sleep(random.uniform(1, 3))
-            
-            # Go to URL and wait for the page to finish loading
-            page.goto(url, wait_until="networkidle", timeout=60000)
-            
-            # Get rendered HTML
-            html_content = page.content()
-            soup = BeautifulSoup(html_content, "html.parser")
-            
-            # Remove scripts, styles, and common UI elements to keep legal text clean
-            for tag in soup(["script", "style", "noscript", "header", "footer", "nav", "aside"]):
-                tag.decompose()
-                
-            return soup.get_text(separator="\n", strip=True)
-            
-        except Exception as e:
-            raise Exception(f"Playwright failed to fetch {url}: {e}")
-        finally:
-            browser.close()
+def fetch_text(url: str, max_retries: int = 3) -> str:
+    """Fetch URL using a headless browser with updated stealth patterns.
+
+    Workarounds applied to handle slow/flaky external pages in CI:
+    - ``wait_until="domcontentloaded"`` is used instead of ``"networkidle"``
+      because ``networkidle`` waits for *all* network activity to stop, which
+      frequently times out on external sites that keep long-polling connections
+      open (e.g. analytics scripts).
+    - The timeout is raised to 90 000 ms to give slow-loading pages more room.
+    - Up to ``max_retries`` attempts are made with exponential back-off so
+      transient network blips don't cause a hard failure.
+    """
+    last_exc: Exception = Exception(f"All {max_retries} attempts to fetch {url} failed.")
+
+    for attempt in range(1, max_retries + 1):
+        with sync_playwright() as p:
+            # Launch Chromium
+            browser = p.chromium.launch(headless=True)
+
+            # Set a realistic user agent
+            context = browser.new_context(
+                user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+            )
+
+            page = context.new_page()
+
+            # NEW VERSION: Use the Stealth class to apply evasion patterns
+            stealth = Stealth()
+            stealth.apply_stealth_sync(page)
+
+            try:
+                # Human-like delay before navigation
+                time.sleep(random.uniform(1, 3))
+
+                # Use "domcontentloaded" instead of "networkidle" to avoid
+                # timeouts caused by persistent background network requests on
+                # external sites.  Timeout increased to 90 s for slow pages.
+                page.goto(url, wait_until="domcontentloaded", timeout=90000)
+
+                # Get rendered HTML
+                html_content = page.content()
+                soup = BeautifulSoup(html_content, "html.parser")
+
+                # Remove scripts, styles, and common UI elements to keep legal text clean
+                for tag in soup(["script", "style", "noscript", "header", "footer", "nav", "aside"]):
+                    tag.decompose()
+
+                return soup.get_text(separator="\n", strip=True)
+
+            except Exception as e:
+                last_exc = e
+                print(
+                    f"  [attempt {attempt}/{max_retries}] Failed to fetch {url}: {e}"
+                )
+                if attempt < max_retries:
+                    # Exponential back-off: 5 s, 10 s, 20 s, …
+                    backoff = 5 * (2 ** (attempt - 1))
+                    print(f"  Retrying in {backoff}s…")
+                    time.sleep(backoff)
+            finally:
+                browser.close()
+
+    raise Exception(f"Playwright failed to fetch {url}: {last_exc}")
 
 def read_snapshot(company_name: str) -> str | None:
     path = snapshot_path(company_name)
