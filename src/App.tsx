@@ -233,14 +233,6 @@ export default function App() {
                           {company.category}
                         </span>
                       )}
-                      <a
-                        href={company.tosUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block text-sm text-indigo-600 hover:underline break-all"
-                      >
-                        {company.tosUrl}
-                      </a>
                       {company.summary && (
                         <p className="mt-2 text-sm text-gray-700">
                           {company.summary}
@@ -268,7 +260,7 @@ export default function App() {
           onClick={() => setSelectedCompany(null)}
         >
           <div
-            className="bg-white rounded-xl shadow-xl max-w-lg w-full mx-4 p-6"
+            className="bg-white rounded-xl shadow-xl max-w-lg w-full mx-4 p-6 relative"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center gap-3 mb-4">
@@ -283,12 +275,17 @@ export default function App() {
               </button>
             </div>
             <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
-              Terms of Service Summary
+              Privacy & AI Risk Flags
             </h3>
             {selectedCompany.summary ? (
-              <p className="text-gray-700 text-sm leading-relaxed">
-                {selectedCompany.summary}
-              </p>
+              <div className="text-gray-700 text-sm leading-relaxed space-y-1">
+                {selectedCompany.summary
+                  .split("\n")
+                  .filter((line) => line.trim())
+                  .map((line, i) => (
+                    <p key={i}>{line}</p>
+                  ))}
+              </div>
             ) : (
               <p className="text-gray-500 text-sm italic">No summary available.</p>
             )}
@@ -297,10 +294,12 @@ export default function App() {
                 href={selectedCompany.tosUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-4 inline-block text-sm text-indigo-600 hover:underline break-all"
+                className="absolute bottom-4 right-4 text-gray-400 hover:text-indigo-600 transition-colors text-xl"
                 onClick={(e) => e.stopPropagation()}
+                aria-label="View full Terms of Service"
+                title="View full Terms of Service"
               >
-                View full Terms of Service ↗
+                📁
               </a>
             )}
           </div>
