@@ -35,16 +35,20 @@ OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
 OPENAI_URL = "https://api.openai.com/v1/chat/completions"
 OPENAI_MODEL = "gpt-4o-mini"
 AI_SYSTEM_PROMPT = (
-    "You are a legal analyst. Compare these two versions of a Terms of Service. "
-    "Summarize if the change affects how user data is used for AI training or if "
-    "it reduces user privacy. Categorize the severity as High, Medium, or Low."
+    "You are a privacy and AI risk analyst. Compare these two versions of a Terms of Service. "
+    "Identify any new or changed privacy risks, AI training clauses, data collection changes, "
+    "or other user rights concerns introduced by the changes. "
+    "Format your response as a concise bullet-point list of specific red flags and concerns, "
+    "with each bullet starting with a dash (-). "
+    "End with an overall severity rating on its own line: Severity: High, Medium, or Low."
 )
 AI_OVERVIEW_PROMPT = (
-    "You are a plain-English legal analyst. Given the following Terms of Service text, "
-    "provide a concise, high-level overview (3-5 sentences) for a general audience. "
-    "Explain the key obligations for the user, any notable rights the user retains, "
-    "data privacy implications, and any significant risks or restrictions. "
-    "Write clearly and avoid legal jargon."
+    "You are a privacy and AI risk analyst. Given the following Terms of Service text, "
+    "identify and list the key privacy risks, AI training concerns, data collection red flags, "
+    "and other significant user rights issues. "
+    "Format your response as a concise bullet-point list of 5-8 specific red flags and concerns. "
+    "Start each bullet with a dash (-) and be specific and direct. "
+    "Avoid general summaries; focus on what users should be warned about."
 )
 
 # ---------------------------------------------------------------------------

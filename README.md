@@ -48,14 +48,19 @@ audit trails.
 ## ToS summarization
 
 After a new archive file is saved, `monitor.py` calls the OpenAI API to
-generate (or refresh) a plain-English summary and persists it to
+generate (or refresh) a privacy- and AI-focused summary and persists it to
 `terms_of_service/{company_slug}/summary.txt`.
 
-- **First snapshot / no change**: a high-level overview of the current ToS
-  is generated (key obligations, data privacy, notable risks).
-- **Change detected**: a diff-focused summary is generated, noting what
-  changed, how it affects user data / privacy, and the severity
-  (High / Medium / Low).
+- **First snapshot / no change**: a bullet-point list of privacy risks, AI
+  training concerns, data collection red flags, and other user rights issues
+  found in the current ToS is generated.
+- **Change detected**: a diff-focused bullet-point list is generated, noting
+  what changed, how it affects user data / privacy or AI training, and the
+  overall severity (High / Medium / Low).
+
+Summaries are only regenerated when a new ToS version is archived or when
+an explicit update is triggered — they are **not** refreshed on every run
+unless the ToS content has changed.
 
 The summary stored in `summary.txt` is read back into `data/results.json`
 so the frontend always displays the latest persisted summary.  If no
@@ -87,12 +92,20 @@ If the favicon fails to load, a 🏢 fallback icon is shown instead.
 
 ## ToS summary click-through
 
-Clicking any company card opens a modal dialog showing a plain-English summary of that company's Terms of Service. The summary is sourced from the `summary` field in `data/results.json`.
+Clicking any company card opens a modal dialog showing a privacy- and
+AI-focused summary of that company's Terms of Service. The summary is
+sourced from the `summary` field in `data/results.json`.
 
-- **When changes are detected** between versions, the summary describes what changed and its privacy/data implications, with a severity rating (High, Medium, or Low).
-- **When no changes are detected** (or on the first snapshot), a high-level plain-English overview of the current TOS is still generated, covering key user obligations, data privacy implications, and notable risks or restrictions.
+- **When changes are detected** between versions, the summary lists what
+  changed in terms of privacy, data use, and AI training, with an overall
+  severity rating (High, Medium, or Low).
+- **When no changes are detected** (or on the first snapshot), the summary
+  lists privacy risks, AI training concerns, data collection red flags, and
+  other significant user rights issues found in the current ToS.
 
-The modal also includes a direct link to the full Terms of Service page.
+The modal displays a 📁 folder icon in the bottom-right corner that links
+to the full Terms of Service page. There is no visible URL text link in
+the modal or on the company card.
 
 ## Local development
 
