@@ -17,17 +17,36 @@ interface Results {
 const RESULTS_URL =
   "https://raw.githubusercontent.com/bradyudovich/Diffy/main/data/results.json";
 
-const HUNTER_LOGO_BASE = "https://hunter.io/api/logo?domain=";
+const GOOGLE_FAVICON_BASE = "https://www.google.com/s2/favicons?sz=32&domain=";
 
 function getLogoUrl(tosUrl: string): string {
   try {
     const { hostname } = new URL(tosUrl);
-    // Strip leading "www." so hunter.io returns the root-domain logo
     const domain = hostname.replace(/^www\./, "");
-    return `${HUNTER_LOGO_BASE}${domain}`;
+    return `${GOOGLE_FAVICON_BASE}${domain}`;
   } catch {
     return "";
   }
+}
+
+function CompanyLogo({ tosUrl, name }: { tosUrl: string; name: string }) {
+  const [imgError, setImgError] = useState(false);
+  const src = getLogoUrl(tosUrl);
+  if (!src || imgError) {
+    return (
+      <span className="h-6 w-6 flex items-center justify-center text-base flex-shrink-0">
+        🏢
+      </span>
+    );
+  }
+  return (
+    <img
+      src={src}
+      alt={`${name} logo`}
+      className="h-6 w-6 object-contain flex-shrink-0"
+      onError={() => setImgError(true)}
+    />
+  );
 }
 
 const CATEGORY_ICONS: Record<string, string> = {
@@ -49,6 +68,7 @@ export default function App() {
   const [error, setError] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCompany, setSelectedCompany] = useState<CompanyResult | null>(null);
 
   useEffect(() => {
     const url = `${RESULTS_URL}?t=${Date.now()}`;
@@ -182,12 +202,13 @@ export default function App() {
                 {visibleCompanies.map((company) => (
                   <li
                     key={company.name}
-                    className={`relative rounded-lg border shadow-sm ${
+                    className={`relative rounded-lg border shadow-sm cursor-pointer hover:shadow-md transition-shadow ${
                       company.changed
                         ? "border-yellow-400 bg-yellow-50"
                         : "border-gray-200 bg-white"
                     }`}
                     style={{ padding: "1.25rem" }}
+                    onClick={() => setSelectedCompany(company)}
                   >
                     {/* Badge absolutely positioned at top-right */}
                     <span
@@ -203,16 +224,7 @@ export default function App() {
                     {/* Card content – right padding ensures text doesn't overlap badge */}
                     <div className="pr-28" style={{ minWidth: 0 }}>
                       <div className="flex items-center gap-3 mb-1">
-                        {getLogoUrl(company.tosUrl) && (
-                          <img
-                            src={getLogoUrl(company.tosUrl)}
-                            alt={`${company.name} logo`}
-                            className="h-6 w-6 object-contain flex-shrink-0"
-                            onError={(e) => {
-                              (e.currentTarget as HTMLImageElement).style.display = "none";
-                            }}
-                          />
-                        )}
+                        <CompanyLogo tosUrl={company.tosUrl} name={company.name} />
                         <h2 className="text-lg font-semibold">{company.name}</h2>
                       </div>
                       {company.category && (
@@ -248,6 +260,52 @@ export default function App() {
           </>
         )}
       </main>
+
+      {/* Company summary modal */}
+      {selectedCompany && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+          onClick={() => setSelectedCompany(null)}
+        >
+          <div
+            className="bg-white rounded-xl shadow-xl max-w-lg w-full mx-4 p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center gap-3 mb-4">
+              <CompanyLogo tosUrl={selectedCompany.tosUrl} name={selectedCompany.name} />
+              <h2 className="text-xl font-bold">{selectedCompany.name}</h2>
+              <button
+                className="ml-auto text-gray-400 hover:text-gray-600 text-xl leading-none"
+                onClick={() => setSelectedCompany(null)}
+                aria-label="Close"
+              >
+                ✕
+              </button>
+            </div>
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+              Terms of Service Summary
+            </h3>
+            {selectedCompany.summary ? (
+              <p className="text-gray-700 text-sm leading-relaxed">
+                {selectedCompany.summary}
+              </p>
+            ) : (
+              <p className="text-gray-500 text-sm italic">No summary available.</p>
+            )}
+            {selectedCompany.tosUrl && (
+              <a
+                href={selectedCompany.tosUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-block text-sm text-indigo-600 hover:underline break-all"
+                onClick={(e) => e.stopPropagation()}
+              >
+                View full Terms of Service ↗
+              </a>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

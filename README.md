@@ -40,6 +40,20 @@ Open `config.json` and add or remove entries:
 }
 ```
 
+## Company logos
+
+Each company card displays a favicon fetched from Google's favicon API:
+
+```
+https://www.google.com/s2/favicons?sz=32&domain=<company-domain>
+```
+
+If the favicon fails to load, a 🏢 fallback icon is shown instead.
+
+## ToS summary click-through
+
+Clicking any company card opens a modal dialog showing a plain-English summary of that company's Terms of Service. The summary is sourced from the `summary` field in `data/results.json`. If no summary is present, the modal displays "No summary available." The modal also includes a direct link to the full Terms of Service page.
+
 ## Local development
 
 ```bash
