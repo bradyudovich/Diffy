@@ -38,6 +38,13 @@ AI_SYSTEM_PROMPT = (
     "Summarize if the change affects how user data is used for AI training or if "
     "it reduces user privacy. Categorize the severity as High, Medium, or Low."
 )
+AI_OVERVIEW_PROMPT = (
+    "You are a plain-English legal analyst. Given the following Terms of Service text, "
+    "provide a concise, high-level overview (3-5 sentences) for a general audience. "
+    "Explain the key obligations for the user, any notable rights the user retains, "
+    "data privacy implications, and any significant risks or restrictions. "
+    "Write clearly and avoid legal jargon."
+)
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -158,6 +165,29 @@ def call_openai(diff_text: str) -> str:
     resp.raise_for_status()
     return resp.json()["choices"][0]["message"]["content"].strip()
 
+def call_openai_overview(tos_text: str) -> str:
+    if not OPENAI_API_KEY:
+        return "AI analysis skipped: OPENAI_API_KEY not set."
+
+    # Truncate to avoid exceeding token limits while preserving key content
+    truncated = tos_text[:8000]
+    payload = {
+        "model": OPENAI_MODEL,
+        "messages": [
+            {"role": "system", "content": AI_OVERVIEW_PROMPT},
+            {"role": "user", "content": f"Here is the Terms of Service text:\n\n{truncated}"},
+        ],
+        "max_tokens": 512,
+        "temperature": 0.3,
+    }
+    headers = {
+        "Authorization": f"Bearer {OPENAI_API_KEY}",
+        "Content-Type": "application/json",
+    }
+    resp = requests.post(OPENAI_URL, headers=headers, json=payload, timeout=60)
+    resp.raise_for_status()
+    return resp.json()["choices"][0]["message"]["content"].strip()
+
 # ---------------------------------------------------------------------------
 # Main monitoring loop
 # ---------------------------------------------------------------------------
@@ -194,13 +224,17 @@ def monitor() -> dict:
         write_snapshot(name, new_text)
 
         if old_text is None or old_text == new_text:
+            try:
+                overview = call_openai_overview(new_text)
+            except Exception as exc:
+                overview = f"Connection Error: AI overview failed – {exc}"
             company_results.append({
                 "name": name,
                 "category": category,
                 "tosUrl": tos_url,
                 "lastChecked": last_checked,
                 "changed": False,
-                "summary": None if old_text else "Initial snapshot created. Monitoring active.",
+                "summary": overview,
             })
             continue
 
