@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-02-25T01:05:53.250449+00:00",
+  "updatedAt": "2026-02-25T01:28:28.657751+00:00",
   "companies": [
     {
       "name": "OpenAI",
       "category": "AI",
       "tosUrl": "https://openai.com/policies/terms-of-use",
-      "lastChecked": "2026-02-25T01:05:53.250465+00:00",
+      "lastChecked": "2026-02-25T01:28:28.657763+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -13,7 +13,7 @@
       "name": "Anthropic",
       "category": "AI",
       "tosUrl": "https://www.anthropic.com/legal/consumer-terms",
-      "lastChecked": "2026-02-25T01:05:57.307001+00:00",
+      "lastChecked": "2026-02-25T01:28:33.296844+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -21,7 +21,7 @@
       "name": "Midjourney",
       "category": "AI",
       "tosUrl": "https://docs.midjourney.com/docs/terms-of-service",
-      "lastChecked": "2026-02-25T01:06:01.724091+00:00",
+      "lastChecked": "2026-02-25T01:28:37.999899+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -29,7 +29,7 @@
       "name": "Meta",
       "category": "Social",
       "tosUrl": "https://www.facebook.com/terms.php",
-      "lastChecked": "2026-02-25T01:06:05.151456+00:00",
+      "lastChecked": "2026-02-25T01:28:42.195281+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -37,7 +37,7 @@
       "name": "X (Twitter)",
       "category": "Social",
       "tosUrl": "https://x.com/en/tos",
-      "lastChecked": "2026-02-25T01:06:07.599832+00:00",
+      "lastChecked": "2026-02-25T01:28:46.093756+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -45,7 +45,7 @@
       "name": "TikTok",
       "category": "Social",
       "tosUrl": "https://www.tiktok.com/legal/page/us/terms-of-service/en",
-      "lastChecked": "2026-02-25T01:06:10.107028+00:00",
+      "lastChecked": "2026-02-25T01:28:48.624681+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -53,7 +53,7 @@
       "name": "Slack",
       "category": "Productivity",
       "tosUrl": "https://slack.com/terms-of-service",
-      "lastChecked": "2026-02-25T01:06:12.809485+00:00",
+      "lastChecked": "2026-02-25T01:28:52.858159+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -61,7 +61,7 @@
       "name": "Zoom",
       "category": "Productivity",
       "tosUrl": "https://explore.zoom.us/en/terms/",
-      "lastChecked": "2026-02-25T01:06:15.239956+00:00",
+      "lastChecked": "2026-02-25T01:28:55.023556+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -69,7 +69,7 @@
       "name": "Notion",
       "category": "Productivity",
       "tosUrl": "https://www.notion.com/terms",
-      "lastChecked": "2026-02-25T01:06:17.894221+00:00",
+      "lastChecked": "2026-02-25T01:28:58.625134+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -77,7 +77,7 @@
       "name": "Amazon",
       "category": "Retail",
       "tosUrl": "https://www.amazon.com/gp/help/customer/display.html?nodeId=508088",
-      "lastChecked": "2026-02-25T01:06:20.298137+00:00",
+      "lastChecked": "2026-02-25T01:29:01.162509+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -85,7 +85,7 @@
       "name": "Walmart",
       "category": "Retail",
       "tosUrl": "https://www.walmart.com/help/article/walmart-com-terms-of-use/3b75080af40340d6bbd596f116fae5a2",
-      "lastChecked": "2026-02-25T01:06:23.805002+00:00",
+      "lastChecked": "2026-02-25T01:29:03.274057+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -93,7 +93,7 @@
       "name": "Shopify",
       "category": "Retail",
       "tosUrl": "https://www.shopify.com/legal/terms",
-      "lastChecked": "2026-02-25T01:06:26.070303+00:00",
+      "lastChecked": "2026-02-25T01:29:05.906045+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -101,7 +101,7 @@
       "name": "Netflix",
       "category": "Streaming",
       "tosUrl": "https://help.netflix.com/legal/termsofuse",
-      "lastChecked": "2026-02-25T01:06:28.613057+00:00",
+      "lastChecked": "2026-02-25T01:29:08.401180+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -109,7 +109,7 @@
       "name": "Disney+",
       "category": "Streaming",
       "tosUrl": "https://www.disneyplus.com/en-gb/legal/subscriber-agreement",
-      "lastChecked": "2026-02-25T01:06:31.125488+00:00",
+      "lastChecked": "2026-02-25T01:29:10.498632+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -117,7 +117,7 @@
       "name": "Spotify",
       "category": "Streaming",
       "tosUrl": "https://www.spotify.com/us/legal/end-user-agreement/",
-      "lastChecked": "2026-02-25T01:06:36.329202+00:00",
+      "lastChecked": "2026-02-25T01:29:15.707897+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -125,7 +125,7 @@
       "name": "Uber",
       "category": "Services",
       "tosUrl": "https://www.uber.com/legal/en/document/?name=general-terms-of-use&country=united-states&lang=en",
-      "lastChecked": "2026-02-25T01:06:39.737737+00:00",
+      "lastChecked": "2026-02-25T01:29:18.056256+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -133,7 +133,7 @@
       "name": "Airbnb",
       "category": "Services",
       "tosUrl": "https://www.airbnb.com/help/article/2908",
-      "lastChecked": "2026-02-25T01:06:42.545272+00:00",
+      "lastChecked": "2026-02-25T01:29:21.205861+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -141,7 +141,7 @@
       "name": "DoorDash",
       "category": "Services",
       "tosUrl": "https://help.doordash.com/consumers/s/terms-and-conditions",
-      "lastChecked": "2026-02-25T01:06:46.037929+00:00",
+      "lastChecked": "2026-02-25T01:29:24.710707+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -149,7 +149,7 @@
       "name": "JPMorgan Chase",
       "category": "Finance",
       "tosUrl": "https://www.chase.com/digital/resources/terms-of-use",
-      "lastChecked": "2026-02-25T01:06:49.557061+00:00",
+      "lastChecked": "2026-02-25T01:29:29.294619+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -157,7 +157,7 @@
       "name": "PayPal",
       "category": "Finance",
       "tosUrl": "https://www.paypal.com/us/legalhub/useragreement-full",
-      "lastChecked": "2026-02-25T01:06:52.844165+00:00",
+      "lastChecked": "2026-02-25T01:29:31.534352+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -165,7 +165,7 @@
       "name": "Stripe",
       "category": "Finance",
       "tosUrl": "https://stripe.com/legal/ssa",
-      "lastChecked": "2026-02-25T01:06:57.499024+00:00",
+      "lastChecked": "2026-02-25T01:29:35.898216+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -173,7 +173,7 @@
       "name": "Tesla",
       "category": "Auto",
       "tosUrl": "https://www.tesla.com/legal/additional-resources/tesla-legal",
-      "lastChecked": "2026-02-25T01:07:00.304413+00:00",
+      "lastChecked": "2026-02-25T01:29:39.407313+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -181,7 +181,7 @@
       "name": "Ford",
       "category": "Auto",
       "tosUrl": "https://www.ford.com/help/privacy/",
-      "lastChecked": "2026-02-25T01:07:02.454219+00:00",
+      "lastChecked": "2026-02-25T01:29:41.774505+00:00",
       "changed": false,
       "summary": "Connection Error: Playwright failed to fetch https://www.ford.com/help/privacy/: Page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.ford.com/help/privacy/\nCall log:\n  - navigating to \"https://www.ford.com/help/privacy/\", waiting until \"domcontentloaded\"\n"
     },
@@ -189,7 +189,7 @@
       "name": "United Airlines",
       "category": "Travel",
       "tosUrl": "https://www.united.com/ual/en/us/fly/legal/legal-notices.html",
-      "lastChecked": "2026-02-25T01:07:24.808789+00:00",
+      "lastChecked": "2026-02-25T01:30:04.317405+00:00",
       "changed": false,
       "summary": "Connection Error: Playwright failed to fetch https://www.united.com/ual/en/us/fly/legal/legal-notices.html: Page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.united.com/ual/en/us/fly/legal/legal-notices.html\nCall log:\n  - navigating to \"https://www.united.com/ual/en/us/fly/legal/legal-notices.html\", waiting until \"domcontentloaded\"\n"
     },
@@ -197,7 +197,7 @@
       "name": "Marriott",
       "category": "Travel",
       "tosUrl": "https://www.marriott.com/about/terms-of-use.mi",
-      "lastChecked": "2026-02-25T01:07:48.628056+00:00",
+      "lastChecked": "2026-02-25T01:30:25.710114+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -205,7 +205,7 @@
       "name": "Google",
       "category": "AI",
       "tosUrl": "https://policies.google.com/terms",
-      "lastChecked": "2026-02-25T01:07:54.111623+00:00",
+      "lastChecked": "2026-02-25T01:30:30.589068+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -213,7 +213,7 @@
       "name": "Microsoft",
       "category": "AI",
       "tosUrl": "https://www.microsoft.com/en-us/servicesagreement/",
-      "lastChecked": "2026-02-25T01:07:56.716692+00:00",
+      "lastChecked": "2026-02-25T01:30:33.925726+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -221,7 +221,7 @@
       "name": "Apple",
       "category": "Tech",
       "tosUrl": "https://www.apple.com/legal/internet-services/itunes/us/terms.html",
-      "lastChecked": "2026-02-25T01:08:00.466634+00:00",
+      "lastChecked": "2026-02-25T01:30:37.184392+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -229,7 +229,7 @@
       "name": "Samsung",
       "category": "Tech",
       "tosUrl": "https://www.samsung.com/us/account/privacy-policy/",
-      "lastChecked": "2026-02-25T01:08:03.266028+00:00",
+      "lastChecked": "2026-02-25T01:30:40.037233+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -237,7 +237,7 @@
       "name": "LinkedIn",
       "category": "Social",
       "tosUrl": "https://www.linkedin.com/legal/user-agreement",
-      "lastChecked": "2026-02-25T01:08:06.753385+00:00",
+      "lastChecked": "2026-02-25T01:30:43.579126+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -245,7 +245,7 @@
       "name": "Instagram",
       "category": "Social",
       "tosUrl": "https://help.instagram.com/581066165581870",
-      "lastChecked": "2026-02-25T01:08:09.813183+00:00",
+      "lastChecked": "2026-02-25T01:30:46.979347+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -253,7 +253,7 @@
       "name": "Pinterest",
       "category": "Social",
       "tosUrl": "https://policy.pinterest.com/en/terms-of-service",
-      "lastChecked": "2026-02-25T01:08:12.324931+00:00",
+      "lastChecked": "2026-02-25T01:30:50.844705+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -261,7 +261,7 @@
       "name": "Reddit",
       "category": "Social",
       "tosUrl": "https://www.redditinc.com/policies/user-agreement",
-      "lastChecked": "2026-02-25T01:08:14.993206+00:00",
+      "lastChecked": "2026-02-25T01:30:55.044346+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -269,7 +269,7 @@
       "name": "Discord",
       "category": "Social",
       "tosUrl": "https://discord.com/terms",
-      "lastChecked": "2026-02-25T01:08:18.341236+00:00",
+      "lastChecked": "2026-02-25T01:30:57.839198+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -277,7 +277,7 @@
       "name": "Twitch",
       "category": "Streaming",
       "tosUrl": "https://www.twitch.tv/p/en/legal/terms-of-service/",
-      "lastChecked": "2026-02-25T01:08:21.288959+00:00",
+      "lastChecked": "2026-02-25T01:31:01.057352+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -285,7 +285,7 @@
       "name": "YouTube",
       "category": "Streaming",
       "tosUrl": "https://www.youtube.com/t/terms",
-      "lastChecked": "2026-02-25T01:08:23.819933+00:00",
+      "lastChecked": "2026-02-25T01:31:04.490237+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -293,7 +293,7 @@
       "name": "Hulu",
       "category": "Streaming",
       "tosUrl": "https://www.hulu.com/subscriber_agreement",
-      "lastChecked": "2026-02-25T01:08:27.513478+00:00",
+      "lastChecked": "2026-02-25T01:31:07.761123+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -301,7 +301,7 @@
       "name": "Max",
       "category": "Streaming",
       "tosUrl": "https://www.max.com/terms-of-use",
-      "lastChecked": "2026-02-25T01:08:30.705045+00:00",
+      "lastChecked": "2026-02-25T01:31:11.948618+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -309,7 +309,7 @@
       "name": "Adobe",
       "category": "Productivity",
       "tosUrl": "https://www.adobe.com/legal/terms.html",
-      "lastChecked": "2026-02-25T01:08:33.274747+00:00",
+      "lastChecked": "2026-02-25T01:31:15.398474+00:00",
       "changed": false,
       "summary": "Connection Error: Playwright failed to fetch https://www.adobe.com/legal/terms.html: Page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.adobe.com/legal/terms.html\nCall log:\n  - navigating to \"https://www.adobe.com/legal/terms.html\", waiting until \"domcontentloaded\"\n"
     },
@@ -317,7 +317,7 @@
       "name": "Dropbox",
       "category": "Productivity",
       "tosUrl": "https://www.dropbox.com/terms",
-      "lastChecked": "2026-02-25T01:08:55.841062+00:00",
+      "lastChecked": "2026-02-25T01:31:39.643409+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -325,7 +325,7 @@
       "name": "Asana",
       "category": "Productivity",
       "tosUrl": "https://asana.com/terms",
-      "lastChecked": "2026-02-25T01:08:59.136808+00:00",
+      "lastChecked": "2026-02-25T01:31:42.267698+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -333,7 +333,7 @@
       "name": "GitHub",
       "category": "Productivity",
       "tosUrl": "https://docs.github.com/en/site-policy/github-terms/github-terms-of-service",
-      "lastChecked": "2026-02-25T01:09:03.352728+00:00",
+      "lastChecked": "2026-02-25T01:31:44.801277+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -341,7 +341,7 @@
       "name": "Lyft",
       "category": "Services",
       "tosUrl": "https://www.lyft.com/terms",
-      "lastChecked": "2026-02-25T01:09:06.772102+00:00",
+      "lastChecked": "2026-02-25T01:31:47.143618+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -349,7 +349,7 @@
       "name": "Grubhub",
       "category": "Services",
       "tosUrl": "https://www.grubhub.com/legal/terms-of-use",
-      "lastChecked": "2026-02-25T01:09:10.645111+00:00",
+      "lastChecked": "2026-02-25T01:31:50.713053+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -357,7 +357,7 @@
       "name": "TaskRabbit",
       "category": "Services",
       "tosUrl": "https://www.taskrabbit.com/terms",
-      "lastChecked": "2026-02-25T01:09:13.723297+00:00",
+      "lastChecked": "2026-02-25T01:31:54.023634+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -365,7 +365,7 @@
       "name": "Venmo",
       "category": "Finance",
       "tosUrl": "https://venmo.com/legal/us-user-agreement/",
-      "lastChecked": "2026-02-25T01:09:16.908987+00:00",
+      "lastChecked": "2026-02-25T01:31:58.603307+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -373,7 +373,7 @@
       "name": "Robinhood",
       "category": "Finance",
       "tosUrl": "https://robinhood.com/us/en/support/articles/customer-agreement/",
-      "lastChecked": "2026-02-25T01:09:19.380161+00:00",
+      "lastChecked": "2026-02-25T01:32:01.359032+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -381,7 +381,7 @@
       "name": "Coinbase",
       "category": "Finance",
       "tosUrl": "https://www.coinbase.com/legal/user_agreement/united_states",
-      "lastChecked": "2026-02-25T01:09:24.580516+00:00",
+      "lastChecked": "2026-02-25T01:32:03.350180+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -389,7 +389,7 @@
       "name": "Delta Airlines",
       "category": "Travel",
       "tosUrl": "https://www.delta.com/us/en/legal/conditions-of-carriage",
-      "lastChecked": "2026-02-25T01:09:28.689232+00:00",
+      "lastChecked": "2026-02-25T01:32:07.239146+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     },
@@ -397,7 +397,7 @@
       "name": "Hilton",
       "category": "Travel",
       "tosUrl": "https://www.hilton.com/en/hilton-honors/terms/",
-      "lastChecked": "2026-02-25T01:09:30.818800+00:00",
+      "lastChecked": "2026-02-25T01:32:09.363555+00:00",
       "changed": false,
       "summary": "Initial snapshot created. Monitoring active."
     }
