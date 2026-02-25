@@ -39,8 +39,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          # We add both data and public/data to ensure the frontend sees it
-          git add data/ public/data/ 
+          # We add data, public/data, and terms_of_service to ensure the frontend sees it
+          git add data/ public/data/ terms_of_service/
           if git diff --cached --quiet; then
             echo "No changes to data – nothing to commit."
           else
