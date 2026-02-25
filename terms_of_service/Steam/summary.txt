@@ -1,0 +1,15 @@
+- **Data Collection Scope**: The Terms do not specify the types of personal information collected beyond billing and account information, raising concerns about the extent of data collection practices.
+
+- **User Consent Ambiguity**: Users must accept multiple agreements (Subscription Terms, Rules of Use, Privacy Policy) without clear guidance on how these documents interact, potentially leading to uninformed consent.
+
+- **Third-Party Data Sharing**: The agreement mentions third-party content and services but lacks transparency on whether user data is shared with these third parties, which could lead to privacy violations.
+
+- **Account Security Responsibility**: Users are solely responsible for their account security, which raises concerns about the adequacy of Valve's security measures and the potential for unauthorized access.
+
+- **Limited User Rights**: The agreement includes disclaimers and limitations of liability that may restrict users' rights to seek recourse in case of data breaches or misuse of personal information.
+
+- **Age Verification Risks**: While the agreement states that users under 13 are not permitted, there is no clear mechanism described for verifying age, which could lead to unauthorized data collection from minors.
+
+- **Amendment Clause**: The ability for Valve to amend the agreement unilaterally without explicit user consent could lead to unfavorable changes in terms, including privacy practices.
+
+- **Lack of Transparency in AI Use**: There is no mention of how user data may be used for AI training or analytics, raising concerns about the potential for misuse of personal data in AI models.

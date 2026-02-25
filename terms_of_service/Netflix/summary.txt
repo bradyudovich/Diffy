@@ -1,0 +1,15 @@
+- **Data Collection for Offers**: Netflix may collect sensitive information such as device ID and payment method details to determine eligibility for promotional offers, raising concerns about the extent of personal data being tracked and stored.
+
+- **Arbitration Agreement and Class Action Waiver**: Users are required to agree to an arbitration clause that limits their ability to pursue legal action collectively, potentially undermining their rights to seek redress in disputes.
+
+- **Automatic Renewal Policy**: The service automatically renews unless canceled, which may lead to unexpected charges for users who forget to cancel, creating a risk of unintentional financial liability.
+
+- **Third-Party Payment Methods**: If users sign up through third-party services, they may face complications in managing their subscriptions or cancellations, which could lead to confusion and potential loss of access to services.
+
+- **Non-Refundable Payments**: The policy states that payments are nonrefundable, meaning users cannot recover funds for partially used subscription periods, which could be financially disadvantageous.
+
+- **Advertising Content**: All subscription plans may include advertisements regardless of the chosen plan, which could detract from user experience and raise concerns about the extent of commercial content users are subjected to.
+
+- **Limited User Control Over Data**: The terms suggest that Netflix may update payment methods and other information without explicit user consent, raising concerns about user control over their personal data.
+
+- **Potential for Data Sharing**: The terms imply that Netflix may share user data with third parties for promotional offers, which could lead to privacy risks if users are unaware of how their data is being used or shared.

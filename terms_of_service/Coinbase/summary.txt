@@ -1,0 +1,15 @@
+- **Arbitration and Waivers**: Users are bound by an arbitration agreement that waives their right to a jury trial and class action, potentially limiting their ability to seek legal recourse collectively or through traditional court systems.
+
+- **Broad Data Collection**: Coinbase collects extensive personal information during account registration, including sensitive data such as biometric information, which raises concerns about user privacy and data security.
+
+- **Amendment of Terms**: Coinbase reserves the right to modify the User Agreement at any time without prior notice, which could lead to users unknowingly accepting unfavorable changes to their rights and obligations.
+
+- **Lack of Investment Advice Disclaimer**: The terms explicitly state that Coinbase does not provide investment advice, which may mislead users into thinking they are receiving guidance when they are not, potentially leading to financial losses.
+
+- **Data Retention and Processing**: Users consent to Coinbase retaining their personal data indefinitely for various purposes, including identity verification and fraud detection, which poses risks of data misuse or breaches.
+
+- **Limited User Control**: Users have limited options to contest or refuse data processing practices, as the agreement emphasizes compliance with Coinbase's requirements for identity verification and monitoring.
+
+- **Geographic Restrictions**: The services and supported digital assets may vary by jurisdiction, which could lead to confusion or unintentional violations of local laws by users unaware of these limitations.
+
+- **No Regulatory Oversight**: Coinbase is not registered with the U.S. Securities and Exchange Commission, meaning users do not benefit from the protections typically afforded to investors in regulated securities, increasing the risk of loss.

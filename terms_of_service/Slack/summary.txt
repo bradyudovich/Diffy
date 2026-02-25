@@ -1,0 +1,15 @@
+- **Data Ownership Ambiguity**: The Terms do not clearly define who owns the data generated and shared within the platform, which could lead to disputes over user-generated content and data rights.
+
+- **Broad Data Collection**: The mention of "data exports" and "Slack’s Privacy Policy" suggests extensive data collection practices, potentially including user communications, which raises concerns about user privacy and consent.
+
+- **User Consent for AI Training**: There is no explicit mention of whether user data will be used for AI training purposes, which could lead to unconsented use of personal information for machine learning models.
+
+- **Limited User Control**: The Terms do not specify the extent to which users can control their data or opt-out of data collection practices, potentially infringing on user rights regarding personal information.
+
+- **Third-Party Data Sharing**: The Terms do not clarify if and how user data may be shared with third parties, which poses risks related to data privacy and user trust.
+
+- **Inadequate Security Guarantees**: While there is a reference to security practices, the Terms lack specific commitments or guarantees regarding the protection of user data against breaches or unauthorized access.
+
+- **Potential for Data Retention Issues**: There is no clear policy outlined regarding how long user data will be retained, which raises concerns about unnecessary data storage and potential misuse.
+
+- **Lack of Transparency on Changes**: The Terms do not specify how users will be notified of changes to the privacy policy or terms, which could affect users' ability to make informed decisions about their data.

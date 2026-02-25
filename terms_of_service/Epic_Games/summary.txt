@@ -1,0 +1,15 @@
+- **Data Collection Scope**: The Terms imply that users must provide "accurate information" when creating an Epic Games Account, raising concerns about the extent of personal data collected and the potential for excessive data retention.
+
+- **Accountability for Minors**: Parents or guardians are held responsible for all actions taken by minors using their accounts, which could lead to disputes over unauthorized purchases or content, placing undue liability on guardians.
+
+- **Mandatory Arbitration Clause**: The inclusion of mandatory arbitration for disputes may limit users' rights to pursue legal action in court, potentially disadvantaging them in case of grievances against Epic Games.
+
+- **Lack of Ownership Rights**: Users are granted a license rather than ownership of Licensed Products, which raises concerns about the permanence of access and the potential for sudden revocation of services or content without compensation.
+
+- **Public Display Name**: The requirement for a publicly available display name poses privacy risks, especially for minors, as it could expose them to unwanted attention or harassment.
+
+- **Data Sharing Restrictions**: The prohibition against sharing accounts may lead to privacy risks if users are unaware that their account activity is solely their responsibility, including any breaches or misuse.
+
+- **Ambiguous Termination Rights**: The Terms allow Epic Games to terminate accounts at their discretion, which raises concerns about the lack of clear guidelines or recourse for users who may lose access to purchased content or services.
+
+- **Potential for AI Training Data Use**: The Terms do not clarify whether user-generated content or interactions may be used for AI training purposes, which could raise concerns about consent and the use of personal data in developing AI models.

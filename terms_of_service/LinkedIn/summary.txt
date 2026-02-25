@@ -1,0 +1,15 @@
+- **Data Sharing with Affiliates**: The Terms indicate that personal data may be shared with affiliates, including Microsoft Corporation, raising concerns about how data is utilized across different platforms and potential lack of user control over personal information.
+
+- **Broad Data Collection**: The mention of "offsite collection of data" through ads and plugins suggests extensive tracking of user behavior beyond LinkedIn's own services, which could lead to privacy invasions and unauthorized data profiling.
+
+- **Changes to Terms Without Notice**: LinkedIn reserves the right to modify the Terms and Privacy Policy without prior notice in certain situations, which could leave users unaware of significant changes affecting their rights and data usage.
+
+- **Ambiguous Consent for Data Use**: Users consent to the collection and use of their personal data by agreeing to the Terms, but the lack of clarity on how data will be used, especially for AI training, raises concerns about informed consent.
+
+- **Limited User Rights on Data Deletion**: While users can close their accounts, the process and implications for data deletion are not clearly outlined, potentially leaving users' data retained even after account termination.
+
+- **Minimum Age Policy**: The minimum age requirement of 16 years old may not adequately protect younger users, especially regarding data collection and the potential for exploitation in targeted advertising.
+
+- **Account Control by Employers**: If an account is created under a service purchased by an employer, that employer has rights to access and control the account, which could compromise user privacy and autonomy over personal data.
+
+- **Automatic Billing Practices**: The automatic billing clause for subscriptions, including continued billing after expiration, may lead to unexpected charges and complicate user control over financial information and consent.

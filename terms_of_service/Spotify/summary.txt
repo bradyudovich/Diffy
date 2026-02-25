@@ -1,0 +1,15 @@
+- **Mandatory Arbitration Clause**: The Terms include a mandatory arbitration provision that limits users' rights to pursue legal action in court, potentially hindering their ability to seek justice or participate in class actions.
+
+- **Data Collection and Usage Transparency**: The reference to the Spotify Privacy Policy suggests that users should be cautious about how their personal data is collected, used, and shared, but the specifics are not detailed in the Terms, raising concerns about transparency.
+
+- **Third-Party Data Sharing**: The integration with third-party applications and devices may lead to sharing of personal data without clear user consent or understanding, posing risks to user privacy.
+
+- **Age Verification and Parental Consent**: The requirement for users under 18 to obtain parental consent raises concerns about the adequacy of age verification processes and the potential for minors to access inappropriate content.
+
+- **Modification of Services**: Spotify reserves the right to change or discontinue services without notice, which could affect users' access to content and features they rely on, creating uncertainty about service continuity.
+
+- **Limited User Rights on Content**: Users are granted only a limited, non-exclusive, revocable permission to access the content, which may restrict their ability to use the content in ways they might expect, such as sharing or redistributing.
+
+- **No Liability for Service Interruptions**: Spotify disclaims liability for service outages caused by external factors, which could leave users without recourse in the event of significant service disruptions.
+
+- **Inadequate Security Measures**: Users are responsible for maintaining the confidentiality of their account credentials, raising concerns about the adequacy of security measures in place to protect user accounts from unauthorized access.

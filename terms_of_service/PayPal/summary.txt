@@ -1,0 +1,15 @@
+- **Arbitration Clause**: Users are required to resolve disputes through arbitration on an individual basis, which may limit their ability to pursue class actions or seek remedies in court, potentially undermining consumer rights.
+
+- **Unilateral Changes**: PayPal reserves the right to revise the user agreement and policies at any time, with changes taking effect immediately upon posting, which could lead to users being bound by terms they have not explicitly agreed to.
+
+- **Data Collection and Use**: The agreement implies extensive data collection, including personal identification information and transaction details, which raises concerns about how this data is used, shared, or sold, especially without explicit user consent.
+
+- **Lack of Clear Opt-Out Options**: There is no mention of clear options for users to opt out of data collection practices or marketing communications, which could lead to unwanted solicitations and privacy invasions.
+
+- **Account Closure Risks**: PayPal may close accounts based on their interpretation of account usage (personal vs. business), which can lead to sudden loss of access to funds and services without adequate notice or justification.
+
+- **Compliance with MFA Regulations**: Users are required to demonstrate compliance with multi-factor authentication regulations, which could place an additional burden on users and raise concerns about the security of their personal data.
+
+- **Limited User Rights Notification**: Changes that reduce user rights or increase responsibilities will be communicated only through postings on the Policy Updates page, which may not be sufficiently visible or accessible to all users.
+
+- **Ambiguous Definitions**: The terms regarding what constitutes personal versus business activity are vague, potentially leading to arbitrary enforcement and account closures, which could disrupt users' access to services.

@@ -1,0 +1,15 @@
+- **Arbitration Clause**: Users are required to resolve disputes through binding arbitration, waiving their right to a jury trial and limiting their ability to bring class action lawsuits, which may restrict access to justice for users with similar claims.
+
+- **Modification Rights**: Uber reserves the right to modify the Terms of Service at any time without prior notice, potentially altering user rights and obligations without their explicit consent.
+
+- **Data Collection Transparency**: The Terms reference a "Privacy Notice," but do not provide specific details about what data is collected, how it is used, or whether it is shared with third parties, raising concerns about user awareness and consent.
+
+- **Third-Party Services**: The inclusion of third-party services may lead to additional data sharing and privacy risks, as users may not be fully aware of how their data is handled by these external entities.
+
+- **Termination Rights**: Uber can terminate access to services at its sole discretion without providing a clear process or criteria for such decisions, leaving users vulnerable to sudden loss of service.
+
+- **Limited User Rights**: The language suggests that users have limited recourse for disputes and may not be able to challenge Uber's decisions effectively, which could undermine consumer protections.
+
+- **Ambiguity in User Conduct**: The terms regarding user conduct and requirements are vague, potentially allowing Uber to enforce arbitrary standards that could lead to account suspension or termination without clear justification.
+
+- **Lack of Data Portability**: There is no mention of data portability rights, which could prevent users from easily transferring their data to other services or platforms if they choose to leave Uber.

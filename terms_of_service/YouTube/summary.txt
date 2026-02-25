@@ -1,0 +1,15 @@
+- **Data Processing Clarity**: The terms state that uploaded content will be processed according to the YouTube Data Processing Terms, but do not specify how user data will be used for AI training or other purposes, raising concerns about transparency in data handling.
+
+- **Broad Content Permissions**: Users grant YouTube extensive rights over their uploaded content, which may include the ability to use it for advertising or other commercial purposes without clear compensation or acknowledgment to the original creator.
+
+- **Vague Age Requirements**: The requirement for parental consent for users under 18 is ambiguous, potentially exposing minors to risks if parents are not adequately informed about data collection practices and content exposure.
+
+- **Limited User Control Over Data**: The terms suggest that users have limited control over their personal data and how it is processed, particularly regarding the lack of options for opting out of data collection for AI training.
+
+- **Accountability for Minors**: Parents are held responsible for their children's activities on the platform, which may lead to legal implications for parents without sufficient tools or guidance on monitoring their children's online behavior.
+
+- **Potential for Content Misuse**: The terms allow YouTube to modify or remove content at its discretion, which could lead to arbitrary censorship or removal of user-generated content without adequate justification or recourse for the user.
+
+- **Ambiguous Liability Clauses**: The terms contain disclaimers that limit YouTube's liability for various issues, which could leave users without recourse in cases of data breaches or misuse of their content.
+
+- **Inadequate Privacy Policy Reference**: While the terms reference the Privacy Policy, they do not summarize key points or changes, making it difficult for users to understand how their data will be managed and what rights they have regarding their personal information.

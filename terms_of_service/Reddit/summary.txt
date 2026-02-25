@@ -1,0 +1,15 @@
+- **Data Collection Consent**: Users are required to consent to the collection and use of their information as outlined in the Privacy Policy, which may not be fully transparent or easily accessible, raising concerns about informed consent.
+
+- **Broad License for User Content**: By submitting content, users grant Reddit a broad, perpetual license to use, modify, and distribute their content, including for AI training purposes, which could lead to unanticipated uses of personal data.
+
+- **Lack of Control Over Personal Data**: Users may have limited control over how their data is used, particularly in terms of AI training, as the terms allow for the removal of metadata and waive moral rights, potentially compromising user privacy.
+
+- **Vague Personalization Practices**: The personalization of user experiences based on various factors may involve extensive data profiling, which could lead to privacy risks if users are unaware of the extent of data collection and analysis.
+
+- **No Clear Opt-Out Mechanism**: The terms do not specify a clear mechanism for users to opt-out of data collection or AI training processes, which could lead to users being unknowingly included in data sets used for machine learning.
+
+- **Account Security Responsibility**: Users are solely responsible for their account security, which may lead to vulnerabilities if they do not follow recommended practices, potentially exposing their data to unauthorized access.
+
+- **Age Restrictions and Compliance**: The requirement that users must be at least 13 years old raises concerns about compliance with child protection laws, as there may be insufficient measures to verify ages and protect younger users.
+
+- **Potential for Content Misuse**: The terms state that Reddit does not guarantee the accuracy or reliability of user-generated content, which could expose users to liability or reputational harm if their content is misused or misrepresented.

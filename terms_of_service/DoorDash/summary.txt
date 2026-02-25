@@ -1,0 +1,7 @@
+- The Terms of Service text is incomplete and does not provide any information on data collection practices, leaving users unaware of what personal information may be collected.
+- There is no mention of how user data will be used for AI training, raising concerns about potential misuse of personal information without informed consent.
+- Lack of clarity on data retention policies could lead to indefinite storage of personal data, increasing the risk of data breaches.
+- No details are provided on user rights regarding data access, deletion, or correction, which may hinder users' ability to manage their personal information.
+- Absence of information on third-party data sharing practices raises red flags about potential unauthorized access to user data.
+- There is no indication of security measures in place to protect user data, which could expose users to identity theft and other privacy risks.
+- The lack of a clear process for reporting privacy violations or data breaches may leave users vulnerable and without recourse.

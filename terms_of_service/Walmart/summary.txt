@@ -1,0 +1,8 @@
+- - Lack of clarity on data collection practices: The Terms of Service do not specify what personal information is collected from users, raising concerns about transparency.
+- - No explicit consent for data usage: Users are not informed about how their data will be used, particularly in relation to AI training or other automated processes.
+- - Absence of detailed data retention policies: There is no mention of how long personal information will be retained, which can lead to potential misuse or unauthorized access over time.
+- - Vague opt-out options: The "Do Not Sell My Personal Information" option is mentioned, but there are no details on how users can effectively opt-out or what it entails.
+- - Unclear third-party sharing practices: The Terms do not clarify whether user data will be shared with third parties, which poses risks of unauthorized data exposure.
+- - No mention of user rights regarding data deletion: Users are not informed about their rights to request deletion of their personal data, which is crucial for privacy protection.
+- - Lack of information on AI training data sources: There is no indication of whether user data will be used to train AI models, raising concerns about consent and data ownership.
+- - No clear dispute resolution process: The absence of a defined process for users to address grievances related to data privacy or misuse is a significant oversight.

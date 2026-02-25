@@ -1,0 +1,15 @@
+- **Data Control and Ownership**: Asana explicitly states that Customer Data is controlled by the Customer, which may lead to confusion regarding user rights over their personal data, especially for Managed Users who may not have clear visibility into how their data is being used or shared.
+
+- **Limited User Rights**: The Terms indicate that Asana makes no representations or warranties to Managed Users regarding the Service, which may leave users without recourse if issues arise, undermining their rights to service quality and data protection.
+
+- **Responsibility for Data Compliance**: Users are required to rely on the Customer (e.g., their employer) to inform them about data policies and obtain necessary consents, which poses a risk if the Customer fails to comply with data protection laws or does not adequately inform users.
+
+- **Accountability for Unauthorized Use**: Users are held fully responsible for all activities under their account, including unauthorized access, which places an undue burden on users to secure their accounts without sufficient support from Asana.
+
+- **Lack of Transparency in Changes**: Asana reserves the right to modify the Terms at its discretion with only a vague promise of "reasonable notice," which may not adequately inform users of significant changes that could affect their rights or data usage.
+
+- **Age Verification Issues**: The Terms require users to be at least 16 years old, but do not clarify how Asana verifies this age, raising concerns about compliance with laws protecting minors’ data.
+
+- **Data Processing Responsibility**: The Terms shift the responsibility of lawful data processing entirely onto the Customer, which could lead to misuse of user data without proper oversight or accountability from Asana.
+
+- **Potential for Data Sharing**: The mention of third-party integrations and the Customer's ability to manage permissions raises concerns about how user data may be shared or accessed by external entities without explicit user consent.

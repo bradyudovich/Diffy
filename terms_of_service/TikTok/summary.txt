@@ -1,0 +1,15 @@
+- **Data Collection Scope**: The terms imply extensive data collection, including user interests, activity, and device settings, raising concerns about the breadth of personal information being gathered without explicit user consent.
+
+- **Third-Party Sharing**: The mention of working with affiliates, service providers, and business partners suggests potential sharing of user data with multiple entities, increasing the risk of data misuse or breaches.
+
+- **Automated Decision-Making**: The use of automated means to identify violations and customize user experiences raises concerns about transparency and accountability in AI-driven decisions that may affect user access and content visibility.
+
+- **Lack of Clear Opt-Out Options**: While users can control how their information is used for ads, the terms do not clearly outline how to opt-out of data collection or targeted advertising, potentially leading to unwanted data usage.
+
+- **Age Verification Risks**: The platform restricts users under 13 but relies on self-reporting for age verification, which may not effectively prevent younger users from accessing the platform and exposing them to privacy risks.
+
+- **Account Security Responsibility**: Users are solely responsible for keeping their account secure, which places the burden on them while the platform does not provide robust measures to protect user accounts from unauthorized access.
+
+- **Ambiguity in Policy Conflicts**: The potential for conflicts between the main terms and additional terms could confuse users about their rights and obligations, leading to unintentional violations or misunderstandings.
+
+- **Limited User Rights Information**: The terms do not adequately inform users about their rights regarding data access, correction, or deletion, which is essential for maintaining user control over personal information.

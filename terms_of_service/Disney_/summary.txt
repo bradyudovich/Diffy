@@ -1,0 +1,15 @@
+- - **Broad Data Collection**: The agreement may permit extensive collection of personal data, including viewing habits, preferences, and device information, raising concerns about user privacy and potential misuse of data.
+  
+- - **Third-Party Sharing**: There may be clauses allowing the sharing of user data with third parties for marketing or analytics purposes, which can lead to loss of control over personal information.
+
+- - **Lack of Clear Opt-Out Options**: Users may not have straightforward options to opt-out of data collection or targeted advertising, limiting their ability to protect their privacy.
+
+- - **Vague AI Usage Disclosure**: The terms may not clearly specify how AI technologies are used in data processing or content recommendations, raising concerns about transparency and accountability.
+
+- - **Data Retention Policies**: The agreement might lack clarity on how long user data is retained, which can pose risks if data is stored longer than necessary.
+
+- - **User Rights Limitations**: There may be insufficient information on user rights regarding data access, correction, and deletion, which can hinder users' ability to manage their personal information.
+
+- - **Automatic Updates to Terms**: The possibility of automatic updates to the Terms of Service without explicit user consent can lead to users being unaware of new privacy risks or changes in data handling practices.
+
+- - **Jurisdictional Issues**: The terms may specify a jurisdiction that could limit users' rights under their local privacy laws, potentially exposing them to less favorable legal protections.

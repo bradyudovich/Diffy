@@ -1,0 +1,7 @@
+- The absence of a Terms of Service document raises significant concerns about user rights and protections, as users are left without clear guidelines on data usage and privacy practices.
+- Users may unknowingly consent to data collection practices without understanding the implications, as there is no documented policy outlining what data is collected and how it is used.
+- The lack of transparency regarding AI training data sources could lead to ethical issues, including potential biases in AI models that are not disclosed to users.
+- Without a Terms of Service, there are no clear mechanisms for users to exercise their rights regarding data access, deletion, or correction, which could violate privacy regulations.
+- Users are at risk of being subjected to undisclosed third-party data sharing, as there are no terms to clarify whether their data will be sold or shared with external entities.
+- The absence of a clear dispute resolution process or user support channels can leave users vulnerable in the event of data breaches or misuse of their information.
+- Users may not be informed about the duration of data retention, leading to concerns about long-term privacy risks associated with their personal information.
