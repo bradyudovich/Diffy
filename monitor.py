@@ -26,6 +26,7 @@ CONFIG_PATH = BASE_DIR / "config.json"
 SNAPSHOTS_DIR = BASE_DIR / "data" / "snapshots"
 DATA_RESULTS_PATH = BASE_DIR / "data" / "results.json"
 PUBLIC_RESULTS_PATH = BASE_DIR / "public" / "data" / "results.json"
+TOS_DIR = BASE_DIR / "terms_of_service"
 
 # ---------------------------------------------------------------------------
 # OpenAI API Settings
@@ -52,6 +53,7 @@ AI_OVERVIEW_PROMPT = (
 
 def ensure_dirs() -> None:
     SNAPSHOTS_DIR.mkdir(parents=True, exist_ok=True)
+    TOS_DIR.mkdir(parents=True, exist_ok=True)
     PUBLIC_RESULTS_PATH.parent.mkdir(parents=True, exist_ok=True)
 
 def load_config() -> list[dict]:
@@ -138,6 +140,56 @@ def read_snapshot(company_name: str) -> str | None:
 def write_snapshot(company_name: str, text: str) -> None:
     snapshot_path(company_name).write_text(text, encoding="utf-8")
 
+def company_slug(company_name: str) -> str:
+    """Return a filesystem-safe slug for a company name."""
+    return re.sub(r"[^\w\-]", "_", company_name)
+
+def tos_archive_dir(company_name: str) -> Path:
+    """Return the archive directory for a company."""
+    return TOS_DIR / company_slug(company_name)
+
+def get_latest_archived_tos(company_name: str) -> str | None:
+    """Return the text of the most recently archived ToS, or None if no archive exists."""
+    archive_dir = tos_archive_dir(company_name)
+    if not archive_dir.exists():
+        return None
+    dated_files = sorted(f for f in archive_dir.glob("*.txt") if f.name != "summary.txt")
+    if not dated_files:
+        return None
+    return dated_files[-1].read_text(encoding="utf-8")
+
+def archive_tos_if_changed(company_name: str, new_text: str) -> bool:
+    """Save new_text as a dated archive file if it differs from the latest archived version.
+
+    Returns True if a new archive file was written, False if the content is unchanged.
+    """
+    archive_dir = tos_archive_dir(company_name)
+    archive_dir.mkdir(parents=True, exist_ok=True)
+    if get_latest_archived_tos(company_name) == new_text:
+        return False
+    date_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    archive_path = archive_dir / f"{date_str}.txt"
+    # Avoid overwriting a same-day file with a numeric suffix
+    suffix = 1
+    while archive_path.exists():
+        archive_path = archive_dir / f"{date_str}_{suffix}.txt"
+        suffix += 1
+    archive_path.write_text(new_text, encoding="utf-8")
+    return True
+
+def read_tos_summary(company_name: str) -> str | None:
+    """Return the persisted summary for a company, or None if it doesn't exist."""
+    summary_file = tos_archive_dir(company_name) / "summary.txt"
+    if summary_file.exists():
+        return summary_file.read_text(encoding="utf-8")
+    return None
+
+def write_tos_summary(company_name: str, summary: str) -> None:
+    """Persist the summary text for a company."""
+    archive_dir = tos_archive_dir(company_name)
+    archive_dir.mkdir(parents=True, exist_ok=True)
+    (archive_dir / "summary.txt").write_text(summary, encoding="utf-8")
+
 def build_diff(old_text: str, new_text: str) -> str:
     old_lines = old_text.splitlines(keepends=True)
     new_lines = new_text.splitlines(keepends=True)
@@ -216,34 +268,44 @@ def monitor() -> dict:
                 "tosUrl": tos_url,
                 "lastChecked": last_checked,
                 "changed": False,
-                "summary": f"Connection Error: {exc}",
+                "summary": read_tos_summary(name) or f"Connection Error: {exc}",
             })
             continue
 
         old_text = read_snapshot(name)
         write_snapshot(name, new_text)
 
+        # Archive the new version if it differs from the latest archived copy
+        archived = archive_tos_if_changed(name, new_text)
+
         if old_text is None or old_text == new_text:
-            try:
-                overview = call_openai_overview(new_text)
-            except Exception as exc:
-                overview = f"Connection Error: AI overview failed – {exc}"
+            # No snapshot change this run – generate/refresh summary only when a
+            # new archive version was saved (first time or archive was absent)
+            if archived or read_tos_summary(name) is None:
+                try:
+                    overview = call_openai_overview(new_text)
+                except Exception as exc:
+                    overview = f"Connection Error: AI overview failed – {exc}"
+                write_tos_summary(name, overview)
+            summary = read_tos_summary(name) or "Initial snapshot created. Monitoring active."
             company_results.append({
                 "name": name,
                 "category": category,
                 "tosUrl": tos_url,
                 "lastChecked": last_checked,
                 "changed": False,
-                "summary": overview,
+                "summary": summary,
             })
             continue
 
-        # Text changed – call OpenAI
+        # Text changed – generate a diff summary and persist it
         diff_text = build_diff(old_text, new_text)
         try:
             summary = call_openai(diff_text)
         except Exception as exc:
             summary = f"Connection Error: AI analysis failed – {exc}"
+
+        write_tos_summary(name, summary)
 
         company_results.append({
             "name": name,
