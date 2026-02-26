@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-02-25T22:54:19.912419+00:00",
+  "updatedAt": "2026-02-26T01:54:42.629853+00:00",
   "companies": [
     {
       "name": "OpenAI",
       "category": "AI",
       "tosUrl": "https://openai.com/policies/terms-of-use",
-      "lastChecked": "2026-02-25T22:54:19.912434+00:00",
+      "lastChecked": "2026-02-26T01:54:42.629865+00:00",
       "changed": false,
       "summary": "Flags: AI training risk, arbitration clause, content ownership. Inputs may train AI unless opted out; outputs may be inaccurate; arbitration limits legal recourse."
     },
@@ -13,7 +13,7 @@
       "name": "Anthropic",
       "category": "AI",
       "tosUrl": "https://www.anthropic.com/legal/consumer-terms",
-      "lastChecked": "2026-02-25T22:54:32.875636+00:00",
+      "lastChecked": "2026-02-26T01:54:47.361093+00:00",
       "changed": false,
       "summary": "Flags: AI training risk, limited user control, data retention. Inputs may train AI models; limited data-deletion rights; organizational accounts can monitor users."
     },
@@ -21,7 +21,7 @@
       "name": "Midjourney",
       "category": "AI",
       "tosUrl": "https://docs.midjourney.com/docs/terms-of-service",
-      "lastChecked": "2026-02-25T22:54:48.160828+00:00",
+      "lastChecked": "2026-02-26T01:54:50.853319+00:00",
       "changed": false,
       "summary": "Flags: AI training risk, data collection, content licensing. Generated and personal data may train AI; user content licensed broadly; limited opt-out."
     },
@@ -29,7 +29,7 @@
       "name": "Google",
       "category": "AI",
       "tosUrl": "https://policies.google.com/terms",
-      "lastChecked": "2026-02-25T22:55:00.654522+00:00",
+      "lastChecked": "2026-02-26T01:54:54.430292+00:00",
       "changed": false,
       "summary": "Flags: Data collection, broad content licensing, third-party sharing. Unclear collection scope; user content licensed broadly; limited opt-out options."
     },
@@ -37,7 +37,7 @@
       "name": "Microsoft",
       "category": "AI",
       "tosUrl": "https://www.microsoft.com/en-us/servicesagreement/",
-      "lastChecked": "2026-02-25T22:55:09.686867+00:00",
+      "lastChecked": "2026-02-26T01:54:56.378358+00:00",
       "changed": false,
       "summary": "Flags: Data collection, AI training risk, broad licensing. Consent required for data collection used in AI training; limited user control; terms may change without notice."
     },
@@ -45,7 +45,7 @@
       "name": "Meta",
       "category": "Social",
       "tosUrl": "https://www.facebook.com/terms.php",
-      "lastChecked": "2026-02-25T22:55:21.670945+00:00",
+      "lastChecked": "2026-02-26T01:55:05.150852+00:00",
       "changed": false,
       "summary": "Flags: Data sharing, AI training risk, limited user control. Data shared across Meta platforms; used for AI/ML; vague opt-out mechanisms."
     },
@@ -53,7 +53,7 @@
       "name": "X (Twitter)",
       "category": "Social",
       "tosUrl": "https://x.com/en/tos",
-      "lastChecked": "2026-02-25T22:55:38.871327+00:00",
+      "lastChecked": "2026-02-26T01:55:08.019849+00:00",
       "changed": false,
       "summary": "Flags: Data transfer, third-party sharing, content licensing. User data may be transferred internationally; broad content license granted; limited transparency on data use."
     },
@@ -61,7 +61,7 @@
       "name": "TikTok",
       "category": "Social",
       "tosUrl": "https://www.tiktok.com/legal/page/us/terms-of-service/en",
-      "lastChecked": "2026-02-25T22:55:48.380372+00:00",
+      "lastChecked": "2026-02-26T01:55:10.981117+00:00",
       "changed": false,
       "summary": "Flags: Extensive data collection, third-party sharing, arbitration clause. Broad device data collected; data shared with affiliates; arbitration waives class action rights."
     },
@@ -69,7 +69,7 @@
       "name": "LinkedIn",
       "category": "Social",
       "tosUrl": "https://www.linkedin.com/legal/user-agreement",
-      "lastChecked": "2026-02-25T22:56:02.418288+00:00",
+      "lastChecked": "2026-02-26T01:55:13.672171+00:00",
       "changed": false,
       "summary": "Flags: Data sharing, AI training risk, content licensing. Data shared with affiliates; content used to improve AI; broad perpetual license on user posts."
     },
@@ -77,7 +77,7 @@
       "name": "Instagram",
       "category": "Social",
       "tosUrl": "https://help.instagram.com/581066165581870",
-      "lastChecked": "2026-02-25T22:56:12.266773+00:00",
+      "lastChecked": "2026-02-26T01:55:16.169337+00:00",
       "changed": false,
       "summary": "Flags: Data retention, content licensing, third-party sharing. Vague retention policies; user content licensed broadly; data shared across Meta companies."
     },
@@ -85,7 +85,7 @@
       "name": "Pinterest",
       "category": "Social",
       "tosUrl": "https://policy.pinterest.com/en/terms-of-service",
-      "lastChecked": "2026-02-25T22:56:21.283388+00:00",
+      "lastChecked": "2026-02-26T01:55:19.110313+00:00",
       "changed": false,
       "summary": "Flags: Data collection, targeted advertising, third-party sharing. Personal data used for ad targeting; shared with partners; limited opt-out for personalization."
     },
@@ -93,7 +93,7 @@
       "name": "Reddit",
       "category": "Social",
       "tosUrl": "https://www.redditinc.com/policies/user-agreement",
-      "lastChecked": "2026-02-25T22:56:32.263075+00:00",
+      "lastChecked": "2026-02-26T01:55:29.776059+00:00",
       "changed": false,
       "summary": "Flags: Data collection, content licensing, arbitration clause. Broad data collection consent required; user content licensed perpetually; arbitration waives class action rights."
     },
@@ -101,7 +101,7 @@
       "name": "Discord",
       "category": "Social",
       "tosUrl": "https://discord.com/terms",
-      "lastChecked": "2026-02-25T22:56:42.451659+00:00",
+      "lastChecked": "2026-02-26T01:55:32.585987+00:00",
       "changed": false,
       "summary": "Flags: Extensive data collection, arbitration clause, age verification gaps. Device activity monitored; arbitration limits legal options; minor protections rely on third parties."
     },
@@ -109,7 +109,7 @@
       "name": "Slack",
       "category": "Productivity",
       "tosUrl": "https://slack.com/terms-of-service",
-      "lastChecked": "2026-02-25T22:56:56.060035+00:00",
+      "lastChecked": "2026-02-26T01:55:36.443472+00:00",
       "changed": false,
       "summary": "Flags: Data ownership ambiguity, employer access, third-party sharing. Employer controls user data; messages accessible by admins; vague data retention policies."
     },
@@ -117,7 +117,7 @@
       "name": "Zoom",
       "category": "Productivity",
       "tosUrl": "https://explore.zoom.us/en/terms/",
-      "lastChecked": "2026-02-25T22:57:04.223192+00:00",
+      "lastChecked": "2026-02-26T01:55:39.927339+00:00",
       "changed": false,
       "summary": "Flags: Data collection, AI training risk, third-party sharing. Meeting data may train AI; broad data collection; limited user control over recordings."
     },
@@ -125,7 +125,7 @@
       "name": "Notion",
       "category": "Productivity",
       "tosUrl": "https://www.notion.com/terms",
-      "lastChecked": "2026-02-25T22:57:13.704363+00:00",
+      "lastChecked": "2026-02-26T01:55:42.322540+00:00",
       "changed": false,
       "summary": "Flags: Broad data collection, AI training risk, third-party sharing. Extensive data collected; content may train AI; limited transparency on data practices."
     },
@@ -133,7 +133,7 @@
       "name": "Adobe",
       "category": "Productivity",
       "tosUrl": "https://www.adobe.com/legal/terms.html",
-      "lastChecked": "2026-02-25T22:57:23.412238+00:00",
+      "lastChecked": "2026-02-26T01:55:44.413796+00:00",
       "changed": false,
       "summary": "Flags: Content scanning, AI training risk, data collection. Content scanned for compliance; may be used for AI training; broad data collection practices."
     },
@@ -141,7 +141,7 @@
       "name": "Dropbox",
       "category": "Productivity",
       "tosUrl": "https://www.dropbox.com/terms",
-      "lastChecked": "2026-02-25T23:02:16.774566+00:00",
+      "lastChecked": "2026-02-26T02:00:35.529803+00:00",
       "changed": false,
       "summary": "Flags: Content scanning, third-party sharing, data retention. Files scanned for features; data shared with affiliates and trusted third parties; vague retention policies."
     },
@@ -149,7 +149,7 @@
       "name": "Asana",
       "category": "Productivity",
       "tosUrl": "https://asana.com/terms",
-      "lastChecked": "2026-02-25T23:02:29.773105+00:00",
+      "lastChecked": "2026-02-26T02:00:39.710938+00:00",
       "changed": false,
       "summary": "Flags: Limited user rights, employer control, data compliance. Employer controls user data; Asana disclaims responsibility to managed users; limited transparency on data use."
     },
@@ -157,7 +157,7 @@
       "name": "GitHub",
       "category": "Productivity",
       "tosUrl": "https://docs.github.com/en/site-policy/github-terms/github-terms-of-service",
-      "lastChecked": "2026-02-25T23:02:40.970318+00:00",
+      "lastChecked": "2026-02-26T02:00:43.276486+00:00",
       "changed": false,
       "summary": "Flags: Content licensing, AI training risk, data sharing. User content broadly licensed; code may inform AI models; limited opt-out for public repositories."
     },
@@ -165,7 +165,7 @@
       "name": "Amazon",
       "category": "Retail",
       "tosUrl": "https://www.amazon.com/gp/help/customer/display.html?nodeId=508088",
-      "lastChecked": "2026-02-25T23:02:53.197685+00:00",
+      "lastChecked": "2026-02-26T02:00:45.998451+00:00",
       "changed": false,
       "summary": "Flags: Unclear data practices, third-party sharing, retention. No clear ToS accessible; unknown data collection, sharing, and retention policies."
     },
@@ -173,7 +173,7 @@
       "name": "Walmart",
       "category": "Retail",
       "tosUrl": "https://www.walmart.com/help/article/walmart-com-terms-of-use/3b75080af40340d6bbd596f116fae5a2",
-      "lastChecked": "2026-02-25T23:03:01.108257+00:00",
+      "lastChecked": "2026-02-26T02:00:49.148771+00:00",
       "changed": false,
       "summary": "Flags: Unclear data practices, third-party sharing, transparency. Limited transparency on data collection scope and sharing with third parties or affiliates."
     },
@@ -181,7 +181,7 @@
       "name": "Shopify",
       "category": "Retail",
       "tosUrl": "https://www.shopify.com/legal/terms",
-      "lastChecked": "2026-02-25T23:03:12.916495+00:00",
+      "lastChecked": "2026-02-26T02:00:53.041536+00:00",
       "changed": false,
       "summary": "Flags: Extensive data collection, third-party sharing, payment data. Personal data collected broadly; shared with merchant partners; payment information retained."
     },
@@ -189,7 +189,7 @@
       "name": "Netflix",
       "category": "Streaming",
       "tosUrl": "https://help.netflix.com/legal/termsofuse",
-      "lastChecked": "2026-02-25T23:03:28.069534+00:00",
+      "lastChecked": "2026-02-26T02:00:56.942513+00:00",
       "changed": false,
       "summary": "Flags: Data collection, targeted advertising, third-party sharing. Sensitive data collected for promotions; used for targeted ads; shared with advertising partners."
     },
@@ -197,7 +197,7 @@
       "name": "Disney+",
       "category": "Streaming",
       "tosUrl": "https://www.disneyplus.com/en-gb/legal/subscriber-agreement",
-      "lastChecked": "2026-02-25T23:03:38.282817+00:00",
+      "lastChecked": "2026-02-26T02:00:59.923072+00:00",
       "changed": false,
       "summary": "Flags: Broad data collection, third-party sharing, automatic ToS updates. Viewing habits collected; data shared for marketing; terms may update without explicit notice."
     },
@@ -205,7 +205,7 @@
       "name": "Spotify",
       "category": "Streaming",
       "tosUrl": "https://www.spotify.com/us/legal/end-user-agreement/",
-      "lastChecked": "2026-02-25T23:03:49.228956+00:00",
+      "lastChecked": "2026-02-26T02:01:04.135049+00:00",
       "changed": false,
       "summary": "Flags: Mandatory arbitration, data collection, AI training risk. Arbitration waives class action rights; broad data collection; content may be used to train AI."
     },
@@ -213,7 +213,7 @@
       "name": "Twitch",
       "category": "Streaming",
       "tosUrl": "https://www.twitch.tv/p/en/legal/terms-of-service/",
-      "lastChecked": "2026-02-25T23:04:00.167718+00:00",
+      "lastChecked": "2026-02-26T02:01:06.935300+00:00",
       "changed": false,
       "summary": "Flags: Data collection, content licensing, third-party sharing. Vague privacy notice; user content licensed broadly; data shared with Amazon."
     },
@@ -221,7 +221,7 @@
       "name": "YouTube",
       "category": "Streaming",
       "tosUrl": "https://www.youtube.com/t/terms",
-      "lastChecked": "2026-02-25T23:04:13.368004+00:00",
+      "lastChecked": "2026-02-26T02:01:10.635419+00:00",
       "changed": false,
       "summary": "Flags: Broad content licensing, AI training risk, data processing. Uploaded content processed and licensed broadly; may train AI; limited transparency on data use."
     },
@@ -229,7 +229,7 @@
       "name": "Hulu",
       "category": "Streaming",
       "tosUrl": "https://www.hulu.com/subscriber_agreement",
-      "lastChecked": "2026-02-25T23:04:24.979589+00:00",
+      "lastChecked": "2026-02-26T02:01:13.883178+00:00",
       "changed": false,
       "summary": "Flags: Data sharing, third-party advertising, data retention. Data shared with advertisers; limited opt-out options; vague retention policies."
     },
@@ -237,7 +237,7 @@
       "name": "Max",
       "category": "Streaming",
       "tosUrl": "https://www.max.com/terms-of-use",
-      "lastChecked": "2026-02-25T23:04:35.264090+00:00",
+      "lastChecked": "2026-02-26T02:01:18.063559+00:00",
       "changed": false,
       "summary": "Flags: Data collection, third-party sharing, targeted advertising. Unclear data collection scope; shared with partners; used for ad targeting."
     },
@@ -245,7 +245,7 @@
       "name": "Uber",
       "category": "Services",
       "tosUrl": "https://www.uber.com/legal/en/document/?name=general-terms-of-use&country=united-states&lang=en",
-      "lastChecked": "2026-02-25T23:04:45.427670+00:00",
+      "lastChecked": "2026-02-26T02:01:20.349225+00:00",
       "changed": false,
       "summary": "Flags: Arbitration clause, location tracking, data sharing. Mandatory arbitration waives class action; continuous location tracking; data shared with third parties."
     },
@@ -253,7 +253,7 @@
       "name": "Airbnb",
       "category": "Services",
       "tosUrl": "https://www.airbnb.com/help/article/2908",
-      "lastChecked": "2026-02-25T23:04:57.131022+00:00",
+      "lastChecked": "2026-02-26T02:01:22.420339+00:00",
       "changed": false,
       "summary": "Flags: Arbitration clause, background checks, third-party sharing. Mandatory arbitration limits legal recourse; identity screening collects sensitive data; vague third-party data sharing."
     },
@@ -261,7 +261,7 @@
       "name": "DoorDash",
       "category": "Services",
       "tosUrl": "https://help.doordash.com/consumers/s/terms-and-conditions",
-      "lastChecked": "2026-02-25T23:05:08.313409+00:00",
+      "lastChecked": "2026-02-26T02:01:25.251544+00:00",
       "changed": false,
       "summary": "Flags: Unclear data practices, retention, third-party sharing. Incomplete ToS; unknown data collection, retention, and third-party data sharing practices."
     },
@@ -269,7 +269,7 @@
       "name": "Lyft",
       "category": "Services",
       "tosUrl": "https://www.lyft.com/terms",
-      "lastChecked": "2026-02-25T23:05:16.410613+00:00",
+      "lastChecked": "2026-02-26T02:01:29.478744+00:00",
       "changed": false,
       "summary": "Flags: Extensive data collection, location tracking, arbitration clause. Location and usage data collected broadly; mandatory arbitration waives class action rights."
     },
@@ -277,7 +277,7 @@
       "name": "Grubhub",
       "category": "Services",
       "tosUrl": "https://www.grubhub.com/legal/terms-of-use",
-      "lastChecked": "2026-02-25T23:05:28.442762+00:00",
+      "lastChecked": "2026-02-26T02:01:33.420927+00:00",
       "changed": false,
       "summary": "Flags: Data collection, third-party sharing, marketing use. Data collected without clear consent; used for marketing purposes; shared with partners."
     },
@@ -285,7 +285,7 @@
       "name": "TaskRabbit",
       "category": "Services",
       "tosUrl": "https://www.taskrabbit.com/terms",
-      "lastChecked": "2026-02-25T23:05:38.632482+00:00",
+      "lastChecked": "2026-02-26T02:01:36.425568+00:00",
       "changed": false,
       "summary": "Flags: Data collection, third-party sharing, limited user rights. Personal data collected and shared; limited user control over data management."
     },
@@ -293,7 +293,7 @@
       "name": "JPMorgan Chase",
       "category": "Finance",
       "tosUrl": "https://www.chase.com/digital/resources/terms-of-use",
-      "lastChecked": "2026-02-25T23:05:48.538214+00:00",
+      "lastChecked": "2026-02-26T02:01:39.548501+00:00",
       "changed": false,
       "summary": "Flags: Broad data sharing, financial data, limited user control. Consent to broad data transmission; financial data shared with affiliates; limited opt-out options."
     },
@@ -301,7 +301,7 @@
       "name": "PayPal",
       "category": "Finance",
       "tosUrl": "https://www.paypal.com/us/legalhub/useragreement-full",
-      "lastChecked": "2026-02-25T23:06:02.615888+00:00",
+      "lastChecked": "2026-02-26T02:01:42.936649+00:00",
       "changed": false,
       "summary": "Flags: Arbitration clause, data collection, financial data. Mandatory arbitration waives class action; extensive financial data collected; limited user recourse."
     },
@@ -309,7 +309,7 @@
       "name": "Stripe",
       "category": "Finance",
       "tosUrl": "https://stripe.com/legal/ssa",
-      "lastChecked": "2026-02-25T23:06:16.793403+00:00",
+      "lastChecked": "2026-02-26T02:01:47.740509+00:00",
       "changed": false,
       "summary": "Flags: Unclear data collection, third-party sharing, payment data. Vague data collection scope; payment data shared with partners; limited transparency."
     },
@@ -317,7 +317,7 @@
       "name": "Venmo",
       "category": "Finance",
       "tosUrl": "https://venmo.com/legal/us-user-agreement/",
-      "lastChecked": "2026-02-25T23:06:29.207231+00:00",
+      "lastChecked": "2026-02-26T02:01:50.081021+00:00",
       "changed": false,
       "summary": "Flags: Broad data collection, third-party sharing, financial data. Extensive data collected; financial transactions visible by default; limited privacy controls."
     },
@@ -325,7 +325,7 @@
       "name": "Robinhood",
       "category": "Finance",
       "tosUrl": "https://robinhood.com/us/en/support/articles/customer-agreement/",
-      "lastChecked": "2026-02-25T23:06:39.679636+00:00",
+      "lastChecked": "2026-02-26T02:01:52.495310+00:00",
       "changed": false,
       "summary": "Flags: Unclear data practices, investment risk, data sharing. Data collection details opaque; financial data usage unclear; limited user protections."
     },
@@ -333,7 +333,7 @@
       "name": "Coinbase",
       "category": "Finance",
       "tosUrl": "https://www.coinbase.com/legal/user_agreement/united_states",
-      "lastChecked": "2026-02-25T23:06:47.406763+00:00",
+      "lastChecked": "2026-02-26T02:01:56.588059+00:00",
       "changed": false,
       "summary": "Flags: Arbitration clause, biometric data, data retention. Mandatory arbitration; biometric data collected; indefinite data retention; limited user control over data."
     },
@@ -341,7 +341,7 @@
       "name": "Tesla",
       "category": "Auto",
       "tosUrl": "https://www.tesla.com/legal/additional-resources/tesla-legal",
-      "lastChecked": "2026-02-25T23:06:57.593588+00:00",
+      "lastChecked": "2026-02-26T02:01:59.319202+00:00",
       "changed": false,
       "summary": "Flags: Inaccessible ToS, vehicle data collection, third-party sharing. ToS unavailable; vehicle usage and location data likely collected and shared."
     },
@@ -349,7 +349,7 @@
       "name": "Ford",
       "category": "Auto",
       "tosUrl": "https://www.ford.com/help/terms/",
-      "lastChecked": "2026-02-25T23:07:04.699800+00:00",
+      "lastChecked": "2026-02-26T02:02:04.510370+00:00",
       "changed": false,
       "summary": "Flags: Inaccessible ToS, vehicle data, unclear practices. ToS could not be fetched; vehicle and location data collection practices unclear."
     },
@@ -357,7 +357,7 @@
       "name": "United Airlines",
       "category": "Travel",
       "tosUrl": "https://www.united.com/en/us/fly/legal.html",
-      "lastChecked": "2026-02-25T23:11:57.630684+00:00",
+      "lastChecked": "2026-02-26T02:06:54.957646+00:00",
       "changed": false,
       "summary": "Flags: Inaccessible ToS, data collection, loyalty program data. ToS unavailable; travel data and loyalty program data collection practices unclear."
     },
@@ -365,7 +365,7 @@
       "name": "Marriott",
       "category": "Travel",
       "tosUrl": "https://www.marriott.com/about/terms-of-use.mi",
-      "lastChecked": "2026-02-25T23:16:51.659143+00:00",
+      "lastChecked": "2026-02-26T02:11:47.359230+00:00",
       "changed": false,
       "summary": "Flags: Feedback rights waiver, data collection, loyalty data. Users relinquish feedback ownership; broad data collection; loyalty program data shared with affiliates."
     },
@@ -373,7 +373,7 @@
       "name": "Delta Airlines",
       "category": "Travel",
       "tosUrl": "https://www.delta.com/us/en/legal/conditions-of-carriage",
-      "lastChecked": "2026-02-25T23:17:02.701700+00:00",
+      "lastChecked": "2026-02-26T02:11:58.043534+00:00",
       "changed": false,
       "summary": "Flags: Inaccessible ToS, data transparency. ToS access denied; unknown data collection, retention, and third-party sharing practices."
     },
@@ -381,7 +381,7 @@
       "name": "Hilton",
       "category": "Travel",
       "tosUrl": "https://www.hilton.com/en/hilton-honors/terms/",
-      "lastChecked": "2026-02-25T23:17:09.652015+00:00",
+      "lastChecked": "2026-02-26T02:12:04.988305+00:00",
       "changed": false,
       "summary": "Flags: Unclear data practices, third-party sharing. No data practice details available; unknown collection, sharing, and retention policies."
     },
@@ -389,7 +389,7 @@
       "name": "Apple",
       "category": "Tech",
       "tosUrl": "https://www.apple.com/legal/internet-services/itunes/us/terms.html",
-      "lastChecked": "2026-02-25T23:17:16.899671+00:00",
+      "lastChecked": "2026-02-26T02:12:11.997169+00:00",
       "changed": false,
       "summary": "Flags: Data monitoring, third-party sharing, payment data. User activity monitored for compliance; payment info auto-updated; limited transparency on data use."
     },
@@ -397,7 +397,7 @@
       "name": "Samsung",
       "category": "Tech",
       "tosUrl": "https://www.samsung.com/us/account/privacy-policy/",
-      "lastChecked": "2026-02-25T23:17:28.836967+00:00",
+      "lastChecked": "2026-02-26T02:12:16.063008+00:00",
       "changed": false,
       "summary": "Flags: Extensive data collection, biometric data, third-party sharing. Wide-ranging data collection including biometrics; shared with partners; limited opt-out."
     },
@@ -405,7 +405,7 @@
       "name": "Steam",
       "category": "Gaming",
       "tosUrl": "https://store.steampowered.com/subscriber_agreement/",
-      "lastChecked": "2026-02-25T23:17:42.692707+00:00",
+      "lastChecked": "2026-02-26T02:12:20.408827+00:00",
       "changed": false,
       "summary": "Flags: Data collection, third-party sharing, account termination. Vague data collection; data shared with Valve affiliates; accounts may be terminated without notice."
     },
@@ -413,7 +413,7 @@
       "name": "Epic Games",
       "category": "Gaming",
       "tosUrl": "https://legal.epicgames.com/en-US/epicgames/tos",
-      "lastChecked": "2026-02-25T23:17:52.461866+00:00",
+      "lastChecked": "2026-02-26T02:12:22.738324+00:00",
       "changed": false,
       "summary": "Flags: Mandatory arbitration, content licensing, minor accountability. Arbitration waives class action; guardians liable for minors' actions; user content licensed broadly."
     },
@@ -421,7 +421,7 @@
       "name": "Roblox",
       "category": "Gaming",
       "tosUrl": "https://en.help.roblox.com/hc/en-us/articles/115004647846-Roblox-Terms-of-Use",
-      "lastChecked": "2026-02-25T23:18:00.390806+00:00",
+      "lastChecked": "2026-02-26T02:12:25.101937+00:00",
       "changed": false,
       "summary": "Flags: Minor privacy risk, unclear data collection, content licensing. Data collection opaque; minors at risk; user content licensed broadly without clear limits."
     },
@@ -429,7 +429,7 @@
       "name": "Zillow",
       "category": "Real Estate",
       "tosUrl": "https://www.zillow.com/corp/Terms.htm",
-      "lastChecked": "2026-02-25T23:18:09.781595+00:00",
+      "lastChecked": "2026-02-26T02:12:28.827466+00:00",
       "changed": false,
       "summary": "Flags: Inaccessible ToS, data transparency. ToS access denied; unknown data collection, sharing, and privacy practices."
     },
@@ -437,7 +437,7 @@
       "name": "Redfin",
       "category": "Real Estate",
       "tosUrl": "https://www.redfin.com/about/terms-of-use",
-      "lastChecked": "2026-02-25T23:18:16.342447+00:00",
+      "lastChecked": "2026-02-26T02:12:31.022875+00:00",
       "changed": false,
       "summary": "Flags: Arbitration clause, data collection, third-party sharing. Mandatory arbitration limits legal recourse; personal data collected and shared with partners."
     },
@@ -445,7 +445,7 @@
       "name": "Coursera",
       "category": "Education",
       "tosUrl": "https://www.coursera.org/about/terms",
-      "lastChecked": "2026-02-25T23:18:24.536926+00:00",
+      "lastChecked": "2026-02-26T02:12:46.111978+00:00",
       "changed": false,
       "summary": "Flags: Broad content licensing, arbitration clause, data consent. Perpetual license on user content; arbitration waives class action; vague data processing details."
     },
@@ -453,7 +453,7 @@
       "name": "Duolingo",
       "category": "Education",
       "tosUrl": "https://www.duolingo.com/terms",
-      "lastChecked": "2026-02-25T23:18:33.567938+00:00",
+      "lastChecked": "2026-02-26T02:12:49.244338+00:00",
       "changed": false,
       "summary": "Flags: Data collection, AI training risk, third-party sharing. Broad data collection; user content may train AI; limited opt-out options."
     },
@@ -461,7 +461,7 @@
       "name": "Uber Eats",
       "category": "Services",
       "tosUrl": "https://www.uber.com/legal/en/document/?name=uber-eats-manager-terms-and-conditions",
-      "lastChecked": "2026-02-25T23:18:42.752654+00:00",
+      "lastChecked": "2026-02-26T02:12:53.214929+00:00",
       "changed": false,
       "summary": "Flags: Unclear data practices, location tracking, third-party sharing. No specific ToS found; likely extensive location and order data collected."
     },
@@ -469,7 +469,7 @@
       "name": "FanDuel",
       "category": "Finance",
       "tosUrl": "https://www.fanduel.com/termsofuse",
-      "lastChecked": "2026-02-25T23:18:48.669182+00:00",
+      "lastChecked": "2026-02-26T02:12:57.388267+00:00",
       "changed": false,
       "summary": "Flags: Inaccessible ToS, data transparency. Access denied; unknown data collection and sharing practices for gambling platform."
     },
@@ -477,7 +477,7 @@
       "name": "Fitbit",
       "category": "Health",
       "tosUrl": "https://www.fitbit.com/global/us/legal/terms-of-service",
-      "lastChecked": "2026-02-25T23:18:56.103508+00:00",
+      "lastChecked": "2026-02-26T02:13:00.710849+00:00",
       "changed": false,
       "summary": "Flags: Data sharing with Google, health data risk, third-party sharing. Health and biometric data shared with Google if account linked; sensitive data collected."
     }
