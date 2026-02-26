@@ -1,1 +1,1 @@
-[Data Rights]: User data shared with JPMorgan group and third parties. [Liability]: Broad data-sharing consent required to access services.
+[Data Rights]: User information may be disclosed to affiliates or as required by law. [AI Usage]: Monitoring of user interactions is permitted. [Liability]: Users indemnify Chase for unauthorized access or data breaches.

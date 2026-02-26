@@ -1,1 +1,3 @@
-[Data Rights]: Meta uses personal data for personalized ads but does not sell or share identifiable information without consent. [AI Usage]: Advanced technologies, including AI, enhance user experience and safety. [Liability]: Meta may access and share user data for legal compliance and safety.
+[Data Rights]: User data is used for personalized ads; no sale of personal data without consent.  
+[AI Usage]: Advanced technologies, including AI, are employed to enhance user experience and safety.  
+[Liability]: Meta may take action against harmful conduct and misuse, sharing data as necessary for safety.

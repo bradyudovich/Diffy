@@ -1,1 +1,1 @@
-Access Denied: Unable to retrieve terms for analysis.
+[Data Rights]: User data may be collected and used for AI development. [Liability]: Company disclaims liability for data misuse. [Critical User Constraint]: Users must comply with data usage policies.
