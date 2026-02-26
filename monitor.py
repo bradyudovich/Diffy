@@ -34,21 +34,13 @@ TOS_DIR = BASE_DIR / "terms_of_service"
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
 OPENAI_URL = "https://api.openai.com/v1/chat/completions"
 OPENAI_MODEL = "gpt-4o-mini"
-AI_SYSTEM_PROMPT = (
-    "You are a privacy and AI risk analyst. Compare these two versions of a Terms of Service. "
-    "Identify any new or changed privacy risks, AI training clauses, data collection changes, "
-    "or other user rights concerns introduced by the changes. "
-    "Format your response as a concise bullet-point list of specific red flags and concerns, "
-    "with each bullet starting with a dash (-). "
-    "End with an overall severity rating on its own line: Severity: High, Medium, or Low."
-)
-AI_OVERVIEW_PROMPT = (
-    "You are a privacy and AI risk analyst. Given the following Terms of Service text, "
-    "identify and list the key privacy risks, AI training concerns, data collection red flags, "
-    "and other significant user rights issues. "
-    "Format your response as a concise bullet-point list of 5-8 specific red flags and concerns. "
-    "Start each bullet with a dash (-) and be specific and direct. "
-    "Avoid general summaries; focus on what users should be warned about."
+AI_TOS_SUMMARY_PROMPT = (
+    "You are a legal summarizer. Provide a high-level summary of the current terms for this company. "
+    "Constraints: Maximum 30 words. "
+    "Structure: [Category]: [Key Data/Legal Policy]. [Critical User Constraint]. "
+    "Focus: Ignore minor formatting; focus on data rights, AI usage, and liability. "
+    "Style: Do not use fluff like 'This policy covers...' or 'Users should know...' "
+    "Return only the summary, no explanation or intro."
 )
 
 # ---------------------------------------------------------------------------
@@ -207,7 +199,7 @@ def call_openai(diff_text: str) -> str:
     payload = {
         "model": OPENAI_MODEL,
         "messages": [
-            {"role": "system", "content": AI_SYSTEM_PROMPT},
+            {"role": "system", "content": AI_TOS_SUMMARY_PROMPT},
             {"role": "user", "content": f"Here is the diff of the TOS changes:\n\n{diff_text}"},
         ],
         "max_tokens": 512,
@@ -230,7 +222,7 @@ def call_openai_overview(tos_text: str) -> str:
     payload = {
         "model": OPENAI_MODEL,
         "messages": [
-            {"role": "system", "content": AI_OVERVIEW_PROMPT},
+            {"role": "system", "content": AI_TOS_SUMMARY_PROMPT},
             {"role": "user", "content": f"Here is the Terms of Service text:\n\n{truncated}"},
         ],
         "max_tokens": 512,

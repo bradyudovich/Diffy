@@ -227,12 +227,6 @@ export default function App() {
                         <CompanyLogo tosUrl={company.tosUrl} name={company.name} />
                         <h2 className="text-lg font-semibold">{company.name}</h2>
                       </div>
-                      {company.category && (
-                        <span className="inline-block text-xs text-indigo-600 font-medium mb-1">
-                          {CATEGORY_ICONS[company.category] ?? "🏢"}{" "}
-                          {company.category}
-                        </span>
-                      )}
                       {company.summary && (
                         <p className="mt-2 text-sm text-gray-700">
                           {company.summary}
@@ -245,6 +239,23 @@ export default function App() {
                         </p>
                       )}
                     </div>
+
+                    {/* Folder icon – lower right corner, links to ToS */}
+                    {company.tosUrl && (
+                      <a
+                        href={company.tosUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="absolute bottom-4 right-4 text-gray-500 hover:text-gray-900 transition-colors"
+                        onClick={(e) => e.stopPropagation()}
+                        aria-label="View full Terms of Service"
+                        title="View full Terms of Service"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+                          <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/>
+                        </svg>
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>
