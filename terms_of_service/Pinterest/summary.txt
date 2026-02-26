@@ -1,15 +1,1 @@
-- **Data Collection Scope**: The Terms indicate that Pinterest collects personal data to identify users and their interests, raising concerns about the extent and specificity of data collected without clear user consent.
-
-- **Third-Party Data Sharing**: There is an implication that user data may be shared with advertisers to show relevant promoted content, which could lead to privacy risks if users are not fully aware of how their data is being utilized.
-
-- **User Content Ownership**: While users retain rights to their content, the Terms state that Pinterest can remove or restrict access to this content, which may create uncertainty regarding user control over their own submissions.
-
-- **Age Restrictions**: The Terms specify that users under 13 cannot use the service, but the requirement for parental consent for users aged 13-18 may not adequately protect younger users from exposure to inappropriate content or data collection practices.
-
-- **Account Suspension Policies**: The Terms allow Pinterest to suspend or terminate accounts for violations, but lack transparency on the criteria for such actions, potentially leading to arbitrary enforcement and user rights violations.
-
-- **Limited User Rights**: The Terms grant Pinterest a revocable license to use the service, but do not clearly outline user rights regarding the deletion of their data or the ability to export their content, which can limit user autonomy.
-
-- **Automated Data Access Restrictions**: The prohibition against scraping or unauthorized data access may hinder legitimate research or user efforts to understand how their data is being used, raising concerns about transparency.
-
-- **Lack of Clarity on AI Use**: The mention of AI in the context of content personalization is vague, leaving users uncertain about how their data may be used to train AI models or influence the content they see.
+[Data Rights]: Users retain rights to their content but must comply with Pinterest's policies. [AI Usage]: Pinterest uses personal data to personalize content. [Liability]: Pinterest may remove content and suspend accounts for policy violations.

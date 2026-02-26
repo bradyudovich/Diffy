@@ -1,8 +1,1 @@
-- - Lack of clarity: The Terms of Service text does not provide any specific information regarding data collection practices, leaving users unaware of what personal information may be collected.
-- - No mention of data usage: There is no explanation of how collected data will be used, raising concerns about potential misuse or lack of transparency in data handling.
-- - Absence of user rights: The text fails to outline user rights regarding data access, deletion, or correction, which could limit users' control over their personal information.
-- - No AI training disclosure: There is no indication of whether user data will be used for AI training purposes, which could lead to unconsented use of personal data in machine learning models.
-- - Vague error message: The ambiguous error message ("Maybe it’s us, maybe it’s you") does not provide users with actionable information, potentially leading to frustration and lack of trust.
-- - Lack of contact information: The text does not provide clear contact details for customer service or data protection inquiries, making it difficult for users to seek assistance or report issues.
-- - No security measures mentioned: There is no information on the security measures in place to protect user data, raising concerns about potential data breaches or unauthorized access.
-- - No third-party sharing policy: The absence of a policy regarding sharing user data with third parties leaves users uncertain about who else may have access to their information.
+[Category]: No relevant terms available. [Key Data/Legal Policy]: Unable to extract data rights, AI usage, or liability information. [Critical User Constraint]: No usable terms provided.

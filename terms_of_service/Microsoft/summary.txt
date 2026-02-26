@@ -1,15 +1,1 @@
-- **Data Collection Consent**: Users consent to Microsoft’s collection, use, and disclosure of their data and content, which may include sensitive personal information, without explicit, ongoing consent mechanisms being clearly outlined.
-
-- **Broad Content License**: By sharing content, users grant Microsoft a worldwide, royalty-free license to use their content, which raises concerns about the potential for misuse or unintended distribution of personal or sensitive data.
-
-- **Limited Data Export Rights**: Microsoft reserves the right to restrict the export of user data that could compromise security or intellectual property, potentially limiting users' ability to transfer their data to other services.
-
-- **Arbitration and Class Action Waiver**: The binding arbitration clause and class action waiver may limit users' ability to seek legal recourse or join collective actions, which can be a significant disadvantage in disputes.
-
-- **Vague AI Service Usage**: The terms mention AI services that make decisions autonomously, but do not provide clear guidelines on how user data will be used in AI training or the implications of such AI decisions on user experiences.
-
-- **Third-Party Data Sharing**: The agreement does not specify how user data may be shared with third-party applications or services, raising concerns about potential data leaks or misuse by external entities.
-
-- **Lack of Transparency on Data Usage**: The Privacy Statement references are vague regarding the specific types of data collected and how it is utilized, which could lead to user uncertainty about privacy risks.
-
-- **User Responsibility for Content**: Users are held fully responsible for their content, which may lead to liability issues if their shared content inadvertently violates laws or rights of others, placing undue burden on users.
+[Data Rights]: Users retain ownership of their content but grant Microsoft a worldwide, royalty-free license to use it. [AI Usage]: Users must adhere to conduct rules when using AI services. [Liability]: Microsoft is not responsible for user-generated content.

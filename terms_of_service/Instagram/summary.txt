@@ -1,8 +1,1 @@
-- - Lack of clarity on data retention policies, leaving users uncertain about how long their data is stored and when it may be deleted.
-- - Broad permissions granted for data collection, including location data and user-generated content, which may be used for targeted advertising without explicit user consent.
-- - Vague language regarding third-party data sharing, raising concerns about how user data may be sold or shared with advertisers and other entities.
-- - Insufficient user rights regarding data access and deletion, making it difficult for users to understand how to manage their personal information.
-- - Potential for AI training using user-generated content without adequate disclosure or compensation, raising ethical concerns about consent and ownership of data.
-- - Ambiguous terms around algorithmic decision-making, which could lead to biased outcomes without transparency on how these algorithms function.
-- - No clear opt-out options for data collection practices, limiting user control over their personal information and privacy preferences.
-- - Inadequate security measures mentioned, which could expose user data to breaches or unauthorized access.
+[Data Rights]: User content remains owned by users; Instagram has a license to use it. [AI Usage]: No specific AI usage terms provided. [Liability]: Instagram not liable for user-generated content.

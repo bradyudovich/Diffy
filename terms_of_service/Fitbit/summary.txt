@@ -1,15 +1,1 @@
-- **Data Sharing with Google**: Users must accept Google’s Terms of Service when using Fitbit with a Google account, raising concerns about data sharing and privacy practices that may differ from Fitbit's own policies.
-
-- **Broad Data Collection**: The Privacy Policy allows Fitbit to collect and use user information broadly, which may include sensitive health data, without clear limitations on the types of data collected or how it will be used.
-
-- **User-Generated Content Rights**: Users grant Fitbit a non-exclusive, worldwide license to use their content, which could lead to unintended exploitation of personal data and images without adequate compensation or control.
-
-- **Account Security Responsibility**: Users are fully responsible for maintaining the confidentiality of their account credentials, which places the burden of security on the user rather than the company, potentially leading to unauthorized access.
-
-- **Limited Age Restrictions**: The service is not available for those under 13 without parental consent, but the enforcement of this age restriction is unclear, raising concerns about the protection of minors’ data.
-
-- **Content Moderation Discretion**: Fitbit retains the right to alter or remove user content at their discretion, which could lead to arbitrary censorship and lack of transparency regarding content policies.
-
-- **Potential for Unauthorized Data Harvesting**: The Terms prohibit users from collecting information from others, yet the lack of robust measures to prevent data harvesting raises concerns about user privacy and consent.
-
-- **Ambiguous Liability Clauses**: Fitbit’s liability for security breaches or data loss is limited, which may leave users vulnerable without recourse in the event of a data breach or misuse of their information.
+[Data Rights]: Users retain rights to their content but grant Fitbit a global license for service improvement. [AI Usage]: No specific AI usage terms outlined. [Liability]: Fitbit not liable for account security breaches.

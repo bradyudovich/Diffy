@@ -1,15 +1,1 @@
-- **Data Ownership and Feedback Rights**: Users relinquish ownership of any feedback provided to Marriott, allowing the company to use this information without compensation or confidentiality obligations, raising concerns about user-generated content being exploited without consent.
-
-- **Broad Monitoring and Data Collection**: Marriott reserves the right to monitor and review all user transmissions and stored information, which could lead to extensive data collection practices without explicit user consent or awareness.
-
-- **Lack of Clear Data Usage Policies**: The Terms do not specify how user data will be used, shared, or stored, creating ambiguity around data privacy and potential misuse of personal information.
-
-- **Changes to Terms Without Notice**: Marriott can modify the Terms of Service at any time without prior notice, leaving users vulnerable to sudden changes in their rights and obligations regarding data usage and privacy.
-
-- **Limited User Control Over Personal Data**: Users have no clear mechanisms to access, correct, or delete their personal information, which is a significant concern for user rights and data privacy.
-
-- **Potential for Unrestricted Data Sharing**: The Terms do not explicitly limit Marriott’s ability to share user data with third parties, which could lead to privacy breaches and unauthorized use of personal information.
-
-- **Age Restrictions and Liability**: The requirement that users must be of legal age to enter into contracts may exclude minors from protections typically afforded to younger users, raising ethical concerns about data collection from vulnerable populations.
-
-- **No Explicit Commitment to Data Security**: There is no mention of specific measures Marriott will take to protect user data from breaches or unauthorized access, which is critical for user trust and safety.
+[Data Rights]: User feedback becomes Marriott's property; no confidentiality obligations. [AI Usage]: No automated scraping or monitoring without consent. [Liability]: Users are solely responsible for their actions on the site.
