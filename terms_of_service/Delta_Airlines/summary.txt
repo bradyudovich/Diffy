@@ -1,7 +1,8 @@
-- - The "Access Denied" message indicates that users may not have access to important information regarding data collection practices, raising concerns about transparency.
-- - Lack of accessible Terms of Service prevents users from understanding their rights, responsibilities, and potential risks associated with data usage.
-- - Users are unable to review how their personal data is handled, which poses a significant risk to informed consent.
-- - The absence of clear guidelines on data retention policies raises concerns about how long user data may be stored and for what purposes.
-- - No mention of third-party data sharing practices suggests potential risks of unauthorized access or misuse of personal information.
-- - The inability to access the Terms of Service may indicate a lack of accountability or recourse for users in case of data breaches or misuse.
-- - Users are left unaware of their rights regarding data deletion or modification, which could lead to unauthorized retention of sensitive information.
+- Access Denied: Users are unable to view the Terms of Service, which prevents them from understanding their rights and obligations, raising transparency concerns.
+- Lack of Information: The absence of accessible Terms of Service may indicate that users are not informed about data collection practices, privacy policies, or AI training methodologies.
+- No User Consent: Without access to the Terms of Service, users cannot provide informed consent regarding their data usage and AI interactions.
+- Potential for Data Misuse: The inability to review the Terms raises concerns about how user data may be collected, stored, or shared without user awareness.
+- Unclear Liability: Users are left without clarity on the service provider's liability in case of data breaches or misuse, which could leave them vulnerable.
+- Missing User Rights: Users may not be aware of their rights regarding data access, deletion, or modification, which could lead to violations of privacy regulations.
+- Lack of Transparency in AI Training: Without the Terms, users cannot ascertain how their data might be used to train AI systems, raising ethical concerns about data usage.
+- No Recourse for Disputes: Users may not have access to information on how to resolve disputes or seek redress, limiting their ability to protect their rights.

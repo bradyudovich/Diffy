@@ -1,8 +1,8 @@
-- The Terms of Service text is inaccessible, which raises concerns about transparency and users' ability to understand their rights and obligations.
-- Lack of access to the Terms of Service may indicate that users cannot review or consent to data collection practices, potentially violating informed consent principles.
-- Users are unable to verify how their data is being used or shared, which poses a significant risk regarding data privacy and user control over personal information.
-- The inability to access legal documents could suggest that the company may not be fully compliant with data protection regulations, such as GDPR or CCPA.
-- Users may be unaware of their rights regarding data deletion, access, or correction, leading to potential violations of user rights.
-- The absence of clear terms may indicate that the company could change policies without proper notification, leaving users vulnerable to unexpected data practices.
-- The lack of transparency in the Terms of Service could lead to unintentional consent to extensive data collection or AI training practices without user awareness.
-- Users should be cautious about potential hidden clauses that may limit their rights or impose unfair liabilities due to the lack of accessible legal information.
+- The inability to access the Terms of Service raises concerns about transparency; users cannot review the terms governing their use of the service.
+- Lack of clear information on data collection practices, including what types of data are collected, how they are used, and whether they are shared with third parties.
+- Absence of user consent mechanisms for data collection, which may violate privacy regulations and user rights.
+- No mention of data retention policies, leaving users uncertain about how long their data will be stored and under what conditions it may be deleted.
+- Potential for undisclosed AI training data usage, which could involve personal data being used without user knowledge or consent.
+- Lack of clear user rights regarding data access, correction, and deletion, which are essential for compliance with privacy laws like GDPR or CCPA.
+- No information on how users can opt-out of data collection or AI training processes, limiting user control over their personal information.
+- Absence of security measures outlined to protect user data, increasing the risk of data breaches and unauthorized access.

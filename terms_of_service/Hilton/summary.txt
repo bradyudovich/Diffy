@@ -1,7 +1,7 @@
-- - The text does not provide any information regarding data collection practices, leaving users unaware of what personal information may be collected during interactions.
-- - There is no mention of user consent or how user data may be used, raising concerns about potential unauthorized data processing.
-- - The absence of a clear privacy policy or terms related to data sharing with third parties poses a significant risk for users regarding their personal information.
-- - There are no details on user rights concerning data access, correction, or deletion, which could hinder users' ability to manage their personal data.
-- - The vague language ("It’s probably us") may indicate a lack of accountability and transparency in service failures, which could affect user trust.
-- - There is no indication of how AI may be used in service delivery or customer support, raising concerns about the ethical use of AI and potential biases in automated responses.
-- - The reference to a "Customer Service" option without clear guidelines on how user queries or complaints will be handled may lead to inadequate support and unresolved issues.
+- The text does not provide any information regarding data collection practices, leaving users unaware of what personal data may be collected during their interactions.
+- There is no mention of how user data will be used, raising concerns about potential misuse or exploitation of personal information.
+- The absence of a clear privacy policy or terms regarding data sharing with third parties poses a significant risk to user privacy.
+- There are no details on user rights regarding data access, deletion, or correction, potentially limiting users' control over their personal information.
+- The vague language ("It’s probably us") suggests a lack of accountability, which could lead to inadequate responses to data breaches or service failures.
+- There is no information on whether AI technologies are used in processing user data, which raises concerns about transparency and informed consent regarding AI training.
+- The lack of contact information or clear customer service options may hinder users' ability to address privacy concerns or seek redress.
