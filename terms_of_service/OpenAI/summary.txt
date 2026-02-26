@@ -1,1 +1,1 @@
-[AI Usage]: User inputs and outputs may train AI models unless opted out. [Liability]: Opting out may reduce service effectiveness.
+[Data Rights]: Users retain ownership of Input and Output; OpenAI can use Content for service improvement. [AI Usage]: Output may not be accurate; human review is recommended. [Liability]: OpenAI not liable for decisions based on Output.

@@ -1,1 +1,1 @@
-[Data Rights]: Users retain content but grant Microsoft a worldwide license. [AI Usage]: Conduct rules govern AI service use.
+[Data Rights]: Users retain ownership of their content but grant Microsoft a worldwide, royalty-free license to use it. [AI Usage]: Users must adhere to conduct rules when using AI services. [Liability]: Microsoft is not responsible for user-generated content.

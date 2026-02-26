@@ -1,1 +1,3 @@
-[Data Rights]: Customer controls their data; Asana assumes no data liability. [AI Usage]: No explicit AI training terms present.
+[Data Rights]: Customer Data controlled by Customer; Asana has no liability for Customer Data management.  
+[AI Usage]: No specific AI usage terms mentioned.  
+[Liability]: Asana not liable for unauthorized account use or Customer Data disputes.

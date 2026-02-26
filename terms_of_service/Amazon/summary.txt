@@ -1,1 +1,1 @@
-[Data Rights]: Terms of Service inaccessible; data practices not transparent. [Liability]: Users lack clear guidelines on data usage rights.
+[Data Rights]: Users retain ownership of their data; company may use data for service improvement. [AI Usage]: AI tools may analyze user data. [Liability]: Company limits liability for service interruptions.
