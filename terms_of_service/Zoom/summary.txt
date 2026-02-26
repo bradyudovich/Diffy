@@ -1,15 +1,1 @@
-- **Data Collection Scope**: The Terms indicate that users must provide personal information to register, but do not clarify the extent of data collected or how it will be used, raising concerns about transparency and user consent.
-
-- **Account Sharing Restrictions**: Users are prohibited from sharing accounts or login credentials, which may limit collaborative use and raise questions about the handling of shared data in professional settings.
-
-- **Arbitration Clause**: The requirement to arbitrate claims instead of going to court, along with the prohibition on class-action claims, may limit users' ability to seek redress for privacy violations or service issues.
-
-- **Modification Rights**: Zoom reserves the right to modify, delete, or add terms to the Terms of Service at its discretion, which could lead to unexpected changes in user rights and obligations without prior notice.
-
-- **Limited Ownership Rights**: Users are granted a non-transferable license to use the software, but do not gain ownership rights, which may affect their ability to control or manage their data and usage of the software.
-
-- **Liability Waiver**: The Terms include a section where users release Zoom from certain damages, potentially limiting users' rights to claim compensation for data breaches or service failures.
-
-- **Automatic Renewals**: The automatic renewal of subscriptions may lead to unintended charges, and the lack of clear cancellation procedures could trap users in ongoing financial commitments.
-
-- **Data Retention Policies**: There is no mention of data retention policies or how long user data will be stored, raising concerns about long-term privacy risks and data security.
+Flags: Data collection, AI training risk, third-party sharing. Meeting data may train AI; broad data collection; limited user control over recordings.

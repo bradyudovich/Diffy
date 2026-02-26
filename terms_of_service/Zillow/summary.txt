@@ -1,7 +1,1 @@
-- The lack of access to the Terms of Service raises concerns about transparency; users cannot review the terms governing their data and privacy rights.
-- Without visibility into the Terms of Service, users are unable to understand how their data may be collected, used, or shared, creating a significant privacy risk.
-- The denial of access may indicate potential hidden clauses or practices that could negatively impact user rights, such as data monetization or third-party sharing.
-- Users are left uninformed about their consent rights, including whether they can opt-out of data collection or request data deletion.
-- The absence of clear terms may suggest inadequate protections against unauthorized data access or breaches, increasing the risk of data misuse.
-- Users cannot ascertain the extent of AI training data usage, including whether their personal data may be used to train algorithms without their knowledge or consent.
-- The inability to access the Terms of Service may prevent users from understanding their rights regarding dispute resolution or liability limitations, which could disadvantage them in potential conflicts.
+Flags: Inaccessible ToS, data transparency. ToS access denied; unknown data collection, sharing, and privacy practices.

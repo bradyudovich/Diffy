@@ -1,15 +1,1 @@
-- **Data Ownership Ambiguity**: While users retain ownership of their content, the terms grant GitHub broad rights to use this content, which may lead to potential misuse or unexpected sharing of user-generated content without explicit consent.
-
-- **User Responsibilities on Content**: Users are held fully responsible for the content they upload, which can expose them to legal risks if their content infringes on others' rights or violates terms, placing a heavy burden on users to ensure compliance.
-
-- **Limited Liability Clause**: The disclaimer of warranties and limitation of liability may leave users without recourse in cases of data loss or service interruptions, raising concerns about accountability for service failures.
-
-- **Data Collection and Usage Transparency**: The terms reference a separate Privacy Statement, but the lack of clarity on what specific data is collected, how it is used, and whether it is shared with third parties raises significant privacy concerns.
-
-- **Changes to Terms with Notice**: While GitHub commits to providing 30 days' notice for material changes to the terms, this may not be sufficient for users to fully understand or respond to significant alterations that could impact their rights.
-
-- **Indemnification Requirement**: Users are required to indemnify GitHub for any claims arising from their use of the service, which could lead to users facing unexpected legal costs or liabilities.
-
-- **API Data Collection Risks**: The API terms allow for data collection, but the specifics on data handling and user consent for API usage are not detailed, potentially leading to unauthorized data scraping or misuse.
-
-- **Age Restrictions**: The requirement that users must be at least 13 years old raises concerns about compliance with child protection laws and the handling of data from younger users, which may not be adequately addressed.
+Flags: Content licensing, AI training risk, data sharing. User content broadly licensed; code may inform AI models; limited opt-out for public repositories.

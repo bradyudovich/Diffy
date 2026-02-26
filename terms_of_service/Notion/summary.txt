@@ -1,15 +1,1 @@
-- - **Broad Data Collection**: The terms may indicate extensive data collection practices, including personal information, usage data, and content created by users, raising concerns about user privacy and consent.
-  
-- - **Lack of Transparency in AI Training**: There may be insufficient disclosure on how user data is utilized for AI training, potentially leading to unconsented use of personal data for model improvement.
-
-- - **Third-Party Sharing**: The terms might allow for sharing user data with third parties without explicit user consent, increasing the risk of data misuse or unauthorized access.
-
-- - **Data Retention Policies**: There could be vague or overly long data retention policies, which may lead to unnecessary storage of personal information, increasing the risk of data breaches.
-
-- - **User Rights Limitations**: The terms may limit users' rights to access, delete, or modify their personal data, undermining user control over their own information.
-
-- - **Ambiguous Liability Clauses**: There may be clauses that limit the company's liability in case of data breaches or misuse, leaving users vulnerable without recourse.
-
-- - **Opt-Out Mechanisms**: The absence of clear and easy opt-out mechanisms for data collection and marketing communications could lead to unwanted data usage and privacy invasions.
-
-- - **International Data Transfers**: If the terms mention transferring data across borders without adequate protections, this poses risks related to varying international privacy standards.
+Flags: Broad data collection, AI training risk, third-party sharing. Extensive data collected; content may train AI; limited transparency on data practices.

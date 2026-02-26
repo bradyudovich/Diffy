@@ -1,15 +1,1 @@
-- **Extensive Data Collection**: Samsung collects a wide range of personal information, including sensitive data like social security numbers and payment information, which increases the risk of data breaches and identity theft.
-
-- **Voice Recording Practices**: The collection and storage of voice recordings, including those made during customer service interactions, pose significant privacy risks, especially if users are unaware of the extent of this data collection.
-
-- **Third-Party Data Sharing**: Samsung shares personal information with third-party service providers for analytics and other services, raising concerns about how this data is used and whether it remains secure.
-
-- **Location Tracking**: The collection of precise geolocation data, along with inferred locations, can lead to privacy invasions if users are not fully aware of how this information is utilized or shared.
-
-- **Lack of Clear User Consent**: The policy mentions that certain data collection requires separate consent, but it does not specify how users can effectively manage or revoke this consent, potentially leading to unauthorized data use.
-
-- **Ambiguous Data Retention Policies**: The terms do not clearly outline how long user data is retained, which can create uncertainty regarding the lifecycle of personal information and increase risks of misuse.
-
-- **Vague Updates and Changes Notification**: While users are advised to check for updates to the Privacy Policy, the lack of proactive notifications about significant changes could lead to users being unaware of new privacy risks.
-
-- **Potential for AI Misuse**: The use of AI for predictive text and other features raises concerns about how user data is processed and whether it is used to train AI models without explicit user consent.
+Flags: Extensive data collection, biometric data, third-party sharing. Wide-ranging data collection including biometrics; shared with partners; limited opt-out.

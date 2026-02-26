@@ -1,15 +1,1 @@
-- **Data Transfer Risks**: The Terms indicate that user information may be transferred to the United States and other countries, potentially exposing users to varying levels of data protection and privacy standards, which could lead to unauthorized access or misuse of personal data.
-
-- **Broad Content Licensing**: Users grant X a broad, royalty-free license to their content, which may lead to concerns about how their content is used, shared, or monetized without explicit consent or compensation.
-
-- **Limited Liability Clauses**: The Terms limit X's liability significantly, which may leave users without adequate recourse in cases of data breaches, misuse of personal information, or other harms resulting from the use of the Services.
-
-- **Vague Enforcement Rights**: X reserves broad enforcement rights, including content removal and account suspension, without clear criteria or processes, potentially leading to arbitrary or unjust actions against users.
-
-- **User Responsibility for Content**: Users are solely responsible for their content, which may expose them to legal risks, especially if their content is deemed harmful or illegal, without adequate support or guidance from X.
-
-- **Advertising and Third-Party Data Sharing**: The presence of advertising and third-party partnerships raises concerns about how user data is collected, shared, and used for targeted advertising, potentially infringing on user privacy.
-
-- **Inadequate User Rights Information**: While there are mentions of user rights and remedies, the specifics are vague, and users may not fully understand their rights or how to exercise them, particularly in different jurisdictions.
-
-- **Age Restrictions and Minor Protections**: The Terms state that users must be at least 13 years old, but do not provide clear mechanisms for protecting minors' data or ensuring that parental consent is obtained, raising concerns about child safety online.
+Flags: Data transfer, third-party sharing, content licensing. User data may be transferred internationally; broad content license granted; limited transparency on data use.

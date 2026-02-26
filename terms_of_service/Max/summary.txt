@@ -1,15 +1,1 @@
-- **Data Collection Scope**: The Terms of Service may not clearly define the extent of data collected from users, raising concerns about the breadth of personal information gathered, including potentially sensitive data.
-
-- **Third-Party Sharing**: There is a lack of transparency regarding whether user data is shared with third parties, which could lead to unauthorized use of personal information without user consent.
-
-- **User Consent Ambiguity**: The language around user consent for data collection and processing may be vague, making it unclear whether users are fully informed about what they are agreeing to.
-
-- **AI Training Data Usage**: The Terms do not specify if user data will be used for training AI models, which raises concerns about how personal information might be utilized in machine learning processes without explicit user knowledge.
-
-- **Data Retention Policies**: There is no mention of how long user data will be retained, which could lead to indefinite storage of personal information without user awareness or control.
-
-- **User Rights Limitations**: The Terms may not adequately outline user rights regarding data access, correction, or deletion, potentially limiting users' ability to manage their personal information.
-
-- **International Data Transfers**: If user data is transferred across borders, the Terms should clarify the protections in place, as this could expose users to different privacy standards.
-
-- **Lack of Security Measures Disclosure**: There is insufficient information regarding the security measures in place to protect user data, which could leave users vulnerable to data breaches and unauthorized access.
+Flags: Data collection, third-party sharing, targeted advertising. Unclear data collection scope; shared with partners; used for ad targeting.

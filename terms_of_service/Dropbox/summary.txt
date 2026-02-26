@@ -1,15 +1,1 @@
-- **Data Access and Scanning**: Dropbox states that it accesses, stores, and scans user content (Your Stuff) to provide features like OCR and personalization, raising concerns about the extent of data processing and potential misuse of sensitive information.
-
-- **Third-Party Permissions**: The permission granted to Dropbox extends to affiliates and trusted third parties, which could lead to unauthorized data sharing or exposure to less secure entities, increasing privacy risks.
-
-- **Beta Services Data Collection**: Users of Beta Services consent to provide feedback, which may involve data collection without clear limitations on how this data will be used or stored, posing risks to user privacy.
-
-- **Lack of Clear Data Retention Policies**: The Terms do not specify how long user data is retained or the conditions under which it may be deleted, leading to uncertainty about data lifecycle management.
-
-- **User Responsibility for Security**: Users are solely responsible for safeguarding their account credentials, which could lead to unauthorized access and data breaches if users do not follow best practices.
-
-- **Limited Liability for Content**: Dropbox disclaims responsibility for user-generated content, which could leave users vulnerable if their data is misused or if they face legal issues related to content shared via the platform.
-
-- **Ambiguity in Legal Compliance**: The Terms state that users must comply with applicable laws, but do not clarify how Dropbox ensures compliance with varying international data protection regulations, potentially exposing users to legal risks.
-
-- **Electronic Signature Risks**: Users must ensure that electronic signatures are appropriate for their transactions, which places the onus on users to understand legal implications, potentially leading to invalid agreements or disputes.
+Flags: Content scanning, third-party sharing, data retention. Files scanned for features; data shared with affiliates and trusted third parties; vague retention policies.

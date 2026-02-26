@@ -1,15 +1,1 @@
-- - **Broad Data Collection**: The terms may indicate extensive data collection practices, including personal, financial, and transaction data, which could lead to privacy risks if not properly managed or secured.
-
-- - **Lack of Transparency**: If the terms do not clearly outline how user data is used, shared, or sold, users may be unaware of potential privacy invasions and third-party data sales.
-
-- - **User Consent for AI Training**: The agreement might include clauses that allow the use of user data for AI training without explicit consent, raising ethical concerns regarding data usage and user awareness.
-
-- - **Data Retention Policies**: If the terms do not specify how long user data is retained, it could lead to risks of outdated or unnecessary data being stored, increasing vulnerability to breaches.
-
-- - **Limited User Control**: Users may have restricted rights to access, modify, or delete their data, which can hinder their ability to protect their privacy.
-
-- - **Third-Party Sharing**: The terms may allow for extensive sharing of user data with third parties, potentially exposing users to additional risks if those parties do not have robust privacy practices.
-
-- - **Inadequate Security Measures**: If the terms do not mention specific security protocols in place to protect user data, it raises concerns about the potential for data breaches.
-
-- - **Changes to Terms Without Notice**: Users may be subjected to changes in terms without adequate notification, which can lead to unexpected alterations in how their data is handled.
+Flags: Broad data collection, third-party sharing, financial data. Extensive data collected; financial transactions visible by default; limited privacy controls.

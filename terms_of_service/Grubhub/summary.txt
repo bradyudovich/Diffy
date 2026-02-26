@@ -1,15 +1,1 @@
-- **Data Collection Without Consent**: The Terms indicate that Grubhub may create an account for users based on transaction information without explicit consent, raising concerns about unauthorized data collection.
-
-- **Limited Liability for Third-Party Merchants**: Grubhub disclaims responsibility for the actions and food safety of independent merchants, which could expose users to risks related to food quality and safety without recourse.
-
-- **Arbitration Clause**: The mandatory arbitration clause limits users' rights to seek legal recourse in disputes, including waiving the right to a jury trial and class action lawsuits, which may disadvantage consumers.
-
-- **Vague Data Usage Policies**: The Terms do not clearly outline how user data will be used, shared, or retained, creating uncertainty about privacy and data protection practices.
-
-- **Potential for Excessive Data Sharing**: The involvement of third-party delivery partners and merchants raises concerns about how user data may be shared or sold without user knowledge or consent.
-
-- **No Clear Opt-Out Mechanism**: The Terms do not provide a straightforward process for users to opt-out of data collection or marketing communications, which could lead to unwanted solicitations.
-
-- **User Responsibility for Accuracy**: Users are required to provide accurate personal information, but the Terms do not specify how inaccuracies will be handled or what consequences may arise from providing false information.
-
-- **Lack of Transparency in Data Security Measures**: There is no mention of the security measures in place to protect user data, which raises concerns about potential data breaches and user privacy.
+Flags: Data collection, third-party sharing, marketing use. Data collected without clear consent; used for marketing purposes; shared with partners.

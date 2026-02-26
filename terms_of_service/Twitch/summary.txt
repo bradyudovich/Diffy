@@ -1,15 +1,1 @@
-- **Data Collection Scope**: The Terms of Service mention a Privacy Notice that outlines how personal information is collected, used, and shared, but it lacks specific details on the types of data collected, raising concerns about the extent of data collection practices.
-
-- **Third-Party Data Sharing**: Users are warned that linking their Twitch account to third-party services will subject their data to those services' privacy policies, which may not be as protective, creating a risk of unauthorized data sharing.
-
-- **Account Security Responsibility**: Users are held fully responsible for the security of their accounts and passwords, which may lead to potential risks if accounts are compromised due to inadequate security measures on the user's part.
-
-- **Age Verification Risks**: The requirement for parental supervision for users under the legal age of majority may not adequately protect minors, as it relies on self-reporting and parental consent, which can be easily circumvented.
-
-- **Lack of Explicit Consent for AI Training**: The Terms do not explicitly mention whether user data will be used for AI training purposes, raising concerns about consent and transparency regarding the use of personal data for machine learning.
-
-- **Modification of Terms**: The ability of Twitch to modify the Terms of Service unilaterally without explicit user consent may lead to changes that could adversely affect user rights or privacy protections without adequate notice.
-
-- **Potential for Unclear Guidelines**: The incorporation of various guidelines and rules into the Terms of Service without clear definitions or examples may create ambiguity, leading to potential misuse or misunderstanding by users.
-
-- **Limited User Rights Information**: The Terms of Service do not clearly outline user rights regarding data access, deletion, or correction, which could hinder users' ability to manage their personal information effectively.
+Flags: Data collection, content licensing, third-party sharing. Vague privacy notice; user content licensed broadly; data shared with Amazon.

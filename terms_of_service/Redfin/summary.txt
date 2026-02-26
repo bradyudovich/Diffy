@@ -1,15 +1,1 @@
-- **Arbitration Clause**: Users are required to resolve disputes through binding arbitration, limiting their ability to pursue claims in court, which may restrict access to legal remedies and transparency in dispute resolution.
-
-- **Class Action Waiver**: The agreement includes a waiver of the right to participate in class action lawsuits, potentially hindering collective legal action against the company for widespread issues affecting multiple users.
-
-- **Data Collection Ambiguity**: The terms reference a "Privacy Notice" that governs the collection and processing of personally identifiable information, but the specifics of this notice are not provided, leaving users uncertain about what data is collected and how it is used.
-
-- **Third Party Content Risks**: Users are warned that third-party sites linked through the services may collect their information, potentially leading to unauthorized data sharing and privacy breaches without the user's consent.
-
-- **User-Generated Content**: Users are required to provide content (e.g., feedback, property information) but the terms do not clarify how this content may be used or shared by Redfin, raising concerns about ownership and control over personal contributions.
-
-- **Limited User Rights**: The agreement emphasizes that users must comply with all terms, which may include vague or overly broad restrictions, potentially infringing on user rights and freedoms in their use of the services.
-
-- **Age Restrictions**: The terms prohibit users under 13 from using the services, but do not specify how compliance with this age restriction is enforced, raising concerns about the protection of minors' data.
-
-- **Lack of Transparency in Changes**: The terms state that continued use constitutes acceptance of changes, which may lead to users being unaware of significant modifications that could affect their rights and privacy.
+Flags: Arbitration clause, data collection, third-party sharing. Mandatory arbitration limits legal recourse; personal data collected and shared with partners.

@@ -1,7 +1,1 @@
-- - The text does not provide any information regarding data collection practices, leaving users unaware of what personal information may be collected during interactions.
-- - There is no mention of user consent or how user data may be used, raising concerns about potential unauthorized data processing.
-- - The absence of a clear privacy policy or terms related to data sharing with third parties poses a significant risk for users regarding their personal information.
-- - There are no details on user rights concerning data access, correction, or deletion, which could hinder users' ability to manage their personal data.
-- - The vague language ("It’s probably us") may indicate a lack of accountability and transparency in service failures, which could affect user trust.
-- - There is no indication of how AI may be used in service delivery or customer support, raising concerns about the ethical use of AI and potential biases in automated responses.
-- - The reference to a "Customer Service" option without clear guidelines on how user queries or complaints will be handled may lead to inadequate support and unresolved issues.
+Flags: Unclear data practices, third-party sharing. No data practice details available; unknown collection, sharing, and retention policies.

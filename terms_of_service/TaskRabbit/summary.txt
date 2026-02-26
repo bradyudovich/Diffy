@@ -1,15 +1,1 @@
-- **Data Collection Scope**: The Terms mention that personal data submitted to the Platform or collected by Taskrabbit is governed by a separate Privacy Policy, which may not be fully transparent to users regarding the extent of data collected and its usage.
-
-- **User Liability for Taskers**: Users are warned that Taskrabbit does not vet Taskers beyond a registration process, meaning users may unknowingly hire unqualified or unsafe individuals, posing risks to their safety and security.
-
-- **Arbitration Agreement**: The inclusion of a mandatory arbitration clause may limit users' ability to seek legal recourse in disputes, potentially undermining their rights to a fair trial or class action.
-
-- **Independent Contractor Status**: Taskers are classified as independent contractors, which may lead to users assuming liability for any issues arising from Taskers’ actions, including tax and insurance responsibilities.
-
-- **Limited User Rights**: Users must agree to the Terms to access the Platform, which may discourage users from negotiating terms or understanding their rights fully, especially regarding data privacy and dispute resolution.
-
-- **Lack of Endorsement**: Taskrabbit explicitly states that descriptions of Taskers (e.g., "background checked") do not guarantee their qualifications or safety, which could mislead users into a false sense of security.
-
-- **Incorporation of Additional Policies**: The Terms reference multiple supplemental policies that are incorporated by reference, which may not be easily accessible or understandable to users, creating ambiguity about their rights and obligations.
-
-- **Potential for Data Sharing**: The broad language regarding data collection and the reference to a Privacy Policy may imply that user data could be shared with third parties, raising concerns about user privacy and consent.
+Flags: Data collection, third-party sharing, limited user rights. Personal data collected and shared; limited user control over data management.

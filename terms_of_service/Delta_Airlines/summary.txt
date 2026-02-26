@@ -1,7 +1,1 @@
-- - The "Access Denied" message indicates that users may not have access to important information regarding data collection practices, raising concerns about transparency.
-- - Lack of accessible Terms of Service prevents users from understanding their rights, responsibilities, and potential risks associated with data usage.
-- - Users are unable to review how their personal data is handled, which poses a significant risk to informed consent.
-- - The absence of clear guidelines on data retention policies raises concerns about how long user data may be stored and for what purposes.
-- - No mention of third-party data sharing practices suggests potential risks of unauthorized access or misuse of personal information.
-- - The inability to access the Terms of Service may indicate a lack of accountability or recourse for users in case of data breaches or misuse.
-- - Users are left unaware of their rights regarding data deletion or modification, which could lead to unauthorized retention of sensitive information.
+Flags: Inaccessible ToS, data transparency. ToS access denied; unknown data collection, retention, and third-party sharing practices.

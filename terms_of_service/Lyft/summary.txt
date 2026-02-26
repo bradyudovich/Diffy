@@ -1,15 +1,1 @@
-- **Data Collection Scope**: Lyft collects extensive data on Users, including location, ride preferences, and user statistics, which raises concerns about the breadth of personal information being gathered and the potential for misuse.
-
-- **User Consent for Modifications**: Users automatically accept modifications to the Terms of Service by continuing to use the platform, which may lead to unawareness of significant changes that could affect their rights and privacy.
-
-- **Ambiguous Third-Party Data Sharing**: The agreement mentions "third-party requirements" without clear disclosure of what data may be shared with these parties, creating uncertainty about user privacy and data security.
-
-- **Eligibility of Minors**: The terms allow minors as young as 13 to use Rideshare Services, which may expose them to risks without adequate safeguards or parental oversight, especially concerning data collection and safety.
-
-- **Arbitration Clause Limitations**: Users, particularly Drivers, have limited options to opt-out of arbitration provisions, potentially restricting their ability to seek legal recourse in disputes related to privacy or service issues.
-
-- **Supplemental Agreements**: Users must review and agree to additional agreements that may impose further obligations or restrictions, which could complicate user rights and lead to unintentional consent to unfavorable terms.
-
-- **Account Deactivation Risks**: Lyft reserves the right to deactivate accounts at its discretion, which could result in loss of access to services and data without clear recourse or explanation for the user.
-
-- **Lack of Transparency in AI Use**: The use of autonomous vehicles and AI for matching Riders and Drivers is mentioned, but there is insufficient detail on how AI decisions are made or how user data is utilized in training these systems, raising ethical concerns.
+Flags: Extensive data collection, location tracking, arbitration clause. Location and usage data collected broadly; mandatory arbitration waives class action rights.

@@ -1,15 +1,1 @@
-- **Data Collection Consent**: Users are required to consent to the collection, use, and disclosure of their data as described in the Privacy Statement, which may not be fully transparent or understandable to all users.
-
-- **Broad License Grant**: By using the services, users grant Microsoft a worldwide, royalty-free license to use their content, which could lead to potential misuse or unintentional sharing of personal information.
-
-- **Limited Control Over Shared Content**: Once content is shared, users lose control over its distribution, as others can use, save, and share it without compensation, raising concerns about privacy and ownership.
-
-- **Arbitration Clause**: The binding arbitration and class action waiver provisions may limit users' ability to seek legal recourse, potentially undermining their rights in disputes with Microsoft.
-
-- **Data Export Restrictions**: Microsoft reserves the right to restrict data export if it compromises service security or intellectual property, which could hinder users' ability to switch to other services or retain their data.
-
-- **Ambiguous AI Use**: The terms mention AI services that make decisions autonomously, but lack clarity on how user data is utilized in AI training, raising concerns about transparency and user consent.
-
-- **Potential for Data Misuse in Advertising**: Although Microsoft states it does not use personal communications for targeted advertising, the broad language in the terms leaves room for interpretation and potential future changes in policy.
-
-- **User Responsibility for Content**: Users are held fully responsible for their content, which could lead to legal repercussions if they inadvertently share content that violates laws or rights of others, placing a heavy burden on users.
+Flags: Data collection, AI training risk, broad licensing. Consent required for data collection used in AI training; limited user control; terms may change without notice.

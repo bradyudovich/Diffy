@@ -278,7 +278,7 @@ export default function App() {
               Privacy & AI Risk Flags
             </h3>
             {selectedCompany.summary ? (
-              <div className="text-gray-700 text-sm leading-relaxed space-y-1">
+              <div className="text-gray-700 text-sm leading-relaxed space-y-1 pb-10">
                 {selectedCompany.summary
                   .split("\n")
                   .filter((line) => line.trim())
@@ -287,19 +287,31 @@ export default function App() {
                   ))}
               </div>
             ) : (
-              <p className="text-gray-500 text-sm italic">No summary available.</p>
+              <p className="text-gray-500 text-sm italic pb-10">No summary available.</p>
             )}
             {selectedCompany.tosUrl && (
               <a
                 href={selectedCompany.tosUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="absolute bottom-4 right-4 text-gray-400 hover:text-indigo-600 transition-colors text-xl"
+                className="absolute bottom-4 right-4 text-gray-700 hover:text-indigo-600 transition-colors"
                 onClick={(e) => e.stopPropagation()}
                 aria-label="View full Terms of Service"
                 title="View full Terms of Service"
               >
-                📁
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-6 w-6"
+                  aria-hidden="true"
+                >
+                  <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+                </svg>
               </a>
             )}
           </div>

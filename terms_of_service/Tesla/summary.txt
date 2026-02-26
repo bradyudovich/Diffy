@@ -1,8 +1,1 @@
-- The Terms of Service text is inaccessible, which raises concerns about transparency and users' ability to understand their rights and obligations.
-- Lack of access to the Terms of Service may indicate that users cannot review or consent to data collection practices, potentially violating informed consent principles.
-- Users are unable to verify how their data is being used or shared, which poses a significant risk regarding data privacy and user control over personal information.
-- The inability to access legal documents could suggest that the company may not be fully compliant with data protection regulations, such as GDPR or CCPA.
-- Users may be unaware of their rights regarding data deletion, access, or correction, leading to potential violations of user rights.
-- The absence of clear terms may indicate that the company could change policies without proper notification, leaving users vulnerable to unexpected data practices.
-- The lack of transparency in the Terms of Service could lead to unintentional consent to extensive data collection or AI training practices without user awareness.
-- Users should be cautious about potential hidden clauses that may limit their rights or impose unfair liabilities due to the lack of accessible legal information.
+Flags: Inaccessible ToS, vehicle data collection, third-party sharing. ToS unavailable; vehicle usage and location data likely collected and shared.

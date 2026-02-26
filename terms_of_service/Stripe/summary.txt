@@ -1,15 +1,1 @@
-- **Data Collection Ambiguity**: The agreement does not clearly specify what types of data Stripe collects from users, raising concerns about transparency and informed consent regarding personal and business data usage.
-
-- **Third-Party Data Sharing Risks**: Users are warned that their use of Third-Party Services is at their own risk, with no liability from Stripe, which could lead to uncontrolled data sharing and privacy violations.
-
-- **Arbitration Clause Limitations**: The inclusion of a class action waiver and mandatory arbitration may limit users' ability to seek collective redress for privacy violations, potentially undermining their rights.
-
-- **Modification Rights**: Stripe reserves the right to modify or discontinue services without significant notice, which could affect users' access to their data or services without adequate warning.
-
-- **Preview Services Liability**: The disclaimer of warranty and limited liability for Preview Services may expose users to risks associated with unstable or incomplete features, potentially compromising data security.
-
-- **Age Restrictions Compliance**: The requirement for users under 18 to have an adult representative could lead to complications in data handling and consent, especially regarding minors' data privacy.
-
-- **Lack of Support Obligations**: Stripe is not obligated to provide support for all services, which may leave users without assistance in resolving privacy or data security issues.
-
-- **Vague Terms on Updates**: The lack of obligation to provide updates and the discretion to implement them could lead to security vulnerabilities if users are not kept informed about necessary changes.
+Flags: Unclear data collection, third-party sharing, payment data. Vague data collection scope; payment data shared with partners; limited transparency.

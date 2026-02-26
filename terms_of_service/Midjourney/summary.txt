@@ -1,15 +1,1 @@
-- **Data Collection Scope**: The terms indicate that users may provide personal information such as email addresses, usernames, and billing information, but do not specify how this data is used or shared beyond the privacy policy link, raising concerns about transparency in data handling.
-
-- **Perpetual License to User Content**: Users grant Midjourney a perpetual, worldwide, non-exclusive license to their inputs and generated assets, which could lead to misuse or unauthorized commercial exploitation of user-generated content without compensation.
-
-- **Public Visibility of User Content**: By default, user content is publicly viewable and remixable, which poses risks of unauthorized use and potential reputational damage, especially for sensitive or personal content.
-
-- **Limited Control Over AI Outputs**: The terms state that there are no guarantees regarding the suitability of generated assets, which could lead to the creation of inappropriate or harmful content that reflects poorly on the user.
-
-- **Ambiguity in Ownership Rights**: Users' ownership of assets is subject to various conditions, including revenue thresholds for companies, which may create confusion and limit rights for certain users, particularly small businesses or individual creators.
-
-- **Stealth Mode Limitations**: The Stealth feature does not guarantee complete privacy, as assets created in shared spaces remain visible to others, undermining the purpose of the feature and exposing users to potential privacy breaches.
-
-- **Right to Suspend Services**: Midjourney reserves the right to suspend or ban user access at any time without notice, which raises concerns about user rights and the lack of recourse for users who may be unfairly penalized.
-
-- **Lack of Clear Data Deletion Policy**: The terms do not specify how users can delete their data or assets from the platform, which is a significant concern for user control over personal information and content.
+Flags: AI training risk, data collection, content licensing. Generated and personal data may train AI; user content licensed broadly; limited opt-out.

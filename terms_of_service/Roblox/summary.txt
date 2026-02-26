@@ -1,15 +1,1 @@
-- **Data Collection Ambiguity**: The Terms do not clearly specify what types of personal data are collected from users, raising concerns about transparency and informed consent.
-
-- **User-Generated Content (UGC) Risks**: Users may not retain ownership rights over their UGC, as the Terms state that users do not acquire enforceable legal rights in virtual content, potentially leading to exploitation of creators.
-
-- **Third-Party Data Sharing**: There is a lack of clarity regarding how user data may be shared with third-party services, which could expose users to privacy risks if their data is sold or misused.
-
-- **Limited User Rights**: The Terms include a class action waiver and arbitration agreement, which may limit users' ability to seek legal recourse or join together in disputes against Roblox.
-
-- **Children's Privacy Concerns**: Given that Roblox is popular among children, the Terms should explicitly address compliance with child privacy laws (e.g., COPPA), yet there is insufficient detail on how children's data is protected.
-
-- **Consent to Electronic Communications**: Users are required to consent to electronic communications, which may include marketing materials, potentially leading to unwanted solicitations without clear opt-out options.
-
-- **Jurisdictional Limitations**: The Terms specify governing laws and jurisdictions that may not be favorable to users, limiting their ability to pursue claims in their local courts.
-
-- **Data Retention Policies**: There is no mention of how long user data will be retained or the conditions under which it will be deleted, raising concerns about long-term data storage and potential misuse.
+Flags: Minor privacy risk, unclear data collection, content licensing. Data collection opaque; minors at risk; user content licensed broadly without clear limits.
