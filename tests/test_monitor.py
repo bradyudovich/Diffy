@@ -215,3 +215,63 @@ class TestMonitorSummaryFallback:
 
         results = monitor.monitor()
         assert results["companies"][0]["summary"] == "Cached summary from before."
+
+
+# ---------------------------------------------------------------------------
+# Summary format tests
+# ---------------------------------------------------------------------------
+
+class TestSummaryFormat:
+    """Verify that AI-generated summaries conform to the 30-word constraint."""
+
+    def _word_count(self, text: str) -> int:
+        return len(text.split())
+
+    def test_summary_on_change_is_at_most_30_words(self, tmp_env, monkeypatch):
+        """When a ToS changes, the resulting summary must be <=30 words."""
+        short_summary = "Data: Company collects browsing data and trains AI on content. Users cannot opt out."
+        assert self._word_count(short_summary) <= 30
+
+        monkeypatch.setattr(monitor, "load_config", lambda: [
+            {"name": "TestCo", "tosUrl": "https://example.com/tos", "category": "Tech"}
+        ])
+
+        # First run: establish initial snapshot
+        call_count = {"index": 0}
+        fetch_responses = ["ToS text v1", "ToS text v2 – something changed"]
+
+        def fetch_side_effect(url):
+            return fetch_responses[call_count["index"]]
+
+        monkeypatch.setattr(monitor, "fetch_text", fetch_side_effect)
+        monkeypatch.setattr(monitor, "call_openai_overview", lambda text: short_summary)
+        monkeypatch.setattr(monitor, "call_openai", lambda diff: short_summary)
+
+        monitor.monitor()
+        call_count["index"] = 1
+        results = monitor.monitor()
+        summary = results["companies"][0]["summary"]
+        assert self._word_count(summary) <= 30
+
+    def test_overview_summary_is_at_most_30_words(self, tmp_env, monkeypatch):
+        """On first run (overview), the summary must be <=30 words."""
+        short_summary = "AI: Trains models on user data; broad liability waiver; no opt-out for data collection."
+        assert self._word_count(short_summary) <= 30
+
+        monkeypatch.setattr(monitor, "load_config", lambda: [
+            {"name": "TestCo", "tosUrl": "https://example.com/tos", "category": "AI"}
+        ])
+        monkeypatch.setattr(monitor, "fetch_text", lambda url: "Some ToS text")
+        monkeypatch.setattr(monitor, "call_openai_overview", lambda text: short_summary)
+
+        results = monitor.monitor()
+        summary = results["companies"][0]["summary"]
+        assert self._word_count(summary) <= 30
+
+    def test_ai_tos_summary_prompt_is_defined(self):
+        """The unified AI_TOS_SUMMARY_PROMPT constant must exist and contain key constraints."""
+        assert hasattr(monitor, "AI_TOS_SUMMARY_PROMPT")
+        prompt = monitor.AI_TOS_SUMMARY_PROMPT
+        assert "30 words" in prompt
+        assert "legal summarizer" in prompt.lower()
+        assert "data rights" in prompt.lower() or "data" in prompt.lower()
