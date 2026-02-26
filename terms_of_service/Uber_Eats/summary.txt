@@ -1,7 +1,1 @@
-- The absence of specific Terms of Service text raises concerns about the lack of transparency regarding user data handling practices.
-- Users may be unaware of their rights and obligations due to the missing information, which can lead to unintentional violations of terms.
-- The inability to access the Terms of Service could indicate potential changes in data collection practices that users are not informed about.
-- Without clear guidelines, users cannot assess how their data may be used for AI training or other purposes, posing risks to their privacy.
-- The lack of accessible information may prevent users from understanding how to opt-out of data collection or AI training processes.
-- Users are at risk of not knowing how to address grievances or seek recourse regarding their data rights, as no contact information or support resources are provided.
-- The unavailability of the Terms of Service could suggest that the company may not prioritize user privacy or data protection in its operations.
+[Data Rights]: Terms inaccessible; data handling practices unknown. [Liability]: Users unaware of rights due to missing service terms.

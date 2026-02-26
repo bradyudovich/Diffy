@@ -1,7 +1,1 @@
-- The Terms of Service text is inaccessible, indicating potential issues with transparency and user awareness of privacy policies.
-- Users may not be able to review or understand their rights and obligations due to the lack of available information.
-- The absence of clear data collection practices raises concerns about how user data is being handled and whether consent is obtained.
-- Without access to the Terms of Service, users cannot ascertain if their data will be used for AI training or other purposes, leading to potential misuse of personal information.
-- The error suggests a lack of proper website maintenance, which could indicate broader issues with data security and user trust.
-- Users are left without guidance on how to address grievances or seek recourse, potentially undermining their rights.
-- The inability to load essential legal documents may prevent users from making informed decisions about using the service.
+[Data Rights]: Terms inaccessible; data handling practices unknown. [Liability]: Users unaware of rights due to missing service terms.

@@ -1,15 +1,1 @@
-- **Data Sharing with Third Parties**: The agreement mentions the use and sharing of certain information, which raises concerns about how user data may be shared with third parties, including advertisers or partners, without explicit user consent.
-
-- **Integration with MyDisney**: The requirement to create a MyDisney account for accessing services raises privacy risks, as it consolidates user data across multiple platforms, potentially increasing the exposure of personal information.
-
-- **Lack of Clear Data Retention Policies**: The terms do not specify how long user data is retained or the conditions under which it may be deleted, leaving users uncertain about the longevity of their data storage.
-
-- **Automatic Renewal and Billing Practices**: The automatic renewal of subscriptions could lead to unexpected charges for users who may forget to cancel, raising concerns about transparency in billing practices.
-
-- **Arbitration Clause**: The inclusion of a binding arbitration clause limits users' rights to pursue legal action in case of disputes, which may deter users from seeking redress for privacy violations or service issues.
-
-- **Consent for Electronic Communications**: Users are required to consent to receive electronic communications, which may include marketing materials, potentially leading to unwanted spam or targeted advertising without a clear opt-out mechanism.
-
-- **Account Security Responsibility**: The terms place the burden of account security on users, which could lead to unauthorized access and data breaches if users do not adequately protect their credentials.
-
-- **Changes to Terms with Limited Notice**: The ability to amend the agreement with only 30 days' notice may not provide sufficient time for users to understand and react to significant changes that could affect their privacy and rights.
+[Data Rights]: User data shared with third-party advertisers. [Liability]: Users cannot fully opt out of third-party data sharing.

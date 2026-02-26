@@ -1,15 +1,1 @@
-- **Broad License to User Content**: Users grant Coursera a "fully-transferable, royalty-free, perpetual, sublicensable, non-exclusive, worldwide license" to their User Content, which raises concerns about the control users retain over their own submissions and potential exploitation of their work.
-
-- **Data Processing Consent**: Users must be over the age at which they can provide consent to data processing, but the terms do not specify how user data is processed or what data is collected, creating ambiguity around user consent and data privacy.
-
-- **Automatic Software Updates**: The agreement allows Coursera to automatically update software without user consent, which could lead to unintentional changes in data handling practices or features that users may not agree with.
-
-- **Arbitration and Waivers**: The inclusion of an arbitration agreement and waivers for class action lawsuits limits users' rights to seek collective legal recourse, which may deter individuals from pursuing legitimate claims against Coursera.
-
-- **User Account Restrictions**: Users are prohibited from sharing account access, which may hinder collaboration and sharing of educational resources, while also raising questions about the enforcement of this policy and potential penalties for violations.
-
-- **Lack of Academic Credit Assurance**: The terms explicitly state that completion of courses does not guarantee academic credit, which could mislead users about the value of their investment in courses and the recognition of their efforts.
-
-- **Content Modification Rights**: Coursera reserves the right to modify or cancel Content Offerings at any time, which could disrupt users' learning experiences and expectations without prior notice or recourse.
-
-- **User Content Removal Rights**: Coursera retains the right to remove or modify User Content for any reason, which could lead to arbitrary censorship or loss of user contributions without adequate justification or appeal processes.
+[Data Rights]: Users grant Coursera a perpetual, royalty-free worldwide content license. [Liability]: Broad content rights transferred; user ownership effectively limited.

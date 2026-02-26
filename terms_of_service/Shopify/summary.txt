@@ -1,15 +1,1 @@
-- **Data Collection Scope**: Shopify requires users to provide extensive personal information, including full legal names, business addresses, and phone numbers, raising concerns about the necessity and security of such data collection.
-
-- **Account Termination Discretion**: Shopify reserves the right to reject or cancel accounts at its sole discretion, which could lead to unexpected loss of access to services and data without clear justification or recourse for users.
-
-- **Email Communication Reliance**: Users must rely on a single email address for all communications with Shopify, which could lead to missed important updates or security notifications if the email account is compromised.
-
-- **Unencrypted Data Transmission**: The Terms indicate that user materials may be transferred unencrypted, posing significant risks for data interception during transmission, especially sensitive business information.
-
-- **Limited User Control Over Data**: Users may have limited control over how their data is used or shared, particularly with third parties, as the terms do not clearly define user rights regarding data ownership and usage.
-
-- **Ambiguous Liability Clauses**: The terms state that Shopify cannot be held liable for losses due to user negligence in account security, which places the burden entirely on users without adequate support or protective measures from Shopify.
-
-- **Potential for AI Training Usage**: There is no explicit mention of how user data might be used for AI training or analytics, raising concerns about the potential for user data to be utilized in ways that are not transparent or consented to by users.
-
-- **Third-Party Access Risks**: The provision for creating Staff Accounts allows multiple users access to sensitive business information, which could lead to data breaches if proper access controls and monitoring are not enforced by the Store Owner.
+[Data Rights]: Extensive personal and business data required for merchant use. [Liability]: Broad data licensing rights granted to Shopify.
