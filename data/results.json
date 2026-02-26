@@ -1,485 +1,485 @@
 {
-  "updatedAt": "2026-02-25T18:10:23.324946+00:00",
+  "updatedAt": "2026-02-26T01:54:42.629853+00:00",
   "companies": [
     {
       "name": "OpenAI",
       "category": "AI",
       "tosUrl": "https://openai.com/policies/terms-of-use",
-      "lastChecked": "2026-02-25T18:10:23.324962+00:00",
+      "lastChecked": "2026-02-26T01:54:42.629865+00:00",
       "changed": false,
-      "summary": "OpenAI's Terms of Use grant you a license to use their services for lawful purposes, but prohibit using outputs to train competing AI models. You must not use the service to generate harmful, deceptive, or illegal content. OpenAI retains broad rights to use your inputs to improve their models unless you opt out through the API. The terms include a binding arbitration clause and class-action waiver for dispute resolution."
+      "summary": "\u26a0\ufe0f Your content may train AI models unless you opt out. Limited data transparency."
     },
     {
       "name": "Anthropic",
       "category": "AI",
       "tosUrl": "https://www.anthropic.com/legal/consumer-terms",
-      "lastChecked": "2026-02-25T18:10:29.867167+00:00",
+      "lastChecked": "2026-02-26T01:54:47.361093+00:00",
       "changed": false,
-      "summary": "Anthropic's consumer terms allow personal, non-commercial use of Claude and related products. You must not use Claude to generate illegal content, spread misinformation, or circumvent safety measures. Anthropic may use your conversations to improve its models unless you opt out. The service is provided 'as is' with limited warranties, and disputes are subject to binding arbitration."
+      "summary": "\u26a0\ufe0f Inputs/outputs may be used for AI training. Data retention practices unclear."
     },
     {
       "name": "Midjourney",
       "category": "AI",
       "tosUrl": "https://docs.midjourney.com/docs/terms-of-service",
-      "lastChecked": "2026-02-25T18:10:33.079685+00:00",
+      "lastChecked": "2026-02-26T01:54:50.853319+00:00",
       "changed": false,
-      "summary": "Midjourney grants paid subscribers ownership of images they create, while free-tier users receive a Creative Commons license allowing commercial use only with attribution. All generated images are publicly visible by default in the community gallery unless you subscribe to a Pro or Mega plan. You are prohibited from generating content that depicts real people in harmful ways or violates intellectual property rights. Midjourney retains a license to use your prompts and images for service improvement."
+      "summary": "\u26a0\ufe0f Collects personal and billing data; usage and sharing terms are vague."
     },
     {
       "name": "Google",
       "category": "AI",
       "tosUrl": "https://policies.google.com/terms",
-      "lastChecked": "2026-02-25T18:10:36.398653+00:00",
+      "lastChecked": "2026-02-26T01:54:54.430292+00:00",
       "changed": false,
-      "summary": "Google's Terms of Service grant users a personal, non-transferable license to use their services. You grant Google a worldwide license to host, display, and use your content to provide and improve their services, including for ad targeting. Google collects extensive data about your activity across its platforms, which is detailed in their Privacy Policy. The terms include limitations on liability and require disputes to be resolved under California law or through arbitration."
+      "summary": "\u26a0\ufe0f Broad data collection with limited transparency on usage and third-party sharing."
     },
     {
       "name": "Microsoft",
       "category": "AI",
       "tosUrl": "https://www.microsoft.com/en-us/servicesagreement/",
-      "lastChecked": "2026-02-25T18:10:38.895466+00:00",
+      "lastChecked": "2026-02-26T01:54:56.378358+00:00",
       "changed": false,
-      "summary": "Microsoft's Services Agreement covers products like Xbox, Outlook, OneDrive, and Bing. You retain ownership of your content, but grant Microsoft a license to use it to provide, improve, and personalize their services. Microsoft may collect diagnostic data and usage information to improve products and deliver targeted advertising in free tiers. The agreement includes a binding arbitration clause and prohibits use of services for commercial purposes without an appropriate business license."
+      "summary": "\u26a0\ufe0f Blanket consent to collect and share sensitive personal data without ongoing notice."
     },
     {
       "name": "Meta",
       "category": "Social",
       "tosUrl": "https://www.facebook.com/terms.php",
-      "lastChecked": "2026-02-25T18:10:42.834922+00:00",
+      "lastChecked": "2026-02-26T01:55:05.150852+00:00",
       "changed": false,
-      "summary": "Meta's Terms of Service grant the company a broad, royalty-free license to use, display, and distribute any content you post on Facebook and Instagram. Your data is used to serve targeted advertisements, which is Meta's primary revenue model. You agree not to post content that violates community standards, including hate speech, misinformation, or illegal material. Meta can terminate your account at any time and is not liable for content posted by other users."
+      "summary": "\u26a0\ufe0f Data shared across Meta's family of apps; extent of cross-platform sharing unclear."
     },
     {
       "name": "X (Twitter)",
       "category": "Social",
       "tosUrl": "https://x.com/en/tos",
-      "lastChecked": "2026-02-25T18:10:46.378253+00:00",
+      "lastChecked": "2026-02-26T01:55:08.019849+00:00",
       "changed": false,
-      "summary": "X (formerly Twitter) grants itself a worldwide, royalty-free license to use, copy, reproduce, and distribute your content. Your public posts may be used to train X's AI models (Grok) unless you opt out in privacy settings. The platform has broad rights to suspend or terminate accounts for violations of its rules. Disputes are governed by California law, and by agreeing to the terms you waive your right to participate in class-action lawsuits."
+      "summary": "\u26a0\ufe0f Data may transfer internationally with weaker privacy protections in some regions."
     },
     {
       "name": "TikTok",
       "category": "Social",
       "tosUrl": "https://www.tiktok.com/legal/page/us/terms-of-service/en",
-      "lastChecked": "2026-02-25T18:10:48.659073+00:00",
+      "lastChecked": "2026-02-26T01:55:10.981117+00:00",
       "changed": false,
-      "summary": "TikTok's Terms grant the company a broad license to use, reproduce, and distribute your videos and other content globally. The platform collects substantial personal data including device identifiers, location, and behavioral data, which may be accessible to parent company ByteDance. You must be at least 13 years old to use the service, and users under 18 have additional restrictions. TikTok can remove content or suspend accounts that violate Community Guidelines, and disputes are subject to binding arbitration."
+      "summary": "\u26a0\ufe0f Extensive data collection including interests, activity, and device info."
     },
     {
       "name": "LinkedIn",
       "category": "Social",
       "tosUrl": "https://www.linkedin.com/legal/user-agreement",
-      "lastChecked": "2026-02-25T18:10:51.223320+00:00",
+      "lastChecked": "2026-02-26T01:55:13.672171+00:00",
       "changed": false,
-      "summary": "LinkedIn's User Agreement grants the company a license to use your profile content and activity for delivering services, advertising, and improving its products. Your professional data may be used to serve targeted job ads and sales recommendations. LinkedIn allows you to control much of your data visibility through privacy settings, but certain data is always shared with Microsoft. Disputes are resolved under California law, with a binding arbitration and class-action waiver."
+      "summary": "\u26a0\ufe0f Personal data shared with Microsoft affiliates; usage scope not fully defined."
     },
     {
       "name": "Instagram",
       "category": "Social",
       "tosUrl": "https://help.instagram.com/581066165581870",
-      "lastChecked": "2026-02-25T18:10:53.683076+00:00",
+      "lastChecked": "2026-02-26T01:55:16.169337+00:00",
       "changed": false,
-      "summary": "Instagram (owned by Meta) grants itself a non-exclusive, royalty-free license to use, distribute, and display your photos and videos to operate and improve the platform. Your activity data is used extensively for targeted advertising across Meta's family of apps. You retain ownership of your content, but the broad license means Instagram can show your posts in ads without additional compensation. Users are prohibited from scraping data, posting illegal content, or impersonating others."
+      "summary": "\u26a0\ufe0f Broad data collection including location; unclear data retention policies."
     },
     {
       "name": "Pinterest",
       "category": "Social",
       "tosUrl": "https://policy.pinterest.com/en/terms-of-service",
-      "lastChecked": "2026-02-25T18:10:56.093779+00:00",
+      "lastChecked": "2026-02-26T01:55:19.110313+00:00",
       "changed": false,
-      "summary": "Pinterest grants itself a worldwide, royalty-free license to host, display, and distribute the content you pin or upload. The platform uses your save behavior, boards, and searches to power personalized ad recommendations. You are responsible for ensuring that any content you pin does not infringe third-party intellectual property rights. Pinterest can terminate accounts for violations, and disputes are subject to binding arbitration under California law."
+      "summary": "\u26a0\ufe0f Collects personal data to profile user interests; specifics not clearly disclosed."
     },
     {
       "name": "Reddit",
       "category": "Social",
       "tosUrl": "https://www.redditinc.com/policies/user-agreement",
-      "lastChecked": "2026-02-25T18:11:00.047746+00:00",
+      "lastChecked": "2026-02-26T01:55:29.776059+00:00",
       "changed": false,
-      "summary": "Reddit's User Agreement grants the platform a broad, royalty-free license to copy, distribute, and display your posts and comments. Reddit has licensed user-generated content to third parties, including AI companies, for large-scale data training. You retain ownership of your posts, but the content license is irrevocable for content already shared publicly. The terms prohibit harassment, vote manipulation, and spreading misinformation."
+      "summary": "\u26a0\ufe0f Consent to data collection required; privacy policy not easily accessible."
     },
     {
       "name": "Discord",
       "category": "Social",
       "tosUrl": "https://discord.com/terms",
-      "lastChecked": "2026-02-25T18:11:03.050647+00:00",
+      "lastChecked": "2026-02-26T01:55:32.585987+00:00",
       "changed": false,
-      "summary": "Discord's Terms of Service grant the platform a license to host and display your messages, images, and other content to operate the service. Discord collects usage data and may share it with third-party service providers, though it does not sell personal data directly to advertisers. You must be at least 13 years old (16 in some jurisdictions), and NSFW content is restricted to age-verified servers. Discord can suspend or terminate accounts at any time for Community Guidelines violations, and disputes are resolved through binding arbitration."
+      "summary": "\u26a0\ufe0f Tracks active apps and games on device; extensive collection, consent unclear."
     },
     {
       "name": "Slack",
       "category": "Productivity",
       "tosUrl": "https://slack.com/terms-of-service",
-      "lastChecked": "2026-02-25T18:11:05.935125+00:00",
+      "lastChecked": "2026-02-26T01:55:36.443472+00:00",
       "changed": false,
-      "summary": "Slack's Terms of Service distinguish between workspace owners (customers) and end users, with customers controlling data retention and deletion policies. Slack collects usage metadata which may be used for product improvement and targeted upsell recommendations. Your messages and files are stored on Slack's servers and accessible to workspace administrators. The terms include a limitation of liability clause."
+      "summary": "\u26a0\ufe0f Data ownership of user-generated content is ambiguous; rights may be disputed."
     },
     {
       "name": "Zoom",
       "category": "Productivity",
       "tosUrl": "https://explore.zoom.us/en/terms/",
-      "lastChecked": "2026-02-25T18:11:09.291073+00:00",
+      "lastChecked": "2026-02-26T01:55:39.927339+00:00",
       "changed": false,
-      "summary": "Zoom's Terms of Service grant the company a license to use meeting content to operate and improve the platform, with hosts controlling recordings and sharing. Customer data is not currently used to train third-party AI without consent, following a 2023 policy update. Zoom collects telemetry data including device info, IP addresses, and usage patterns. Disputes are subject to binding arbitration, and enterprise agreements may supersede the standard consumer terms."
+      "summary": "\u26a0\ufe0f Scope of data collection during meetings is not clearly defined."
     },
     {
       "name": "Notion",
       "category": "Productivity",
       "tosUrl": "https://www.notion.com/terms",
-      "lastChecked": "2026-02-25T18:11:12.752493+00:00",
+      "lastChecked": "2026-02-26T01:55:42.322540+00:00",
       "changed": false,
-      "summary": "Notion's Terms of Service state that you retain ownership of all content you create, and Notion only uses it to provide and improve the service. Notion AI features may send content to third-party AI providers, and you can opt out of AI features to prevent this. The platform does not sell your personal data to advertisers. Disputes are resolved under California law, with a class-action waiver and binding arbitration."
+      "summary": "\u26a0\ufe0f Broad collection of personal info, usage data, and user-created content."
     },
     {
       "name": "Adobe",
       "category": "Productivity",
       "tosUrl": "https://www.adobe.com/legal/terms.html",
-      "lastChecked": "2026-02-25T18:11:15.046026+00:00",
+      "lastChecked": "2026-02-26T01:55:44.413796+00:00",
       "changed": false,
-      "summary": "Adobe's General Terms of Use grant the company a license to access and use your content to operate services and, unless you opt out, to train Adobe's AI models (Firefly). Following user backlash, Adobe clarified it does not train Firefly on customer content without opt-in. Your Creative Cloud files are stored on Adobe's servers and subject to their data retention policies. Early cancellation of annual subscriptions incurs a fee equal to 50% of the remaining contract value."
+      "summary": "\u26a0\ufe0f Terms unavailable \u2014 unable to assess data practices or user rights."
     },
     {
       "name": "Dropbox",
       "category": "Productivity",
       "tosUrl": "https://www.dropbox.com/terms",
-      "lastChecked": "2026-02-25T18:16:07.976751+00:00",
+      "lastChecked": "2026-02-26T02:00:35.529803+00:00",
       "changed": false,
-      "summary": "Dropbox's Terms of Service grant the company a license to store and transmit your files solely to provide the service; Dropbox does not claim ownership of your content. Dropbox employees can access your files in limited circumstances such as legal compliance or technical troubleshooting. Dropbox holds the encryption keys and can comply with legal requests to access your data. Disputes are handled through binding arbitration, and Dropbox's liability is limited to the fees you paid in the past 12 months."
+      "summary": "\u26a0\ufe0f Scans and accesses your files for OCR and personalization features."
     },
     {
       "name": "Asana",
       "category": "Productivity",
       "tosUrl": "https://asana.com/terms",
-      "lastChecked": "2026-02-25T18:16:11.372406+00:00",
+      "lastChecked": "2026-02-26T02:00:39.710938+00:00",
       "changed": false,
-      "summary": "Asana's Terms of Service designate your organization as the data controller for workspace content, while Asana acts as a data processor. You retain full ownership of your project data, and Asana only uses it to provide the service. Asana may collect usage analytics and metadata to improve the product and guide feature development. The terms include a limitation of liability, and disputes are governed by California law."
+      "summary": "\u26a0\ufe0f Customer data ownership may be confusing for individual vs. enterprise users."
     },
     {
       "name": "GitHub",
       "category": "Productivity",
       "tosUrl": "https://docs.github.com/en/site-policy/github-terms/github-terms-of-service",
-      "lastChecked": "2026-02-25T18:16:15.624765+00:00",
+      "lastChecked": "2026-02-26T02:00:43.276486+00:00",
       "changed": false,
-      "summary": "GitHub's Terms of Service state that you retain ownership of your code, but grant GitHub a license to store, display, and provide your public repositories to other users. Public repositories may be used to train GitHub Copilot and other AI tools, though private repository content is not used for AI training without consent. Repository owners can choose open-source licenses to control how others use their code. Violations of the Acceptable Use Policy can result in account suspension."
+      "summary": "\u26a0\ufe0f Broad content license granted to GitHub; potential for unexpected usage."
     },
     {
       "name": "Amazon",
       "category": "Retail",
       "tosUrl": "https://www.amazon.com/gp/help/customer/display.html?nodeId=508088",
-      "lastChecked": "2026-02-25T18:16:17.656584+00:00",
+      "lastChecked": "2026-02-26T02:00:45.998451+00:00",
       "changed": false,
-      "summary": "Amazon's Conditions of Use govern purchases on Amazon.com and related services. Amazon collects extensive purchase history, browsing data, and Alexa voice recordings to personalize recommendations and target ads. Third-party sellers have their own terms, and Amazon's liability for their products is limited. Disputes with Amazon are subject to binding arbitration."
+      "summary": "\u26a0\ufe0f No accessible ToS \u2014 users lack clarity on data rights and privacy practices."
     },
     {
       "name": "Walmart",
       "category": "Retail",
       "tosUrl": "https://www.walmart.com/help/article/walmart-com-terms-of-use/3b75080af40340d6bbd596f116fae5a2",
-      "lastChecked": "2026-02-25T18:16:20.200339+00:00",
+      "lastChecked": "2026-02-26T02:00:49.148771+00:00",
       "changed": false,
-      "summary": "Walmart's Terms of Use govern Walmart.com and its mobile apps for shopping and services. Walmart collects purchase history, location data, and browsing behavior to personalize the shopping experience and deliver targeted advertising. The terms prohibit scraping, reverse-engineering, or using automated tools on the site. Disputes are governed by Arkansas law, and Walmart reserves the right to cancel orders or suspend accounts at its discretion."
+      "summary": "\u26a0\ufe0f No clear data collection disclosure or explicit user consent mechanisms."
     },
     {
       "name": "Shopify",
       "category": "Retail",
       "tosUrl": "https://www.shopify.com/legal/terms",
-      "lastChecked": "2026-02-25T18:16:23.768328+00:00",
+      "lastChecked": "2026-02-26T02:00:53.041536+00:00",
       "changed": false,
-      "summary": "Shopify's Terms of Service apply to merchants using the platform to run online stores, granting Shopify a license to process your store data to provide the service. Shopify may use aggregated, anonymized merchant data for business analytics and product improvement. Merchants are responsible for compliance with consumer protection laws, payment card standards, and applicable taxes. Shopify can suspend stores for policy violations."
+      "summary": "\u26a0\ufe0f Requires extensive personal/business data; necessity not clearly justified."
     },
     {
       "name": "Netflix",
       "category": "Streaming",
       "tosUrl": "https://help.netflix.com/legal/termsofuse",
-      "lastChecked": "2026-02-25T18:16:27.774199+00:00",
+      "lastChecked": "2026-02-26T02:00:56.942513+00:00",
       "changed": false,
-      "summary": "Netflix's Terms of Use grant subscribers a personal, non-transferable license to stream content for private, non-commercial viewing. Account sharing is restricted to your household under the current terms. Netflix collects viewing history and preferences to power its recommendation algorithm and for marketing purposes. Subscriptions auto-renew monthly, and Netflix can change pricing or content availability with reasonable notice."
+      "summary": "\u26a0\ufe0f Collects device ID and payment details for offer eligibility; limited transparency."
     },
     {
       "name": "Disney+",
       "category": "Streaming",
       "tosUrl": "https://www.disneyplus.com/en-gb/legal/subscriber-agreement",
-      "lastChecked": "2026-02-25T18:16:31.432830+00:00",
+      "lastChecked": "2026-02-26T02:00:59.923072+00:00",
       "changed": false,
-      "summary": "Disney+'s Subscriber Agreement grants a limited, personal license to stream content for private, non-commercial use. You may not download, copy, or redistribute content outside of the in-app download feature for offline viewing. Disney collects viewing history and device data to personalize content and serve relevant promotions. The terms include a binding arbitration clause and prohibit account sharing outside your household."
+      "summary": "\u26a0\ufe0f Broad collection of viewing habits, preferences, and device data."
     },
     {
       "name": "Spotify",
       "category": "Streaming",
       "tosUrl": "https://www.spotify.com/us/legal/end-user-agreement/",
-      "lastChecked": "2026-02-25T18:16:35.763212+00:00",
+      "lastChecked": "2026-02-26T02:01:04.135049+00:00",
       "changed": false,
-      "summary": "Spotify's End User License Agreement grants a limited, personal license to stream music and podcasts for non-commercial use. Spotify collects extensive listening history, device data, and behavioral signals to power its recommendation algorithm and targeted advertising. Free-tier users cannot skip unlimited tracks or listen offline, and ads are inserted automatically. Disputes are subject to binding arbitration, and Spotify can modify the terms with 30 days' notice."
+      "summary": "\u26a0\ufe0f Mandatory arbitration limits users' right to pursue legal action in court."
     },
     {
       "name": "Twitch",
       "category": "Streaming",
       "tosUrl": "https://www.twitch.tv/p/en/legal/terms-of-service/",
-      "lastChecked": "2026-02-25T18:16:39.939989+00:00",
+      "lastChecked": "2026-02-26T02:01:06.935300+00:00",
       "changed": false,
-      "summary": "Twitch's Terms of Service grant streamers a license to broadcast content on the platform while retaining ownership, but Twitch can display, promote, and sublicense streams. Twitch Partner and Affiliate agreements contain exclusivity provisions that restrict simultaneous streaming on competing platforms. Twitch collects viewing behavior, chat logs, and account data for ad targeting and content moderation. The terms allow Twitch to remove content or ban users, and disputes are subject to binding arbitration."
+      "summary": "\u26a0\ufe0f Privacy notice lacks specifics on data types collected and how they're shared."
     },
     {
       "name": "YouTube",
       "category": "Streaming",
       "tosUrl": "https://www.youtube.com/t/terms",
-      "lastChecked": "2026-02-25T18:16:43.383210+00:00",
+      "lastChecked": "2026-02-26T02:01:10.635419+00:00",
       "changed": false,
-      "summary": "YouTube's Terms of Service grant Google a worldwide, royalty-free license to host, distribute, and monetize your uploaded content through ads. Creators retain copyright ownership, but by uploading they grant YouTube broad rights that persist even after account termination. YouTube can demonetize, remove, or restrict content that violates its Community Guidelines or advertiser policies. Accounts can be suspended for repeated copyright violations under the three-strike system."
+      "summary": "\u26a0\ufe0f Data processing terms reference AI training but lack clear user-facing detail."
     },
     {
       "name": "Hulu",
       "category": "Streaming",
       "tosUrl": "https://www.hulu.com/subscriber_agreement",
-      "lastChecked": "2026-02-25T18:16:45.406012+00:00",
+      "lastChecked": "2026-02-26T02:01:13.883178+00:00",
       "changed": false,
-      "summary": "Hulu's Subscriber Agreement grants a personal, non-transferable license to stream content for private viewing. Ad-supported tiers are required to watch advertising, and ad-free upgrades are available for an additional fee. Hulu collects viewing data and may share it with Disney and affiliated companies for advertising targeting and content personalization. Subscriptions auto-renew, and Hulu can change content availability or pricing with notice."
+      "summary": "\u26a0\ufe0f User data shared with third-party advertisers; limited opt-out details."
     },
     {
       "name": "Max",
       "category": "Streaming",
       "tosUrl": "https://www.max.com/terms-of-use",
-      "lastChecked": "2026-02-25T18:16:49.413628+00:00",
+      "lastChecked": "2026-02-26T02:01:18.063559+00:00",
       "changed": false,
-      "summary": "Max's Terms of Use grant subscribers a non-exclusive, non-transferable license to stream content for personal, non-commercial use. You cannot download or redistribute content beyond the in-app offline download feature available on certain plans. Max (owned by Warner Bros. Discovery) collects viewing history, device data, and account information to personalize recommendations and serve advertising on ad-supported tiers. The terms include a binding arbitration clause and prohibit account sharing outside your household."
+      "summary": "\u26a0\ufe0f Scope of personal data collected is vaguely defined in the ToS."
     },
     {
       "name": "Uber",
       "category": "Services",
       "tosUrl": "https://www.uber.com/legal/en/document/?name=general-terms-of-use&country=united-states&lang=en",
-      "lastChecked": "2026-02-25T18:16:52.850687+00:00",
+      "lastChecked": "2026-02-26T02:01:20.349225+00:00",
       "changed": false,
-      "summary": "Uber's Terms of Use establish that Uber is a technology platform connecting riders with independent driver-partners, not a transportation company, limiting Uber's liability for driver actions. Uber collects precise location data before, during, and after rides, which is used for safety monitoring and can be shared with law enforcement. Surge pricing applies during high-demand periods, and you agree to dynamic pricing by completing a ride request. Disputes are resolved through binding arbitration, and you waive your right to participate in class-action lawsuits."
+      "summary": "\u26a0\ufe0f Mandatory arbitration waives jury trial and class action rights."
     },
     {
       "name": "Airbnb",
       "category": "Services",
       "tosUrl": "https://www.airbnb.com/help/article/2908",
-      "lastChecked": "2026-02-25T18:16:56.815140+00:00",
+      "lastChecked": "2026-02-26T02:01:22.420339+00:00",
       "changed": false,
-      "summary": "Airbnb's Terms of Service establish the platform as a marketplace connecting hosts and guests, with Airbnb acting as a limited payment agent but not a party to the rental agreement. Hosts set their own house rules and cancellation policies, which guests agree to upon booking. Airbnb collects identity verification data, payment information, and behavioral data, and may share certain data with hosts or guests to facilitate bookings. Disputes between Airbnb and users are subject to binding arbitration."
+      "summary": "\u26a0\ufe0f Arbitration clause and class action waiver limit legal recourse for U.S. users."
     },
     {
       "name": "DoorDash",
       "category": "Services",
       "tosUrl": "https://help.doordash.com/consumers/s/terms-and-conditions",
-      "lastChecked": "2026-02-25T18:16:59.516457+00:00",
+      "lastChecked": "2026-02-26T02:01:25.251544+00:00",
       "changed": false,
-      "summary": "DoorDash's Terms and Conditions govern the use of its food delivery platform, connecting customers with restaurants and independent Dashers. DoorDash collects location, order history, and payment data to facilitate deliveries and target promotional offers. Pricing includes delivery fees, service fees, and optional tips, all disclosed at checkout. Disputes are subject to binding arbitration, and DoorDash's liability is limited to the fees paid for the specific order at issue."
+      "summary": "\u26a0\ufe0f Terms of Service inaccessible \u2014 no transparency on privacy or user rights."
     },
     {
       "name": "Lyft",
       "category": "Services",
       "tosUrl": "https://www.lyft.com/terms",
-      "lastChecked": "2026-02-25T18:17:03.416981+00:00",
+      "lastChecked": "2026-02-26T02:01:29.478744+00:00",
       "changed": false,
-      "summary": "Lyft's Terms of Service position the company as a technology platform rather than a transportation provider, with drivers classified as independent contractors. Lyft collects precise location data throughout your trip and may share it with third parties for advertising, analytics, and safety purposes. Pricing uses dynamic surge pricing during peak periods. The terms include a binding arbitration clause, a class-action waiver, and require disputes to be filed within one year of the incident."
+      "summary": "\u26a0\ufe0f Collects extensive location and ride data; breadth of collection is concerning."
     },
     {
       "name": "Grubhub",
       "category": "Services",
       "tosUrl": "https://www.grubhub.com/legal/terms-of-use",
-      "lastChecked": "2026-02-25T18:17:05.916341+00:00",
+      "lastChecked": "2026-02-26T02:01:33.420927+00:00",
       "changed": false,
-      "summary": "Grubhub's Terms of Use govern the use of its food ordering and delivery marketplace. Grubhub collects order history, location data, and device information to personalize the experience and deliver marketing communications. Restaurants are independent businesses, and Grubhub acts as their agent for the purpose of processing orders. Disputes are subject to binding arbitration under New York law."
+      "summary": "\u26a0\ufe0f May create accounts using transaction data without explicit user consent."
     },
     {
       "name": "TaskRabbit",
       "category": "Services",
       "tosUrl": "https://www.taskrabbit.com/terms",
-      "lastChecked": "2026-02-25T18:17:07.805969+00:00",
+      "lastChecked": "2026-02-26T02:01:36.425568+00:00",
       "changed": false,
-      "summary": "TaskRabbit's Terms of Service establish the platform as a marketplace connecting clients with independent Taskers, not an employer of those Taskers. TaskRabbit collects identity verification, payment, and behavioral data to facilitate the matching process and ensure safety. Clients are responsible for providing a safe working environment, and TaskRabbit carries limited liability for work performed. Disputes between users and TaskRabbit are subject to binding arbitration."
+      "summary": "\u26a0\ufe0f Data practices governed by a separate policy not prominently linked or explained."
     },
     {
       "name": "JPMorgan Chase",
       "category": "Finance",
       "tosUrl": "https://www.chase.com/digital/resources/terms-of-use",
-      "lastChecked": "2026-02-25T18:17:12.251363+00:00",
+      "lastChecked": "2026-02-26T02:01:39.548501+00:00",
       "changed": false,
-      "summary": "Chase's Digital Terms of Use govern online banking and mobile app access, requiring you to keep login credentials confidential and report unauthorized access immediately. Chase may monitor your account activity for fraud detection and share data with credit bureaus and affiliated companies. You are responsible for internet access costs and device security when using digital banking. The terms permit Chase to update features or discontinue services with reasonable notice."
+      "summary": "\u26a0\ufe0f Broad consent to share data across the JPMorgan group and third parties."
     },
     {
       "name": "PayPal",
       "category": "Finance",
       "tosUrl": "https://www.paypal.com/us/legalhub/useragreement-full",
-      "lastChecked": "2026-02-25T18:17:15.427250+00:00",
+      "lastChecked": "2026-02-26T02:01:42.936649+00:00",
       "changed": false,
-      "summary": "PayPal's User Agreement grants PayPal the right to hold funds, reverse transactions, and limit your account access if suspicious activity is detected. PayPal collects financial transaction history and device data and may share it with credit bureaus, law enforcement, and risk management partners. Transaction disputes are subject to PayPal's own resolution process, which can result in funds being held for up to 180 days. The terms include binding arbitration, prohibit class-action lawsuits, and allow PayPal to change fees with 30 days' notice."
+      "summary": "\u26a0\ufe0f Mandatory individual arbitration limits class action and court remedies."
     },
     {
       "name": "Stripe",
       "category": "Finance",
       "tosUrl": "https://stripe.com/legal/ssa",
-      "lastChecked": "2026-02-25T18:17:19.581949+00:00",
+      "lastChecked": "2026-02-26T02:01:47.740509+00:00",
       "changed": false,
-      "summary": "Stripe's Services Agreement governs payment processing for businesses. Businesses using Stripe must comply with card network rules and applicable financial regulations. Stripe can hold funds or terminate accounts if fraud is suspected or if the business violates acceptable use policies. Stripe may use aggregated transaction data for fraud prevention, risk modeling, and product improvement."
+      "summary": "\u26a0\ufe0f Types of collected data are not clearly disclosed; transparency concerns."
     },
     {
       "name": "Venmo",
       "category": "Finance",
       "tosUrl": "https://venmo.com/legal/us-user-agreement/",
-      "lastChecked": "2026-02-25T18:17:22.951497+00:00",
+      "lastChecked": "2026-02-26T02:01:50.081021+00:00",
       "changed": false,
-      "summary": "Venmo's User Agreement governs peer-to-peer money transfers intended for personal use between trusted contacts, not commercial transactions. Venmo transactions and social feeds are public by default, though you can switch to private in settings. Venmo can freeze or close accounts suspected of fraudulent activity, and funds may be held for up to 180 days. The terms require binding arbitration for disputes and prohibit using Venmo for illegal purchases or business payments without a business account."
+      "summary": "\u26a0\ufe0f Broad collection of personal, financial, and transaction data; privacy risks."
     },
     {
       "name": "Robinhood",
       "category": "Finance",
       "tosUrl": "https://robinhood.com/us/en/support/articles/customer-agreement/",
-      "lastChecked": "2026-02-25T18:17:25.542837+00:00",
+      "lastChecked": "2026-02-26T02:01:52.495310+00:00",
       "changed": false,
-      "summary": "Robinhood's Customer Agreement governs brokerage accounts for investing in stocks, ETFs, options, and cryptocurrencies. Robinhood uses a payment-for-order-flow model, meaning it may route your orders to market makers who pay for the privilege. Options and margin trading carry significant risk of loss, including losses exceeding your initial investment. Disputes are subject to FINRA arbitration, and the agreement includes important disclosures about investment risks and account limitations."
+      "summary": "\u26a0\ufe0f No mention of data collection practices; users lack informed consent details."
     },
     {
       "name": "Coinbase",
       "category": "Finance",
       "tosUrl": "https://www.coinbase.com/legal/user_agreement/united_states",
-      "lastChecked": "2026-02-25T18:17:29.405418+00:00",
+      "lastChecked": "2026-02-26T02:01:56.588059+00:00",
       "changed": false,
-      "summary": "Coinbase's User Agreement governs cryptocurrency trading and custody services, and notes that digital assets are not FDIC-insured like bank deposits. Coinbase can suspend trading, freeze funds, or close accounts to comply with law enforcement requests or regulatory requirements. You are responsible for the tax implications of your cryptocurrency transactions, and Coinbase may report transactions to the IRS. The terms include a binding arbitration clause, and Coinbase's liability is limited to the amount of the disputed transaction."
+      "summary": "\u26a0\ufe0f Arbitration agreement waives jury trial and class action rights."
     },
     {
       "name": "Tesla",
       "category": "Auto",
       "tosUrl": "https://www.tesla.com/legal/additional-resources/tesla-legal",
-      "lastChecked": "2026-02-25T18:17:32.279854+00:00",
+      "lastChecked": "2026-02-26T02:01:59.319202+00:00",
       "changed": false,
-      "summary": "Tesla's legal terms cover both vehicle purchase agreements and use of Tesla's digital services, including the app and Autopilot. Tesla collects extensive vehicle telemetry data including location, driving behavior, and camera footage, used for safety, OTA updates, and improving Autopilot. Over-the-air software updates can add or remove features from your purchased vehicle. Disputes are governed by California law, and Tesla's warranty terms are separate from the general terms of use."
+      "summary": "\u26a0\ufe0f Terms restricted/inaccessible \u2014 users cannot review rights or obligations."
     },
     {
       "name": "Ford",
       "category": "Auto",
       "tosUrl": "https://www.ford.com/help/terms/",
-      "lastChecked": "2026-02-25T18:17:33.972524+00:00",
+      "lastChecked": "2026-02-26T02:02:04.510370+00:00",
       "changed": false,
-      "summary": "Ford's Terms of Use govern the Ford.com website, the FordPass app, and connected vehicle services. Ford collects vehicle telemetry data, location, and app usage information for connected services, OTA updates, and to share with authorized dealers. You grant Ford a license to use feedback you provide for product improvement without compensation. Disputes are governed by Michigan law, and Ford's liability for digital services is limited to service fees paid in the prior 12 months."
+      "summary": "\u26a0\ufe0f Terms unavailable due to timeout \u2014 data practices unknown."
     },
     {
       "name": "United Airlines",
       "category": "Travel",
       "tosUrl": "https://www.united.com/en/us/fly/legal.html",
-      "lastChecked": "2026-02-25T18:22:24.678145+00:00",
+      "lastChecked": "2026-02-26T02:06:54.957646+00:00",
       "changed": false,
-      "summary": "United Airlines' legal terms cover conditions of carriage governing your rights when flying, including policies on delays, cancellations, and baggage. United's liability for lost baggage is capped at $3,800 per passenger on domestic flights under DOT regulations. The MileagePlus loyalty program has separate terms allowing United to devalue or terminate miles without notice. Disputes are governed by federal aviation law, and United's liability for flight delays and cancellations is more limited than EU consumer protections."
+      "summary": "\u26a0\ufe0f Terms unavailable due to timeout \u2014 user rights unclear."
     },
     {
       "name": "Marriott",
       "category": "Travel",
       "tosUrl": "https://www.marriott.com/about/terms-of-use.mi",
-      "lastChecked": "2026-02-25T18:27:16.641037+00:00",
+      "lastChecked": "2026-02-26T02:11:47.359230+00:00",
       "changed": false,
-      "summary": "Marriott's Terms of Use govern the Marriott Bonvoy loyalty program and online booking services. Marriott collects personal information including travel preferences, payment details, and stay history, which may be shared with hotel franchisees, travel partners, and marketing affiliates. Bonvoy points can be devalued or the program terminated, and points expire after 24 months of account inactivity. Disputes are governed by Maryland law."
+      "summary": "\u26a0\ufe0f User feedback surrendered to Marriott without compensation or confidentiality."
     },
     {
       "name": "Delta Airlines",
       "category": "Travel",
       "tosUrl": "https://www.delta.com/us/en/legal/conditions-of-carriage",
-      "lastChecked": "2026-02-25T18:27:20.141192+00:00",
+      "lastChecked": "2026-02-26T02:11:58.043534+00:00",
       "changed": false,
-      "summary": "Delta's Conditions of Carriage govern the contract between passengers and Delta for air travel. Delta can cancel, delay, or substitute flights without guarantee of compensation beyond what is required by DOT regulations. SkyMiles loyalty program points are the property of Delta and can be devalued or the program terminated at Delta's discretion. Liability for checked baggage is capped by federal regulations, and international flights may be subject to the Montreal Convention."
+      "summary": "\u26a0\ufe0f Terms lack any data collection or privacy information."
     },
     {
       "name": "Hilton",
       "category": "Travel",
       "tosUrl": "https://www.hilton.com/en/hilton-honors/terms/",
-      "lastChecked": "2026-02-25T18:27:23.050353+00:00",
+      "lastChecked": "2026-02-26T02:12:04.988305+00:00",
       "changed": false,
-      "summary": "Hilton Honors' Terms and Conditions govern the loyalty rewards program and online booking through Hilton's website and app. Hilton collects stay history, preferences, and personal data that may be shared with franchise hotel owners and marketing partners. Points can be devalued by Hilton at any time, and the program can be terminated with limited notice. Disputes are governed by Virginia law."
+      "summary": "\u26a0\ufe0f No data collection specifics provided; users left uninformed of practices."
     },
     {
       "name": "Apple",
       "category": "Tech",
       "tosUrl": "https://www.apple.com/legal/internet-services/itunes/us/terms.html",
-      "lastChecked": "2026-02-25T18:27:26.257093+00:00",
+      "lastChecked": "2026-02-26T02:12:11.997169+00:00",
       "changed": false,
-      "summary": "Apple's Media Services Terms govern the App Store, Apple Music, iTunes, and iCloud. Content purchases are licenses, not sales — you do not own downloaded apps or media, and Apple can remove your access. Apple collects device usage data, purchase history, and Apple ID activity for personalization, fraud prevention, and targeted advertising. Disputes are governed by California law, and the terms include binding arbitration with a class-action waiver."
+      "summary": "\u26a0\ufe0f Monitors user activity for compliance; scope and purpose not clearly stated."
     },
     {
       "name": "Samsung",
       "category": "Tech",
       "tosUrl": "https://www.samsung.com/us/account/privacy-policy/",
-      "lastChecked": "2026-02-25T18:27:28.572656+00:00",
+      "lastChecked": "2026-02-26T02:12:16.063008+00:00",
       "changed": false,
-      "summary": "Samsung's Privacy Policy governing Samsung Account and connected devices describes extensive data collection including device usage, location, voice commands from Bixby, and SmartThings home data. Samsung shares your data with service providers, advertising partners, and may transfer it internationally including to South Korea. Samsung devices may collect data even when not actively used, including diagnostic information sent automatically. You can manage some data collection through device privacy settings, but some collection is tied to core device functionality."
+      "summary": "\u26a0\ufe0f Collects sensitive data including SSNs and payment info; high breach risk."
     },
     {
       "name": "Steam",
       "category": "Gaming",
       "tosUrl": "https://store.steampowered.com/subscriber_agreement/",
-      "lastChecked": "2026-02-25T18:27:33.231625+00:00",
+      "lastChecked": "2026-02-26T02:12:20.408827+00:00",
       "changed": false,
-      "summary": "Steam's Subscriber Agreement grants licenses to game content rather than ownership — Valve can remove games from your library if publishers request it or if you violate the terms. Steam collects gameplay statistics, purchase history, and system information that may be shared with game developers. Refunds are available within 14 days of purchase and 2 hours of playtime. Disputes are subject to binding arbitration, and Steam Workshop content you create may be used by Valve without compensation."
+      "summary": "\u26a0\ufe0f Data collection scope beyond billing and account info is not disclosed."
     },
     {
       "name": "Epic Games",
       "category": "Gaming",
       "tosUrl": "https://legal.epicgames.com/en-US/epicgames/tos",
-      "lastChecked": "2026-02-25T18:27:36.755182+00:00",
+      "lastChecked": "2026-02-26T02:12:22.738324+00:00",
       "changed": false,
-      "summary": "Epic Games' Terms of Service grant licenses to access games and the Epic Games Store, not permanent ownership. Epic collects gameplay data, device information, and friends-list activity, some of which may be shared with game developers. The terms restrict account selling, unauthorized modifications, and use of cheats or exploits. Disputes are subject to binding arbitration, and you waive the right to participate in class-action lawsuits."
+      "summary": "\u26a0\ufe0f Requires accurate personal data; full extent of collection unclear."
     },
     {
       "name": "Roblox",
       "category": "Gaming",
       "tosUrl": "https://en.help.roblox.com/hc/en-us/articles/115004647846-Roblox-Terms-of-Use",
-      "lastChecked": "2026-02-25T18:27:40.526967+00:00",
+      "lastChecked": "2026-02-26T02:12:25.101937+00:00",
       "changed": false,
-      "summary": "Roblox's Terms of Use are designed with a younger audience in mind and require users under 13 to have parental consent. Content created on Roblox is subject to Roblox's Community Standards, and Roblox retains a license to use your created content within the platform. Robux (virtual currency) has no cash value; the DevEx program allows some creators to convert earnings to real money under specific eligibility criteria. Roblox collects device data and behavioral data, which raises privacy concerns for its primarily under-18 user base."
+      "summary": "\u26a0\ufe0f Unclear data collection practices; user-generated content rights ambiguous."
     },
     {
       "name": "Zillow",
       "category": "Real Estate",
       "tosUrl": "https://www.zillow.com/corp/Terms.htm",
-      "lastChecked": "2026-02-25T18:27:44.062174+00:00",
+      "lastChecked": "2026-02-26T02:12:28.827466+00:00",
       "changed": false,
-      "summary": "Zillow's Terms of Use govern access to property listings, Zestimates, and real estate tools. Zillow collects search history, saved properties, and contact information to connect users with agents and deliver targeted real estate advertising. Zestimate valuations are automated estimates, not appraisals, and Zillow disclaims liability for their accuracy. The terms prohibit scraping or commercial use of listing data, and disputes are governed by Washington state law."
+      "summary": "\u26a0\ufe0f Terms inaccessible \u2014 users cannot review data and privacy rights."
     },
     {
       "name": "Redfin",
       "category": "Real Estate",
       "tosUrl": "https://www.redfin.com/about/terms-of-use",
-      "lastChecked": "2026-02-25T18:27:46.424776+00:00",
+      "lastChecked": "2026-02-26T02:12:31.022875+00:00",
       "changed": false,
-      "summary": "Redfin's Terms of Use govern access to property listings and its brokerage services. Redfin collects search and browsing behavior, saved homes, and contact information to match users with agents and deliver personalized recommendations. Redfin's automated home valuations are not appraisals, and the company is not liable for their accuracy. Disputes are governed by Washington law, and the terms prohibit unauthorized commercial use or scraping of listing data."
+      "summary": "\u26a0\ufe0f Vague definition of collected content raises scope and privacy concerns."
     },
     {
       "name": "Coursera",
       "category": "Education",
       "tosUrl": "https://www.coursera.org/about/terms",
-      "lastChecked": "2026-02-25T18:27:49.129686+00:00",
+      "lastChecked": "2026-02-26T02:12:46.111978+00:00",
       "changed": false,
-      "summary": "Coursera's Terms of Use grant you a personal, non-transferable license to access course content for educational purposes. Coursera collects learning activity data, quiz results, and engagement metrics, which may be shared with course providers for quality improvement. Certificates are tied to your account, and sharing login credentials or cheating on assessments can result in revocation of credentials. Disputes are governed by California law, and Coursera's liability is limited to course fees paid."
+      "summary": "\u26a0\ufe0f Grants broad, perpetual, worldwide license over all user-created content."
     },
     {
       "name": "Duolingo",
       "category": "Education",
       "tosUrl": "https://www.duolingo.com/terms",
-      "lastChecked": "2026-02-25T18:27:51.871426+00:00",
+      "lastChecked": "2026-02-26T02:12:49.244338+00:00",
       "changed": false,
-      "summary": "Duolingo's Terms of Service grant you a personal license to use the app for language learning. Duolingo collects learning progress, device data, and usage patterns to personalize lessons and show targeted advertising in the free tier. Content you submit may be used by Duolingo to improve the service without compensation. Duolingo Super (paid subscription) removes ads and adds offline access; the terms include binding arbitration for dispute resolution."
+      "summary": "\u26a0\ufe0f May collect extensive personal and usage data without clear limits."
     },
     {
       "name": "Uber Eats",
       "category": "Services",
       "tosUrl": "https://www.uber.com/legal/en/document/?name=uber-eats-manager-terms-and-conditions",
-      "lastChecked": "2026-02-25T18:27:54.520321+00:00",
+      "lastChecked": "2026-02-26T02:12:53.214929+00:00",
       "changed": false,
-      "summary": "Uber Eats' Terms govern the food delivery marketplace connecting customers, restaurants, and independent delivery couriers. Uber Eats collects order history, location, and payment data to facilitate deliveries and personalize offers. Service fees and delivery fees are disclosed at checkout but can increase during surge periods. Disputes are subject to binding arbitration, and Uber's liability is limited to the value of the order at issue."
+      "summary": "\u26a0\ufe0f No specific ToS available \u2014 data handling and user rights are unknown."
     },
     {
       "name": "FanDuel",
       "category": "Finance",
       "tosUrl": "https://www.fanduel.com/termsofuse",
-      "lastChecked": "2026-02-25T18:27:57.576831+00:00",
+      "lastChecked": "2026-02-26T02:12:57.388267+00:00",
       "changed": false,
-      "summary": "FanDuel's Terms of Use govern real-money daily fantasy sports and sports betting, available only in jurisdictions where such activities are legal. FanDuel collects extensive behavioral and financial data to comply with responsible gambling regulations and detect fraud. Deposits and withdrawals are subject to verification, and FanDuel can withhold winnings if it suspects terms violations or fraudulent activity. The terms include a binding arbitration clause and require disputes to be filed within one year."
+      "summary": "\u26a0\ufe0f Access denied to ToS \u2014 no data usage policy visible to users."
     },
     {
       "name": "Fitbit",
       "category": "Health",
       "tosUrl": "https://www.fitbit.com/global/us/legal/terms-of-service",
-      "lastChecked": "2026-02-25T18:28:00.788107+00:00",
+      "lastChecked": "2026-02-26T02:13:00.710849+00:00",
       "changed": false,
-      "summary": "Fitbit's Terms of Service (now under Google/Alphabet) govern the use of fitness trackers and the Fitbit app. Fitbit collects sensitive health data including heart rate, sleep patterns, activity levels, and menstrual cycle information, subject to both Fitbit's and Google's privacy policies. Your health data may be used for product improvement and could be shared with Google services unless you opt out. You retain ownership of your health data, but Fitbit requires a broad license to process it; you can export or delete your data through account settings."
+      "summary": "\u26a0\ufe0f Linked to Google account; data shared under Google's broader privacy terms."
     }
   ]
 }
