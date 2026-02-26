@@ -1,15 +1,1 @@
-- **Data Collection Transparency**: The terms do not clearly specify what types of personal data are collected, how it is used, or whether it is shared with third parties, raising concerns about user awareness and consent.
-
-- **AI Training Data Usage**: There is a lack of clarity on whether user-generated content is used to train AI models, which could lead to unintentional sharing of sensitive or personal information without explicit user consent.
-
-- **Automatic Updates and Changes**: The provision for automatic updates to software and services without user consent may lead to unexpected changes in functionality or privacy settings, potentially compromising user data security.
-
-- **Limited User Control Over Data**: While users are informed about the ability to manage their information, the terms do not outline specific rights regarding data deletion or the ability to opt-out of certain data collection practices.
-
-- **Ambiguous Intellectual Property Rights**: The terms state that Google retains intellectual property rights over user-generated content, which may lead to users unknowingly relinquishing rights to their own content.
-
-- **Government Data Requests**: The mention of how Google handles government requests for user information lacks detail, raising concerns about user privacy and the potential for surveillance without adequate legal protections.
-
-- **User Responsibility for Minors**: The terms place the onus on parents or guardians for minors using the services, which may lead to inadequate protection for children’s data and privacy.
-
-- **Vague Definitions of Abuse**: The definitions of what constitutes abuse or harm are broad and may lead to arbitrary enforcement, potentially infringing on user rights and freedom of expression.
+[Data Rights]: Broad data collection with worldwide usage license granted to Google. [AI Usage]: Content used to train AI systems.

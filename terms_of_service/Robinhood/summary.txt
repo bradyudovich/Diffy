@@ -1,7 +1,1 @@
-- The text lacks any mention of data collection practices, raising concerns about how user data is handled and whether users are adequately informed about data usage.
-- There is no indication of user consent requirements for data processing, which could lead to unauthorized use of personal information.
-- The absence of a clear privacy policy or terms regarding data retention periods poses a risk of indefinite data storage without user knowledge or control.
-- There are no provisions for user rights regarding data access, correction, or deletion, which undermines users' ability to manage their personal information.
-- The vague language suggests a lack of transparency, which can lead to misunderstandings about the extent of data sharing with third parties or for marketing purposes.
-- No mention of security measures in place to protect user data raises concerns about potential data breaches and the safety of personal information.
-- There is no reference to AI training practices, leaving users unaware of whether their data could be used to train AI models without their explicit consent.
+[Data Rights]: Limited clarity on investment data collection practices. [Liability]: Disputes resolved via mandatory arbitration; limited legal recourse.

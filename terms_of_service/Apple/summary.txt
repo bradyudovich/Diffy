@@ -1,15 +1,1 @@
-- **Data Collection Scope**: The Terms indicate that Apple may monitor user activity to ensure compliance with usage rules, raising concerns about the extent and purpose of data collection without explicit user consent.
-
-- **Third-Party Data Sharing**: There is no clear information on how user data may be shared with third-party content providers or partners, which could lead to unexpected privacy risks.
-
-- **Account Security Responsibility**: Users are held fully responsible for maintaining the confidentiality of their Apple Account, which may lead to significant risks if accounts are compromised, as Apple disclaims liability for unauthorized access.
-
-- **Automatic Payment Information Updates**: Apple may automatically update users' payment information based on data from payment networks or financial institutions, which raises concerns about user awareness and control over their financial data.
-
-- **Limited User Rights on Transactions**: The terms state that all transactions are final and refunds may be denied in cases of suspected fraud or abuse, potentially limiting consumer rights and recourse for legitimate issues.
-
-- **Age Restrictions and Parental Control**: The requirement for parental consent for users under 13 may not adequately protect minors, as the Terms do not specify how user data will be managed or safeguarded for these accounts.
-
-- **Ambiguity in Privacy Policy**: The reference to Apple’s Privacy Policy without detailed explanations in the Terms leaves users uncertain about how their personal information will be used, stored, and shared.
-
-- **Potential for Content Monitoring**: The provision allowing Apple to monitor service usage for compliance with rules could be perceived as invasive, raising concerns about user privacy and data security.
+[Data Rights]: User activity monitored for compliance with usage rules. [Liability]: Unauthorized content distribution is strictly prohibited per terms.

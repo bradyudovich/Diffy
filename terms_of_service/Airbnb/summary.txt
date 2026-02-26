@@ -1,15 +1,1 @@
-- **Arbitration Agreement and Class Action Waiver**: Users in the U.S. are subject to an arbitration agreement that limits their ability to pursue class action lawsuits, potentially restricting their legal recourse in disputes.
-
-- **Broad Data Collection**: The Privacy Policy mentions the collection and use of personal data without specifying the extent or types of data collected, raising concerns about user consent and transparency.
-
-- **Identity and Background Screening**: Users in the U.S. consent to identity and background screenings, which could involve sensitive personal information and raise privacy concerns regarding data handling and retention.
-
-- **Lack of Clear User Rights**: The Terms do not explicitly outline user rights regarding data access, correction, or deletion, which could lead to confusion about what users can do with their personal information.
-
-- **Third-Party Data Sharing**: There is no clear information regarding whether user data is shared with third parties, which could expose users to privacy risks if their data is sold or misused.
-
-- **Vague Cancellation and Refund Policies**: The Terms reference multiple cancellation and refund policies without clear, user-friendly summaries, potentially leading to misunderstandings about users' rights in these situations.
-
-- **Limited Control Over Listings**: Users acting as Hosts may have limited control over how their listings are managed or represented, which could impact their reputation and privacy.
-
-- **Potential for Off-Platform Risks**: The Off-Platform Policy prohibits certain actions outside the Airbnb platform, but the enforcement and implications of this policy are unclear, potentially exposing users to risks when interacting outside the platform.
+[Data Rights]: User data subject to international transfers and processing. [Liability]: Class action rights waived via mandatory arbitration agreement.

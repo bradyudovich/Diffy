@@ -1,15 +1,1 @@
-- **Broad Data Sharing Consent**: Users consent to the transmission and transfer of their information to any company within the JPMorgan Chase group and to third parties, which raises concerns about the extent of data sharing and potential misuse.
-
-- **Global Data Transfer Risks**: The agreement allows for data to be processed in any country, including those outside the EEA, which may not have adequate data protection laws, increasing the risk of exposure to less secure environments.
-
-- **Monitoring and Tracking**: The terms state that user interactions with the website may be monitored, tracked, and recorded, which could lead to privacy invasions and a lack of user anonymity.
-
-- **Indemnification Clause**: Users are required to indemnify JPMorgan Chase for any unauthorized access to account data, which places a heavy burden on users and may discourage them from reporting security issues.
-
-- **Lack of Clear Data Breach Protocol**: The terms do not specify a clear protocol for notifying users in the event of a data breach, which could delay user awareness and response to potential identity theft or fraud.
-
-- **Vague Purpose for Data Collection**: The terms mention data collection for "advertising" and "other purposes" without specifying what those purposes are, leading to uncertainty about how personal data is being utilized.
-
-- **Potential for Unclear Changes**: The terms indicate that they are subject to change without notice, which can lead to users being unaware of new risks or obligations that may arise from updated terms.
-
-- **Limited User Rights**: The terms do not clearly outline user rights regarding data access, correction, or deletion, which could limit users' control over their personal information.
+[Data Rights]: User data shared with JPMorgan group and third parties. [Liability]: Broad data-sharing consent required to access services.

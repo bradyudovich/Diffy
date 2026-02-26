@@ -1,15 +1,1 @@
-- **Data Collection Scope**: The terms imply extensive data collection, including identifying active games and applications on users' devices, which raises concerns about user consent and the extent of data being collected without explicit user knowledge.
-
-- **Age Verification Limitations**: The reliance on third-party services for age verification and the disclaimer about the accuracy of the minimum age list could expose minors to inappropriate content, increasing risks for underage users.
-
-- **Arbitration Clause**: The inclusion of an arbitration clause and class-action waiver may limit users' ability to seek legal recourse, potentially undermining their rights in disputes with Discord.
-
-- **Personalization Risks**: The personalization of services based on user activity and preferences may lead to privacy concerns, as users might not fully understand how their data is being used to tailor their experience.
-
-- **User Control Over Data**: While users can change settings to control data sharing, the terms do not clearly outline the default settings or the implications of not adjusting these settings, which may lead to unintended data exposure.
-
-- **Content Ownership Ambiguities**: The terms regarding user-generated content may lack clarity on ownership rights, potentially allowing Discord to use user content in ways that users do not anticipate or agree with.
-
-- **Third-Party Integrations**: The ability to connect Discord accounts with third-party services raises concerns about data sharing and user privacy, especially if users are not fully aware of what data is shared with these services.
-
-- **Safety Features Limitations**: The mention of safety features having different defaults based on age or location suggests that not all users may have equal access to protective measures, potentially exposing vulnerable users to risks.
+[Data Rights]: Extensive data collection includes monitoring active apps and games. [Liability]: Class action rights waived via arbitration clause.

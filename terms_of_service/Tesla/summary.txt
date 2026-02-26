@@ -1,1 +1,1 @@
-[Data Rights]: User data may be collected and used for service improvement. [AI Usage]: AI technologies may be employed for operational purposes. [Liability]: Company limits liability for indirect damages.
+[Data Rights]: Vehicle and user data collected for service improvement. [AI Usage]: Driving data trains AI systems. [Liability]: Indirect damages excluded.

@@ -1,15 +1,1 @@
-- **Data Collection Scope**: The terms may allow for extensive data collection, including personal information, usage patterns, and potentially sensitive data without clear limitations on what constitutes necessary data for service provision.
-
-- **Third-Party Sharing**: There may be vague language regarding sharing user data with third parties, which could include advertisers or partners, raising concerns about user consent and the potential for data misuse.
-
-- **AI Training Usage**: User-generated content may be utilized for AI training purposes without explicit user consent, leading to concerns about how personal data is used to improve algorithms and whether users are informed about this usage.
-
-- **User Rights Ambiguity**: The terms might lack clarity on user rights regarding data access, deletion, and correction, making it difficult for users to understand how to manage their personal information.
-
-- **Data Retention Policies**: There may be insufficient information on how long user data is retained, which could lead to prolonged exposure of personal information beyond what is necessary for service delivery.
-
-- **Opt-Out Options**: The terms may not provide clear or easy options for users to opt out of data collection or targeted advertising, limiting user control over their personal information.
-
-- **International Data Transfers**: If applicable, there may be inadequate disclosures regarding the transfer of user data across borders, which could expose users to different privacy standards and risks.
-
-- **Liability Limitations**: The terms might include clauses that limit the company's liability for data breaches or misuse of personal information, potentially leaving users without recourse in the event of a data incident.
+[Data Rights]: Extensive data collected including usage patterns and personal info. [Liability]: Collection scope not clearly limited in current terms.

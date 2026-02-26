@@ -1,8 +1,1 @@
-- Access Denied: The lack of transparency regarding why access is denied raises concerns about user rights and the criteria used for access restrictions.
-- No Clear Data Usage Policy: The absence of information on how user data is collected, stored, and used creates uncertainty about privacy risks.
-- Lack of Consent Mechanism: Users may not be informed about or required to consent to data collection practices, violating user autonomy and privacy rights.
-- No Information on Data Sharing: There is no mention of whether user data is shared with third parties, which poses risks of unauthorized data exposure.
-- Absence of AI Training Disclosure: Without details on whether user data is used for AI training, users cannot assess the potential risks of their data being utilized in this manner.
-- No User Rights Explanation: The terms do not clarify user rights regarding data access, correction, or deletion, which is essential for informed consent.
-- Potential for Arbitrary Enforcement: The vague nature of access denial could lead to arbitrary enforcement of rules, impacting user trust and engagement.
-- Lack of Security Measures: There is no mention of security protocols in place to protect user data, increasing the risk of data breaches.
+[Data Rights]: Access denied; no data policy available for review. [Liability]: Users cannot access terms governing their betting activity.
