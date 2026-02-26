@@ -203,6 +203,31 @@ class TestMonitorSummaryFallback:
         # summary.txt should be updated
         assert monitor.read_tos_summary("TestCo") == "Diff summary"
 
+    def test_no_regeneration_when_tos_unchanged_and_summary_missing(self, tmp_env, monkeypatch):
+        """Summary stability principle: AI must not be called when ToS is unchanged, even if summary.txt is missing."""
+        # Seed an archive for "ToS text v1" so archived=False on next run with same text
+        monitor.archive_tos_if_changed("TestCo", "ToS text v1")
+        # Write a snapshot so old_text == new_text
+        monitor.write_snapshot("TestCo", "ToS text v1")
+        # Do NOT write summary.txt – it is intentionally absent
+
+        call_count = {"n": 0}
+
+        def counting_overview(text):
+            call_count["n"] += 1
+            return "Should not be called"
+
+        monkeypatch.setattr(monitor, "load_config", lambda: [
+            {"name": "TestCo", "tosUrl": "https://example.com/tos", "category": "Tech"}
+        ])
+        monkeypatch.setattr(monitor, "fetch_text", lambda url: "ToS text v1")
+        monkeypatch.setattr(monitor, "call_openai_overview", counting_overview)
+
+        results = monitor.monitor()
+        company = results["companies"][0]
+        assert call_count["n"] == 0, "AI must not be called when ToS is unchanged"
+        assert company["changed"] is False
+
     def test_fetch_error_uses_persisted_summary(self, tmp_env, monkeypatch):
         """When fetching fails, return the previously persisted summary."""
         # Pre-seed a summary

@@ -275,9 +275,9 @@ def monitor() -> dict:
         archived = archive_tos_if_changed(name, new_text)
 
         if old_text is None or old_text == new_text:
-            # No snapshot change this run – generate/refresh summary only when a
-            # new archive version was saved (first time or archive was absent)
-            if archived or read_tos_summary(name) is None:
+            # No snapshot change this run – summary stability principle: summaries only
+            # update if ToS changes (not when summary.txt is missing or content is unchanged).
+            if archived:
                 try:
                     overview = call_openai_overview(new_text)
                 except Exception as exc:
