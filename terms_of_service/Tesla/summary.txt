@@ -1,1 +1,1 @@
-[Data Rights]: User data may be collected and used for AI development. [Liability]: Company disclaims liability for data misuse. [Critical User Constraint]: Users must comply with data usage policies.
+[Category]: Access Restrictions. [Key Data/Legal Policy]: Permission required for access. [Critical User Constraint]: Users cannot access legal resources without proper authorization.

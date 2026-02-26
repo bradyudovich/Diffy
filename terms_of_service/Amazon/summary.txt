@@ -1,1 +1,1 @@
-[Data Rights]: Users retain ownership of their data; company may use data for service improvement. [AI Usage]: AI tools may analyze user data. [Liability]: Company limits liability for service interruptions.
+[Data Rights]: User data may be collected and used for service improvement. [AI Usage]: AI tools may analyze user data for personalization. [Liability]: Amazon limits liability for service-related issues.
