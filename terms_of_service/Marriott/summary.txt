@@ -1,15 +1,15 @@
-- **Data Ownership and Feedback Rights**: Users relinquish ownership of any feedback provided to Marriott, which can be used without compensation or confidentiality obligations, raising concerns about user contributions being exploited without acknowledgment or reward.
+- **Data Ownership and Feedback Rights**: Users relinquish ownership of any feedback provided to Marriott, allowing the company to use this information without compensation or confidentiality obligations, raising concerns about user-generated content being exploited without consent.
 
-- **Broad Monitoring and Data Collection**: Marriott reserves the right to monitor and review all user communications and stored information without restriction, posing significant privacy risks regarding user data and communications being surveilled.
+- **Broad Monitoring and Data Collection**: Marriott reserves the right to monitor and review all user transmissions and stored information, which could lead to extensive data collection practices without explicit user consent or awareness.
 
-- **Lack of User Control Over Changes**: The terms allow Marriott to modify the Terms of Service at their discretion without prior notice, which can lead to unexpected changes in user rights and obligations, undermining user autonomy.
+- **Lack of Clear Data Usage Policies**: The Terms do not specify how user data will be used, shared, or stored, creating ambiguity around data privacy and potential misuse of personal information.
 
-- **Ambiguous User Responsibilities**: Users are required to avoid various prohibited activities, but the vague language can lead to misunderstandings about what constitutes acceptable use, potentially resulting in unjust penalties or account suspensions.
+- **Changes to Terms Without Notice**: Marriott can modify the Terms of Service at any time without prior notice, leaving users vulnerable to sudden changes in their rights and obligations regarding data usage and privacy.
 
-- **Limited Liability for Content Moderation**: Marriott disclaims responsibility for the accuracy of information in user-generated content areas, which could expose users to harmful or misleading information without recourse.
+- **Limited User Control Over Personal Data**: Users have no clear mechanisms to access, correct, or delete their personal information, which is a significant concern for user rights and data privacy.
 
-- **Potential for Unclear Data Sharing Practices**: The terms do not specify how user data may be shared with third parties, raising concerns about the potential for data misuse or unauthorized access by external entities.
+- **Potential for Unrestricted Data Sharing**: The Terms do not explicitly limit Marriott’s ability to share user data with third parties, which could lead to privacy breaches and unauthorized use of personal information.
 
-- **No Clear Data Retention Policy**: The absence of a defined data retention policy may lead to indefinite storage of personal data, increasing the risk of data breaches or misuse over time.
+- **Age Restrictions and Liability**: The requirement that users must be of legal age to enter into contracts may exclude minors from protections typically afforded to younger users, raising ethical concerns about data collection from vulnerable populations.
 
-- **Restrictions on Legal Recourse**: The terms imply that users may have limited options for legal recourse or dispute resolution, which could disadvantage users in cases of grievances against Marriott.
+- **No Explicit Commitment to Data Security**: There is no mention of specific measures Marriott will take to protect user data from breaches or unauthorized access, which is critical for user trust and safety.

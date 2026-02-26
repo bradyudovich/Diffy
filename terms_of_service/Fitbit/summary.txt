@@ -1,15 +1,15 @@
-- **Data Sharing with Google**: Users must accept Google’s Terms of Service when using Fitbit with a Google account, raising concerns about data sharing and privacy under Google's broader data practices.
+- **Data Sharing with Google**: Users must accept Google’s Terms of Service when using Fitbit with a Google account, raising concerns about data sharing and privacy practices that may differ from Fitbit's own policies.
 
-- **Broad Data Collection**: The Terms state that Fitbit can collect and use user information as outlined in their Privacy Policy, which may include sensitive health data, without specifying the extent or purpose of this data collection.
+- **Broad Data Collection**: The Privacy Policy allows Fitbit to collect and use user information broadly, which may include sensitive health data, without clear limitations on the types of data collected or how it will be used.
 
-- **User-Generated Content Rights**: By posting content, users grant Fitbit a broad license to use their content, including personal identifiers, which could lead to unwanted exposure or misuse of personal information.
+- **User-Generated Content Rights**: Users grant Fitbit a non-exclusive, worldwide license to use their content, which could lead to unintended exploitation of personal data and images without adequate compensation or control.
 
-- **Limited User Control Over Content**: Fitbit reserves the right to alter or remove user content at its discretion, which may limit users' control over their own data and how it is represented on the platform.
+- **Account Security Responsibility**: Users are fully responsible for maintaining the confidentiality of their account credentials, which places the burden of security on the user rather than the company, potentially leading to unauthorized access.
 
-- **Accountability for Security Breaches**: Users are held responsible for maintaining the confidentiality of their account credentials, which could lead to potential security risks if their account is compromised.
+- **Limited Age Restrictions**: The service is not available for those under 13 without parental consent, but the enforcement of this age restriction is unclear, raising concerns about the protection of minors’ data.
 
-- **Age Restrictions**: The service restricts access for individuals under 13, but does not clearly outline how parental consent is verified, potentially exposing minors to privacy risks.
+- **Content Moderation Discretion**: Fitbit retains the right to alter or remove user content at their discretion, which could lead to arbitrary censorship and lack of transparency regarding content policies.
 
-- **Lack of Clarity on Data Retention**: The Terms do not specify how long Fitbit retains user data or under what circumstances it may be deleted, raising concerns about long-term data storage and privacy.
+- **Potential for Unauthorized Data Harvesting**: The Terms prohibit users from collecting information from others, yet the lack of robust measures to prevent data harvesting raises concerns about user privacy and consent.
 
-- **Potential for Unauthorized Data Harvesting**: The Terms prohibit users from collecting information about others, yet the vague language could allow for loopholes that may enable data harvesting practices.
+- **Ambiguous Liability Clauses**: Fitbit’s liability for security breaches or data loss is limited, which may leave users vulnerable without recourse in the event of a data breach or misuse of their information.
