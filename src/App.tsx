@@ -290,17 +290,21 @@ export default function App() {
               <p className="text-gray-500 text-sm italic">No summary available.</p>
             )}
             {selectedCompany.tosUrl && (
-              <a
-                href={selectedCompany.tosUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="absolute bottom-4 right-4 text-gray-400 hover:text-indigo-600 transition-colors text-xl"
-                onClick={(e) => e.stopPropagation()}
-                aria-label="View full Terms of Service"
-                title="View full Terms of Service"
-              >
-                📁
-              </a>
+              <div className="mt-6 pt-4 border-t border-gray-100 flex justify-end">
+                <a
+                  href={selectedCompany.tosUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-500 hover:text-gray-900 transition-colors"
+                  onClick={(e) => e.stopPropagation()}
+                  aria-label="View full Terms of Service"
+                  title="View full Terms of Service"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+                    <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/>
+                  </svg>
+                </a>
+              </div>
             )}
           </div>
         </div>
