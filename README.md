@@ -47,20 +47,30 @@ audit trails.
 
 ## ToS summarization
 
-After a new archive file is saved, `monitor.py` calls the OpenAI API to
-generate (or refresh) a privacy- and AI-focused summary and persists it to
-`terms_of_service/{company_slug}/summary.txt`.
+`monitor.py` uses the **content-diff method** to decide when to regenerate a
+ToS summary: the raw legal text fetched from the company's ToS page is compared
+byte-for-byte against the most-recently archived version.  A new summary is
+generated via the OpenAI API **only** when the raw text has changed.  If the
+content is identical, the previously persisted `summary.txt` is reused without
+any API call.
 
-- **First snapshot / no change**: a bullet-point list of privacy risks, AI
-  training concerns, data collection red flags, and other user rights issues
-  found in the current ToS is generated.
-- **Change detected**: a diff-focused bullet-point list is generated, noting
-  what changed, how it affects user data / privacy or AI training, and the
-  overall severity (High / Medium / Low).
+This approach is strictly more reliable than effective-date scraping (which can
+miss silent edits, trigger false positives on banner/date changes, or fail
+when a company doesn't publish a revision date) because it is driven entirely
+by the legal text itself.
 
-Summaries are only regenerated when a new ToS version is archived or when
-an explicit update is triggered — they are **not** refreshed on every run
-unless the ToS content has changed.
+- **No change detected** (`archive_tos_if_changed` returns `False`): the
+  existing `summary.txt` is returned as-is.  The AI is **never** called on
+  summary-file absence, archive-file creation, or any other event unrelated
+  to content.
+- **Change detected** (`archive_tos_if_changed` returns `True`): the new text
+  is archived and a fresh summary is generated.
+  - *First version / snapshot missing* → full overview summary via
+    `call_openai_overview`.
+  - *Incremental update* → diff-focused summary via `call_openai`.
+
+Summaries are only regenerated when a new ToS version is archived — they are
+**not** refreshed on every run unless the ToS content has changed.
 
 The summary stored in `summary.txt` is read back into `data/results.json`
 so the frontend always displays the latest persisted summary.  If no
