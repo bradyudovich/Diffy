@@ -11,7 +11,7 @@ The app is deployed at: **https://bradyudovich.github.io/Diffy/**
 ## How it works
 
 1. `config.json` at the repo root lists the companies and their ToS URLs to monitor.
-2. A GitHub Actions workflow (future) fetches those pages, stores snapshots in `data/snapshots/`, compares them, and commits updated results to `data/results.json`.
+2. The `.github/workflows/daily_scan.yml` workflow runs `monitor.py` every day at midnight UTC (and can be triggered manually). It uses a headless Chromium browser (via Playwright) to fetch each ToS page, stores snapshots in `data/snapshots/`, archives changed versions under `terms_of_service/`, generates AI summaries via the OpenAI API, and commits updated results to `data/results.json`.
 3. The frontend (`src/App.tsx`) fetches `data/results.json` directly from the `main` branch via `raw.githubusercontent.com` on every page load (with a cache-busting timestamp query param), so it always reflects the latest committed data without needing a rebuild.
 4. On every push to `main` (including when `data/results.json` changes), the Pages deployment workflow (`.github/workflows/deploy.yml`) rebuilds and redeploys the site automatically.
 
@@ -85,10 +85,12 @@ Open `config.json` and add or remove entries:
 ```json
 {
   "companies": [
-    { "name": "Acme Inc.", "tosUrl": "https://acme.example/terms" }
+    { "name": "Acme Inc.", "category": "Tech", "tosUrl": "https://acme.example/terms" }
   ]
 }
 ```
+
+The `category` field is used by the frontend to populate the category filter bar. Recognized categories with built-in icons are: `AI`, `Social`, `Productivity`, `Retail`, `Streaming`, `Services`, `Finance`, `Auto`, `Travel`, and `Tech`. Any other value falls back to a 🏢 icon.
 
 ## Company logos
 
@@ -119,6 +121,8 @@ the modal or on the company card.
 
 ## Local development
 
+**Frontend**
+
 ```bash
 npm install
 npm run dev
@@ -126,6 +130,18 @@ npm run dev
 
 The dev server runs at `http://localhost:5173/Diffy/`.
 
+**Backend (monitor.py)**
+
+`monitor.py` requires Python 3.11+, Playwright's Chromium browser, and an OpenAI API key:
+
+```bash
+pip install -r requirements.txt
+python -m playwright install --with-deps chromium
+OPENAI_API_KEY=<your-key> python monitor.py
+```
+
 ## Deployment
 
 Pushes to `main` automatically trigger the `.github/workflows/deploy.yml` workflow, which builds the Vite app and deploys the `dist/` folder to GitHub Pages.
+
+The `.github/workflows/daily_scan.yml` workflow runs `monitor.py` on a daily schedule (midnight UTC) and can also be triggered manually from the Actions tab. It commits any updated data files back to `main`, which in turn triggers a fresh Pages deployment.
