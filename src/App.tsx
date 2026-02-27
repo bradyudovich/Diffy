@@ -221,9 +221,9 @@ export default function App() {
                       {company.changed ? "Changed" : "No change"}
                     </span>
 
-                    {/* Card content – right padding ensures text doesn't overlap badge */}
-                    <div className="pr-28" style={{ minWidth: 0 }}>
-                      <div className="flex items-center gap-3 mb-1">
+                    {/* Card content */}
+                    <div style={{ minWidth: 0 }}>
+                      <div className="flex items-center gap-3 mb-1 pr-24 sm:pr-28">
                         <CompanyLogo tosUrl={company.tosUrl} name={company.name} />
                         <h2 className="text-lg font-semibold">{company.name}</h2>
                       </div>
