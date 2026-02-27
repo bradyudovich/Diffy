@@ -241,6 +241,54 @@ class TestMonitorSummaryFallback:
         results = monitor.monitor()
         assert results["companies"][0]["summary"] == "Cached summary from before."
 
+    def test_content_diff_is_sole_trigger_for_regeneration(self, tmp_env, monkeypatch):
+        """Content-diff method: AI is called if and only if the ToS raw text changes.
+
+        Verifies four cases:
+        1. Content changes → AI IS called (summary regenerated).
+        2. Same content, summary absent → AI NOT called (no regeneration).
+        3. Same content, summary present → AI NOT called (persisted summary reused).
+        4. Content changes again → AI IS called (summary regenerated).
+        """
+        ai_call_count = {"n": 0}
+
+        def counting_overview(text):
+            ai_call_count["n"] += 1
+            return "AI summary"
+
+        def counting_diff(diff):
+            ai_call_count["n"] += 1
+            return "AI diff summary"
+
+        monkeypatch.setattr(monitor, "load_config", lambda: [
+            {"name": "TestCo", "tosUrl": "https://example.com/tos", "category": "Tech"}
+        ])
+        monkeypatch.setattr(monitor, "call_openai_overview", counting_overview)
+        monkeypatch.setattr(monitor, "call_openai", counting_diff)
+
+        # Case 1: New content – AI must be called once (archive created for first time).
+        monkeypatch.setattr(monitor, "fetch_text", lambda url: "ToS content A")
+        monitor.monitor()
+        assert ai_call_count["n"] == 1, "AI must be called when content is new"
+
+        # Case 2: Same content, summary.txt absent – AI must NOT be called.
+        monitor.tos_archive_dir("TestCo").joinpath("summary.txt").unlink()
+        ai_call_count["n"] = 0
+        monitor.monitor()
+        assert ai_call_count["n"] == 0, "AI must not be called when content is unchanged, even if summary.txt is absent"
+
+        # Case 3: Same content, summary.txt present – AI must NOT be called.
+        monitor.write_tos_summary("TestCo", "Existing summary.")
+        ai_call_count["n"] = 0
+        monitor.monitor()
+        assert ai_call_count["n"] == 0, "AI must not be called when content is unchanged and summary.txt is present"
+
+        # Case 4: Content changes – AI IS called again.
+        monkeypatch.setattr(monitor, "fetch_text", lambda url: "ToS content B – something changed")
+        ai_call_count["n"] = 0
+        monitor.monitor()
+        assert ai_call_count["n"] == 1, "AI must be called when content changes"
+
 
 # ---------------------------------------------------------------------------
 # Summary format tests

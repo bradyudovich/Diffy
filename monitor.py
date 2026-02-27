@@ -271,18 +271,17 @@ def monitor() -> dict:
         old_text = read_snapshot(name)
         write_snapshot(name, new_text)
 
-        # Archive the new version if it differs from the latest archived copy
+        # Content-diff method: compare the newly fetched ToS against the most
+        # recently archived version.  `archived=True` means the raw text has
+        # changed; `archived=False` means it is byte-for-byte identical.
+        # This is the ONLY signal used to decide whether to regenerate the
+        # summary – absence of summary.txt, a new archive file being created
+        # for the first time, or any other event must NOT trigger regeneration.
         archived = archive_tos_if_changed(name, new_text)
 
-        if old_text is None or old_text == new_text:
-            # No snapshot change this run – summary stability principle: summaries only
-            # update if ToS changes (not when summary.txt is missing or content is unchanged).
-            if archived:
-                try:
-                    overview = call_openai_overview(new_text)
-                except Exception as exc:
-                    overview = f"Connection Error: AI overview failed – {exc}"
-                write_tos_summary(name, overview)
+        if not archived:
+            # ToS content is unchanged – reuse the persisted summary without
+            # calling the AI API.  This is the core of the content-diff method.
             summary = read_tos_summary(name) or "Initial snapshot created. Monitoring active."
             company_results.append({
                 "name": name,
@@ -294,12 +293,20 @@ def monitor() -> dict:
             })
             continue
 
-        # Text changed – generate a diff summary and persist it
-        diff_text = build_diff(old_text, new_text)
-        try:
-            summary = call_openai(diff_text)
-        except Exception as exc:
-            summary = f"Connection Error: AI analysis failed – {exc}"
+        # ToS content changed – generate a new summary and persist it.
+        if old_text is not None and old_text != new_text:
+            # Incremental change: generate a diff-focused summary.
+            diff_text = build_diff(old_text, new_text)
+            try:
+                summary = call_openai(diff_text)
+            except Exception as exc:
+                summary = f"Connection Error: AI analysis failed – {exc}"
+        else:
+            # First version or snapshot missing: generate a full overview summary.
+            try:
+                summary = call_openai_overview(new_text)
+            except Exception as exc:
+                summary = f"Connection Error: AI overview failed – {exc}"
 
         write_tos_summary(name, summary)
 
