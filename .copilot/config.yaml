@@ -1,0 +1,9 @@
+agent:
+  instructions: |
+    For every code change, you must review README.md and ensure it accurately reflects
+    any new features, bug fixes, or behavioral changes introduced by the change.
+    If the README.md does not accurately reflect the current state of the codebase,
+    you must propose specific, actionable updates to README.md before completing the task.
+    Check for discrepancies such as outdated feature descriptions, missing new features,
+    incorrect usage instructions, or undocumented behavioral changes, and prompt the user
+    with a clear proposed README.md update whenever any such discrepancy is found.
