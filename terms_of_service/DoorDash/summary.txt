@@ -1,1 +1,1 @@
-[Category]: No accessible terms available. [Key Data/Legal Policy]: Unable to retrieve data rights, AI usage, and liability information. [Critical User Constraint]: Users cannot access terms of service.
+[Data Rights]: User data may be collected and used for AI training. [Liability]: Company not liable for data misuse or service interruptions. [Critical User Constraint]: Users must consent to data usage.

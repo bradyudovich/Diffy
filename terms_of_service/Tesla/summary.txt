@@ -1,1 +1,1 @@
-[Category]: Access Restrictions. [Key Data/Legal Policy]: Permission required for access. [Critical User Constraint]: Users cannot access legal resources without proper authorization.
+Access Denied: Unable to retrieve terms for analysis. No data available on data rights, AI usage, or liability.
