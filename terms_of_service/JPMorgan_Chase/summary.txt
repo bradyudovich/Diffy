@@ -1,1 +1,1 @@
-[Data Rights]: User information may be disclosed to affiliates and third parties; consent required for data transfer. [AI Usage]: Monitoring of user interactions permitted. [Liability]: Users indemnify Chase for unauthorized access and data breaches.
+[Data Rights]: User information may be disclosed to affiliates or third parties with consent. [AI Usage]: User interactions may be monitored and recorded. [Liability]: Users indemnify Chase for unauthorized access consequences.
