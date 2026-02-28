@@ -47,35 +47,84 @@ audit trails.
 
 ## ToS summarization
 
-`monitor.py` uses the **content-diff method** to decide when to regenerate a
-ToS summary: the raw legal text fetched from the company's ToS page is compared
-byte-for-byte against the most-recently archived version.  A new summary is
-generated via the OpenAI API **only** when the raw text has changed.  If the
-content is identical, the previously persisted `summary.txt` is reused without
-any API call.
+`monitor.py` uses the **hybrid substantive diff method** to decide when to
+regenerate a ToS summary and alert users.  Raw legal text is fetched from the
+company's ToS page, normalized, and compared against the most-recently archived
+version.  A new AI summary is generated **only** when a *substantive* change is
+detected.
 
-This approach is strictly more reliable than effective-date scraping (which can
-miss silent edits, trigger false positives on banner/date changes, or fail
-when a company doesn't publish a revision date) because it is driven entirely
-by the legal text itself.
+### Archiving vs. alerting
+
+Every new version of a ToS is always archived under
+`terms_of_service/{company_slug}/` for audit purposes, even if the change is
+not considered substantive (e.g. a pure whitespace re-flow).  However, the
+`changed` field in `data/results.json` is only set to `true` and the AI
+summary is only regenerated when the change is deemed significant.
+
+### Change detection pipeline
+
+1. **Normalize** – both texts are lowercased, whitespace is collapsed, and
+   blank lines are reduced before any comparison.  This eliminates false
+   positives from purely cosmetic edits.
+2. **Hot-section check** – the document is split into paragraphs.  Any
+   paragraph matching one of the *hot section* keywords is extracted and
+   compared old-vs-new using a semantic similarity score.  If the score falls
+   below `SIMILARITY_THRESHOLD` (default **0.97**), the change is flagged and
+   the reason is recorded (e.g. `"change detected in hot section: arbitration"`).
+3. **Percent-change check** – if total document character-length changes by
+   more than `PERCENT_CHANGE_THRESHOLD` (default **2 %**), the change is
+   flagged with a reason like `"document changed by 5.3%"`.
+4. **Overall semantic similarity** – if no earlier check triggered, the overall
+   similarity of the two normalized documents is measured.  A score below
+   `SIMILARITY_THRESHOLD` flags the change with reason `"semantic meaning
+   changed"`.
+
+### Semantic similarity
+
+spaCy (`en_core_web_md`) is used when installed.  If spaCy is unavailable the
+code falls back transparently to `difflib.SequenceMatcher`, which uses the same
+`SIMILARITY_THRESHOLD`.  Install spaCy for higher-quality semantic comparison:
+
+```bash
+pip install spacy
+python -m spacy download en_core_web_md
+```
+
+### Configuring thresholds and hot sections
+
+All thresholds and the list of hot-section keyword patterns live at the top of
+`monitor.py` in three constants:
+
+| Constant | Default | Description |
+|---|---|---|
+| `HOT_SECTION_KEYWORDS` | see source | Dict of section name → list of regex patterns |
+| `SIMILARITY_THRESHOLD` | `0.97` | Similarity score below which a change is substantive |
+| `PERCENT_CHANGE_THRESHOLD` | `0.02` | Fractional size change (0.02 = 2 %) to trigger a flag |
+
+Edit these constants directly in `monitor.py` to tune sensitivity.
+
+### Change reason in results
+
+When a substantive change is detected, the `data/results.json` entry for that
+company includes a `changeReason` field explaining why the change was flagged,
+e.g.:
+
+```json
+{
+  "name": "Example Corp",
+  "changed": true,
+  "changeReason": "change detected in hot section: arbitration",
+  "summary": "..."
+}
+```
 
 - **No change detected** (`archive_tos_if_changed` returns `False`): the
-  existing `summary.txt` is returned as-is.  The AI is **never** called on
-  summary-file absence, archive-file creation, or any other event unrelated
-  to content.
-- **Change detected** (`archive_tos_if_changed` returns `True`): the new text
-  is archived and a fresh summary is generated.
-  - *First version / snapshot missing* → full overview summary via
-    `call_openai_overview`.
-  - *Incremental update* → diff-focused summary via `call_openai`.
-
-Summaries are only regenerated when a new ToS version is archived — they are
-**not** refreshed on every run unless the ToS content has changed.
-
-The summary stored in `summary.txt` is read back into `data/results.json`
-so the frontend always displays the latest persisted summary.  If no
-summary file exists yet (e.g. the first run with no internet access), the
-frontend falls back to `"Initial snapshot created. Monitoring active."`.
+  existing `summary.txt` is returned as-is.  The AI is **never** called.
+- **Change detected but not substantive**: the new version is archived, the
+  existing summary is reused, and `changed` is `false`.
+- **Substantive change detected**: the new version is archived, a fresh AI
+  summary is generated, `changed` is `true`, and `changeReason` explains the
+  flag.
 
 
 ## Editing the company list

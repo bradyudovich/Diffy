@@ -12,6 +12,7 @@ import time
 import random
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Optional
 
 from bs4 import BeautifulSoup
 import requests
@@ -27,6 +28,33 @@ SNAPSHOTS_DIR = BASE_DIR / "data" / "snapshots"
 DATA_RESULTS_PATH = BASE_DIR / "data" / "results.json"
 PUBLIC_RESULTS_PATH = BASE_DIR / "public" / "data" / "results.json"
 TOS_DIR = BASE_DIR / "terms_of_service"
+
+# ---------------------------------------------------------------------------
+# Hybrid substantive diff configuration
+# ---------------------------------------------------------------------------
+
+# Keywords/patterns identifying "hot" TOS sections that warrant careful change
+# detection.  Each key maps to a list of regex patterns (case-insensitive).
+# Tweak the lists here to adjust which sections are considered high-risk.
+HOT_SECTION_KEYWORDS: dict[str, list[str]] = {
+    "liability":     [r"\bliabilit\w*\b", r"\bindemnif\w*\b"],
+    "privacy":       [r"\bprivac\w*\b", r"\bpersonal\s+data\b", r"\bdata\s+collect\w*\b"],
+    "arbitration":   [r"\barbitrat\w*\b"],
+    "dispute":       [r"\bdisput\w*\b", r"\bclass[\s\-]action\b"],
+    "termination":   [r"\bterminat\w*\b", r"\bsuspend\w*\b"],
+    "user_data":     [r"\buser\s+data\b", r"\byour\s+data\b", r"\buser\s+content\b"],
+    "ai":            [r"\bartificial\s+intelligen\w*\b", r"\bmachine\s+learn\w*\b", r"\bai[\s\-]train\w*\b"],
+    "governing_law": [r"\bgoverning\s+law\b", r"\bjurisdiction\b"],
+}
+
+# Similarity score below which a section change is considered substantive.
+# Applies to both spaCy vector similarity (when available) and the
+# SequenceMatcher fallback.  Range: 0.0 (totally different) – 1.0 (identical).
+SIMILARITY_THRESHOLD: float = 0.97
+
+# Fractional document-size change (0.02 = 2%) that triggers a flag for
+# non-hot-section changes.
+PERCENT_CHANGE_THRESHOLD: float = 0.02
 
 # ---------------------------------------------------------------------------
 # OpenAI API Settings
@@ -192,6 +220,137 @@ def build_diff(old_text: str, new_text: str) -> str:
     diff = list(difflib.unified_diff(old_lines, new_lines, fromfile="previous", tofile="current", n=3))
     return "".join(diff[:1000])  # Increased limit for better AI context
 
+# ---------------------------------------------------------------------------
+# Hybrid substantive diff helpers
+# ---------------------------------------------------------------------------
+
+def normalize_text(text: str) -> str:
+    """Normalize TOS text to reduce noise from formatting, whitespace, and case.
+
+    Lowercases the text, collapses runs of whitespace within lines, strips
+    leading/trailing whitespace per line, and collapses excessive blank lines.
+    This allows meaningful content comparisons that ignore purely cosmetic edits.
+    """
+    text = text.lower()
+    text = text.replace("\r\n", "\n").replace("\r", "\n")
+    # Collapse runs of spaces/tabs within a line to a single space
+    text = re.sub(r"[ \t]+", " ", text)
+    # Strip each line and drop blank lines caused by stripping
+    text = "\n".join(line.strip() for line in text.splitlines())
+    # Collapse three or more consecutive blank lines to two
+    text = re.sub(r"\n{3,}", "\n\n", text)
+    return text.strip()
+
+
+def fallback_similarity(a: str, b: str) -> float:
+    """Return a similarity score (0–1) using difflib.SequenceMatcher.
+
+    This is the lightweight fallback used when spaCy is not installed.
+    """
+    if not a and not b:
+        return 1.0
+    if not a or not b:
+        return 0.0
+    return difflib.SequenceMatcher(None, a, b).ratio()
+
+
+# Module-level cache for the spaCy NLP model.
+# None = not yet attempted; False = unavailable; model object = loaded.
+_spacy_nlp: Optional[object] = None
+
+
+def _get_spacy_nlp() -> Optional[object]:
+    """Lazily load and cache a spaCy model.  Returns None if unavailable."""
+    global _spacy_nlp
+    if _spacy_nlp is None:
+        try:
+            import spacy  # type: ignore
+            _spacy_nlp = spacy.load("en_core_web_md")
+        except Exception:
+            _spacy_nlp = False
+    return _spacy_nlp if _spacy_nlp is not False else None
+
+
+def semantic_similarity(a: str, b: str) -> float:
+    """Return a semantic similarity score (0–1).
+
+    Uses spaCy vector similarity when available; falls back to
+    ``fallback_similarity`` (SequenceMatcher) otherwise.
+    """
+    nlp = _get_spacy_nlp()
+    if nlp is not None:
+        try:
+            # Truncate to avoid excessive memory use on very long texts
+            doc_a = nlp(a[:25000])  # type: ignore[call-arg]
+            doc_b = nlp(b[:25000])  # type: ignore[call-arg]
+            return doc_a.similarity(doc_b)
+        except Exception:
+            pass
+    return fallback_similarity(a, b)
+
+
+def extract_hot_section_text(text: str) -> dict[str, str]:
+    """Return a mapping of hot-section names to their relevant paragraphs.
+
+    Splits *text* into paragraphs and assigns each paragraph to every
+    hot-section whose keyword patterns it matches.
+    """
+    paragraphs = [p for p in re.split(r"\n{2,}", text) if p.strip()]
+    sections: dict[str, list[str]] = {k: [] for k in HOT_SECTION_KEYWORDS}
+    for para in paragraphs:
+        for section_name, patterns in HOT_SECTION_KEYWORDS.items():
+            for pattern in patterns:
+                if re.search(pattern, para, re.IGNORECASE):
+                    sections[section_name].append(para)
+                    break
+    return {k: "\n\n".join(v) for k, v in sections.items()}
+
+
+def detect_substantive_change(old_text: str, new_text: str) -> tuple[bool, str]:
+    """Determine whether a TOS change is substantive and return the reason.
+
+    Returns ``(is_significant, reason)`` where *reason* is a human-readable
+    explanation suitable for displaying to the user, e.g.
+    ``"change detected in hot section: arbitration"``.
+
+    Algorithm:
+    1. Normalize both texts; if identical after normalization → not significant.
+    2. Check each hot section: flag if similarity < ``SIMILARITY_THRESHOLD``.
+    3. Flag if total document size change exceeds ``PERCENT_CHANGE_THRESHOLD``.
+    4. Flag if overall semantic similarity < ``SIMILARITY_THRESHOLD``.
+    """
+    old_norm = normalize_text(old_text)
+    new_norm = normalize_text(new_text)
+
+    if old_norm == new_norm:
+        return False, ""
+
+    # --- Hot-section check ---
+    old_sections = extract_hot_section_text(old_norm)
+    new_sections = extract_hot_section_text(new_norm)
+    for section_name in HOT_SECTION_KEYWORDS:
+        old_sec = old_sections.get(section_name, "")
+        new_sec = new_sections.get(section_name, "")
+        if old_sec or new_sec:
+            sim = semantic_similarity(old_sec, new_sec)
+            if sim < SIMILARITY_THRESHOLD:
+                return True, f"change detected in hot section: {section_name}"
+
+    # --- Percent-change check (catches large non-hot edits) ---
+    old_len = len(old_norm)
+    if old_len > 0:
+        # pct is a fraction (e.g. 0.05 = 5%); format with :.1% multiplies by 100
+        pct = abs(len(new_norm) - old_len) / old_len
+        if pct > PERCENT_CHANGE_THRESHOLD:
+            return True, f"document changed by {pct:.1%}"
+
+    # --- Overall semantic similarity check ---
+    sim = semantic_similarity(old_norm, new_norm)
+    if sim < SIMILARITY_THRESHOLD:
+        return True, "semantic meaning changed"
+
+    return False, ""
+
 def call_openai(diff_text: str) -> str:
     if not OPENAI_API_KEY:
         return "AI analysis skipped: OPENAI_API_KEY not set."
@@ -264,6 +423,7 @@ def monitor() -> dict:
                 "tosUrl": tos_url,
                 "lastChecked": last_checked,
                 "changed": False,
+                "changeReason": "",
                 "summary": read_tos_summary(name) or f"Connection Error: {exc}",
             })
             continue
@@ -274,9 +434,8 @@ def monitor() -> dict:
         # Content-diff method: compare the newly fetched ToS against the most
         # recently archived version.  `archived=True` means the raw text has
         # changed; `archived=False` means it is byte-for-byte identical.
-        # This is the ONLY signal used to decide whether to regenerate the
-        # summary – absence of summary.txt, a new archive file being created
-        # for the first time, or any other event must NOT trigger regeneration.
+        # Every new version is always archived; significance is determined
+        # separately by detect_substantive_change below.
         archived = archive_tos_if_changed(name, new_text)
 
         if not archived:
@@ -289,11 +448,37 @@ def monitor() -> dict:
                 "tosUrl": tos_url,
                 "lastChecked": last_checked,
                 "changed": False,
+                "changeReason": "",
                 "summary": summary,
             })
             continue
 
-        # ToS content changed – generate a new summary and persist it.
+        # Raw text changed – determine whether the change is *substantive*
+        # using the hybrid diff logic (hot sections, percent change, semantics).
+        if old_text is not None:
+            is_significant, change_reason = detect_substantive_change(old_text, new_text)
+        else:
+            # First version ever archived – always treat as significant.
+            is_significant = True
+            change_reason = "first version archived"
+
+        if not is_significant:
+            # Change is noise (formatting/whitespace/trivial wording) – archive
+            # was already written above; skip AI and keep the existing summary
+            # so the user is not alerted unnecessarily.
+            summary = read_tos_summary(name) or "Initial snapshot created. Monitoring active."
+            company_results.append({
+                "name": name,
+                "category": category,
+                "tosUrl": tos_url,
+                "lastChecked": last_checked,
+                "changed": False,
+                "changeReason": "",
+                "summary": summary,
+            })
+            continue
+
+        # Substantive change – generate a new AI summary and persist it.
         if old_text is not None and old_text != new_text:
             # Incremental change: generate a diff-focused summary.
             diff_text = build_diff(old_text, new_text)
@@ -316,6 +501,7 @@ def monitor() -> dict:
             "tosUrl": tos_url,
             "lastChecked": last_checked,
             "changed": True,
+            "changeReason": change_reason,
             "summary": summary,
         })
 

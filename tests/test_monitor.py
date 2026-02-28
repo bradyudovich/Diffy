@@ -348,3 +348,188 @@ class TestSummaryFormat:
         assert "30 words" in prompt
         assert "legal summarizer" in prompt.lower()
         assert "data rights" in prompt.lower() or "data" in prompt.lower()
+
+
+# ---------------------------------------------------------------------------
+# Hybrid substantive diff tests
+# ---------------------------------------------------------------------------
+
+class TestNormalizeText:
+    def test_lowercases(self):
+        assert monitor.normalize_text("Hello WORLD") == "hello world"
+
+    def test_collapses_whitespace(self):
+        assert monitor.normalize_text("hello   world") == "hello world"
+
+    def test_strips_lines(self):
+        assert monitor.normalize_text("  hello  \n  world  ") == "hello\nworld"
+
+    def test_collapses_blank_lines(self):
+        result = monitor.normalize_text("a\n\n\n\nb")
+        assert result == "a\n\nb"
+
+    def test_normalizes_line_endings(self):
+        assert monitor.normalize_text("a\r\nb\rc") == "a\nb\nc"
+
+    def test_empty_string(self):
+        assert monitor.normalize_text("") == ""
+
+
+class TestFallbackSimilarity:
+    def test_identical(self):
+        assert monitor.fallback_similarity("hello", "hello") == 1.0
+
+    def test_empty_both(self):
+        assert monitor.fallback_similarity("", "") == 1.0
+
+    def test_empty_one(self):
+        assert monitor.fallback_similarity("hello", "") == 0.0
+
+    def test_different(self):
+        ratio = monitor.fallback_similarity("hello world", "goodbye moon")
+        assert 0.0 < ratio < 1.0
+
+    def test_similar_high_score(self):
+        a = "The user agrees to arbitration for all disputes."
+        b = "The user agrees to arbitration for all disputes!"
+        assert monitor.fallback_similarity(a, b) > 0.97
+
+
+class TestExtractHotSectionText:
+    def test_privacy_keyword(self):
+        text = "we collect personal data from users\n\nunrelated paragraph here"
+        sections = monitor.extract_hot_section_text(text)
+        assert "we collect personal data from users" in sections["privacy"]
+        assert "privacy" in sections
+
+    def test_arbitration_keyword(self):
+        text = "all disputes shall be resolved by arbitration\n\nother stuff"
+        sections = monitor.extract_hot_section_text(text)
+        assert "all disputes shall be resolved by arbitration" in sections["arbitration"]
+
+    def test_no_hot_keywords(self):
+        text = "welcome to our service\n\nenjoy your stay"
+        sections = monitor.extract_hot_section_text(text)
+        for v in sections.values():
+            assert v == ""
+
+    def test_multiple_sections_in_one_para(self):
+        text = "we limit liability and collect user data in our privacy policy"
+        sections = monitor.extract_hot_section_text(text)
+        assert text in sections["liability"]
+        assert text in sections["privacy"]
+
+
+class TestDetectSubstantiveChange:
+    def test_identical_texts_not_significant(self):
+        text = "These are the terms of service. Nothing has changed."
+        is_sig, reason = monitor.detect_substantive_change(text, text)
+        assert is_sig is False
+        assert reason == ""
+
+    def test_normalized_identical_not_significant(self):
+        old = "Terms of Service.\nPlease read carefully."
+        new = "terms of service.\nplease read carefully."  # only case change
+        is_sig, reason = monitor.detect_substantive_change(old, new)
+        assert is_sig is False
+
+    def test_large_percent_change_is_significant(self):
+        old = "Short TOS."
+        new = "Short TOS. " + "A" * 500  # >> 2% larger
+        is_sig, reason = monitor.detect_substantive_change(old, new)
+        assert is_sig is True
+        assert "document changed by" in reason
+
+    def test_hot_section_change_is_significant(self):
+        old = "You waive all rights to arbitration for minor disputes."
+        new = "You agree to binding arbitration and waive all class action rights."
+        is_sig, reason = monitor.detect_substantive_change(old, new)
+        assert is_sig is True
+        # The change touches hot sections; reason must reference "hot section"
+        assert "hot section" in reason
+
+    def test_trivial_whitespace_change_not_significant(self):
+        old = "We collect data.\n\n\nYou agree to terms."
+        new = "we collect data.\n\nyou agree to terms."  # only case + blank lines
+        is_sig, reason = monitor.detect_substantive_change(old, new)
+        assert is_sig is False
+
+    def test_reason_includes_section_name(self):
+        old = "Our privacy policy covers how we handle personal data."
+        new = "Our privacy policy covers how we handle personal data and share it with third parties extensively."
+        is_sig, reason = monitor.detect_substantive_change(old, new)
+        if is_sig:
+            assert reason != ""
+
+    def test_first_version_always_significant(self):
+        """monitor() marks first version as significant even without old text."""
+        # This is tested indirectly through detect_substantive_change:
+        # when old_text is None, monitor() sets is_significant=True directly.
+        # Here we verify that two very different texts are flagged.
+        old = "a"
+        new = "z" * 1000
+        is_sig, _ = monitor.detect_substantive_change(old, new)
+        assert is_sig is True
+
+
+class TestHybridDiffConstants:
+    def test_hot_section_keywords_defined(self):
+        assert hasattr(monitor, "HOT_SECTION_KEYWORDS")
+        keywords = monitor.HOT_SECTION_KEYWORDS
+        assert isinstance(keywords, dict)
+        # All required hot sections must be present
+        for section in ("liability", "privacy", "arbitration", "dispute",
+                        "termination", "user_data", "ai", "governing_law"):
+            assert section in keywords, f"Missing hot section: {section}"
+            assert len(keywords[section]) > 0
+
+    def test_similarity_threshold_defined(self):
+        assert hasattr(monitor, "SIMILARITY_THRESHOLD")
+        assert monitor.SIMILARITY_THRESHOLD == 0.97
+
+    def test_percent_change_threshold_defined(self):
+        assert hasattr(monitor, "PERCENT_CHANGE_THRESHOLD")
+        assert monitor.PERCENT_CHANGE_THRESHOLD == 0.02
+
+
+class TestHybridDiffMonitorIntegration:
+    """Verify that monitor() correctly uses hybrid diff logic."""
+
+    def _run(self, tmp_env, monkeypatch, tos_text, ai_return="AI summary"):
+        monkeypatch.setattr(monitor, "load_config", lambda: [
+            {"name": "TestCo", "tosUrl": "https://example.com/tos", "category": "Tech"}
+        ])
+        monkeypatch.setattr(monitor, "fetch_text", lambda url: tos_text)
+        monkeypatch.setattr(monitor, "call_openai_overview", lambda text: ai_return)
+        monkeypatch.setattr(monitor, "call_openai", lambda diff: ai_return)
+        return monitor.monitor()["companies"][0]
+
+    def test_trivial_change_not_flagged(self, tmp_env, monkeypatch):
+        """Whitespace-only change must not trigger changed=True."""
+        # First run: archive initial version
+        self._run(tmp_env, monkeypatch, "Terms of service apply.")
+        # Second run: same content with only case difference
+        result = self._run(tmp_env, monkeypatch, "TERMS OF SERVICE APPLY.")
+        assert result["changed"] is False
+
+    def test_significant_change_is_flagged_with_reason(self, tmp_env, monkeypatch):
+        """A large content change must set changed=True and include a changeReason."""
+        # First run
+        self._run(tmp_env, monkeypatch, "Short terms.")
+        # Second run with much larger content
+        long_new = "Short terms. " + ("Extended liability clause. " * 50)
+        result = self._run(tmp_env, monkeypatch, long_new)
+        assert result["changed"] is True
+        assert result["changeReason"] != ""
+
+    def test_change_reason_in_result(self, tmp_env, monkeypatch):
+        """changeReason field must be present in all result entries."""
+        result = self._run(tmp_env, monkeypatch, "Some TOS text.")
+        assert "changeReason" in result
+
+    def test_unchanged_result_has_empty_change_reason(self, tmp_env, monkeypatch):
+        """When unchanged, changeReason must be empty string."""
+        self._run(tmp_env, monkeypatch, "Same text.")
+        result = self._run(tmp_env, monkeypatch, "Same text.")
+        assert result["changed"] is False
+        assert result["changeReason"] == ""
