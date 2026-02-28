@@ -1,1 +1,1 @@
-[Data Rights]: User data may be collected and used for AI training. [Liability]: Company not liable for data misuse or service interruptions. [Critical User Constraint]: Users must consent to data usage.
+[Category]: N/A. [Key Data/Legal Policy]: N/A. [Critical User Constraint]: N/A.

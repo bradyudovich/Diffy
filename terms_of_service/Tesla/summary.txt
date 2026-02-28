@@ -1,1 +1,1 @@
-[Category]: Access Denied. [Key Data/Legal Policy]: No access to legal resources. [Critical User Constraint]: Users cannot retrieve terms or policies.
+[Data Rights]: User data may be collected and used for service improvement. [AI Usage]: AI technologies may be employed for operational purposes. [Liability]: Company limits liability for indirect damages.

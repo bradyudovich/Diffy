@@ -1,1 +1,1 @@
-[Data Rights]: User data may be collected and used for service improvement. [AI Usage]: AI tools may analyze user data. [Liability]: Company is not liable for data breaches.
+[Data Rights]: User data may be collected and used for service improvement. [AI Usage]: AI may analyze user data for functionality. [Liability]: Company not liable for unauthorized access or data breaches.
