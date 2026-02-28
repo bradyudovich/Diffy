@@ -1,1 +1,1 @@
-[Category]: N/A. [Key Data/Legal Policy]: N/A. [Critical User Constraint]: N/A.
+[Data Rights]: User data may be collected and used for AI development. [Liability]: Company is not liable for data breaches or AI inaccuracies. [Critical User Constraint]: Users consent to data usage upon service access.
