@@ -832,3 +832,109 @@ class TestPruneOldTosArchives:
         monitor.prune_old_tos_archives("Acme")
         deleted_again = monitor.prune_old_tos_archives("Acme")
         assert deleted_again == 0
+
+
+# ---------------------------------------------------------------------------
+# NAV_TITLE_ANCHORS / strip_navigation_preamble tests
+# ---------------------------------------------------------------------------
+
+class TestNavTitleAnchors:
+    def test_constant_defined(self):
+        assert hasattr(monitor, "NAV_TITLE_ANCHORS")
+        assert isinstance(monitor.NAV_TITLE_ANCHORS, list)
+        assert len(monitor.NAV_TITLE_ANCHORS) > 0
+
+    def test_includes_terms_of_use(self):
+        anchors = monitor.NAV_TITLE_ANCHORS
+        assert any(p.search("Terms of Use") for p in anchors)
+
+    def test_includes_terms_of_service(self):
+        anchors = monitor.NAV_TITLE_ANCHORS
+        assert any(p.search("Terms of Service") for p in anchors)
+
+
+class TestStripNavigationPreamble:
+    def test_strips_content_above_terms_of_use(self):
+        text = "Home\nProducts\nSupport\nTerms of Use\nActual ToS content."
+        result = monitor.strip_navigation_preamble(text)
+        assert result.startswith("Terms of Use")
+        assert "Home" not in result
+        assert "Products" not in result
+        assert "Actual ToS content." in result
+
+    def test_strips_content_above_terms_of_service(self):
+        text = "Nav link 1\nNav link 2\nTerms of Service\nContent starts here."
+        result = monitor.strip_navigation_preamble(text)
+        assert result.startswith("Terms of Service")
+        assert "Nav link" not in result
+        assert "Content starts here." in result
+
+    def test_strips_content_above_terms_and_conditions(self):
+        text = "Home\nAbout\nTerms and Conditions\nYou agree to..."
+        result = monitor.strip_navigation_preamble(text)
+        assert "Home" not in result
+        assert "Terms and Conditions" in result
+
+    def test_no_anchor_returns_full_text(self):
+        text = "Home\nProducts\nThis is some generic text with no ToS title."
+        result = monitor.strip_navigation_preamble(text)
+        assert result == text
+
+    def test_empty_string_returns_empty(self):
+        assert monitor.strip_navigation_preamble("") == ""
+
+    def test_anchor_at_start_returns_full_text(self):
+        text = "Terms of Use\nContent here."
+        result = monitor.strip_navigation_preamble(text)
+        assert result == text
+
+    def test_case_insensitive_anchor_matching(self):
+        text = "Navbar\nFoo\nTERMS OF USE\nLegal content."
+        result = monitor.strip_navigation_preamble(text)
+        assert "Navbar" not in result
+        assert "TERMS OF USE" in result
+
+    def test_first_anchor_wins_when_multiple_present(self):
+        text = "Nav\nTerms of Use\nSome intro text.\nTerms of Service\nMore content."
+        result = monitor.strip_navigation_preamble(text)
+        assert result.startswith("Terms of Use")
+        assert "Nav" not in result
+
+    def test_reduces_false_positives_in_detect(self):
+        """Navigation preamble change on otherwise identical ToS must NOT be flagged."""
+        tos_body = "\n".join(
+            f"Clause {i}: substantive legal terms here." for i in range(30)
+        )
+        old = "Home\nProducts\nTerms of Use\n" + tos_body
+        new = "Home\nProducts\nShop\nTerms of Use\n" + tos_body
+        old_stripped = monitor.strip_navigation_preamble(old)
+        new_stripped = monitor.strip_navigation_preamble(new)
+        is_sig, reason = monitor.detect_substantive_change(old_stripped, new_stripped)
+        assert is_sig is False, f"Nav-only change should not be flagged; reason: {reason!r}"
+
+
+class TestMonitorPrunesAfterArchiving:
+    """monitor() must keep only the latest ToS snapshot per company."""
+
+    def _run(self, tmp_env, monkeypatch, tos_text, ai_return="AI summary"):
+        monkeypatch.setattr(monitor, "load_config", lambda: [
+            {"name": "TestCo", "tosUrl": "https://example.com/tos", "category": "Tech"}
+        ])
+        monkeypatch.setattr(monitor, "fetch_text", lambda url: tos_text)
+        monkeypatch.setattr(monitor, "call_openai_overview", lambda text: ai_return)
+        monkeypatch.setattr(monitor, "call_openai", lambda diff: ai_return)
+        return monitor.monitor()["companies"][0]
+
+    def test_only_latest_snapshot_kept_after_multiple_runs(self, tmp_env, monkeypatch):
+        self._run(tmp_env, monkeypatch, "Version 1")
+        self._run(tmp_env, monkeypatch, "Version 2")
+        self._run(tmp_env, monkeypatch, "Version 3")
+        archive_dir = monitor.tos_archive_dir("TestCo")
+        dated = [f for f in archive_dir.glob("*.txt") if f.name != "summary.txt"]
+        assert len(dated) == 1
+        assert dated[0].read_text() == "Version 3"
+
+    def test_summary_preserved_after_pruning(self, tmp_env, monkeypatch):
+        self._run(tmp_env, monkeypatch, "Version 1", "Summary v1")
+        self._run(tmp_env, monkeypatch, "Version 2", "Summary v2")
+        assert monitor.read_tos_summary("TestCo") == "Summary v2"
