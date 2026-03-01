@@ -1,1 +1,1 @@
-[Data Rights]: Broad data collection with worldwide usage license granted to Google. [AI Usage]: Content used to train AI systems.
+[Data Rights]: Users retain rights to their content; Google maintains intellectual property rights. [AI Usage]: AI and machine learning are utilized for service improvement. [Liability]: Users must comply with terms; violations may result in service restrictions.

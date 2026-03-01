@@ -1,11 +1,3 @@
-Welcome to Anthropic! Before you access our services, please read these Terms of Service.
-These Terms of Service (“
-Terms
-”) govern your use of Claude.ai, Claude Pro, and other products and services that we may offer for individuals, along with any associated apps, software, and websites (together, our “
-Services
-”). These Terms are a contract between you and Anthropic, PBC ("
-Anthropic
-") (and not our Providers), and they include our
 Acceptable Use Policy
 . By accessing our Services, you agree to these Terms.
 Please read our

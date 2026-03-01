@@ -1,1 +1,1 @@
-[Data Rights]: Transaction data used for fraud detection. [Liability]: Disputes resolved via individual arbitration; class action rights waived.
+[Data Rights]: Users retain ownership of their data but grant PayPal a license to use it for service improvement. [AI Usage]: AI tools may be used for transaction analysis. [Liability]: Users remain liable for obligations post-account closure.

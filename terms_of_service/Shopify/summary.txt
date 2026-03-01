@@ -1,1 +1,1 @@
-[Data Rights]: Extensive personal and business data required for merchant use. [Liability]: Broad data licensing rights granted to Shopify.
+[Data Rights]: Users retain ownership of their materials but grant Shopify a license to use them. [AI Usage]: Shopify may use AI tools for service enhancement. [Liability]: Shopify is not liable for account security breaches.

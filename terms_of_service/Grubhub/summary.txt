@@ -1,1 +1,1 @@
-[Data Rights]: Accounts may be created from transactions without explicit consent. [AI Usage]: Order history used for personalization and marketing.
+[Data Rights]: User data may be collected and used for service improvement. [AI Usage]: No specific AI usage terms provided. [Liability]: Grubhub not liable for Merchant or Delivery Partner actions. [Critical User Constraint]: Users must be 16+ or have guardian consent.

@@ -1,1 +1,1 @@
-[Data Rights]: Personal data collection scope unspecified in terms. [Liability]: No explicit user consent mechanisms for data collection identified.
+[Data Rights]: Users can request personal information; options to opt-out of data sales available. [AI Usage]: Not specified. [Liability]: Walmart disclaims liability for third-party actions.

@@ -1,1 +1,3 @@
-[Data Rights]: Extensive location and ride data collected for operations. [Liability]: Binding arbitration waives jury trial and class action rights.
+[Data Rights]: User recordings are owned by Uber; not considered User Content.  
+[AI Usage]: No commercial use or AI training without Uber's permission.  
+[Liability]: Uber assumes no liability for account access loss or service interruptions.

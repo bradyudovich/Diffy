@@ -1,1 +1,1 @@
-[Data Rights]: Users grant Redfin a license to use submitted content; personal data governed by Privacy Notice. [AI Usage]: No specific terms on AI usage. [Liability]: Limited liability; disputes resolved via binding arbitration, class action waiver applies.
+[Data Rights]: User content is governed by the Privacy Notice; no personally identifiable information is collected. [AI Usage]: No automated data scraping or reverse-engineering of services allowed. [Liability]: Claims resolved through binding arbitration; class action waiver applies.

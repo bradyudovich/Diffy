@@ -1,1 +1,3 @@
-[Data Rights]: Personal data collection scope unclear; transparency concerns raised. [Liability]: User content licensed to Roblox; parental consent required for minors.
+[Data Rights]: Users have no enforceable legal rights to Virtual Content.  
+[AI Usage]: Not explicitly mentioned.  
+[Liability]: Limitation of liability applies; disputes resolved via arbitration.

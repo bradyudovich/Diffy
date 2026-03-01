@@ -1,1 +1,3 @@
-[Data Rights]: User data transferred internationally with varying protections. [AI Usage]: Content licensed for AI training without explicit opt-out.
+[Data Rights]: Users retain ownership of their Content, granting X a broad, royalty-free license.  
+[AI Usage]: Users must comply with acceptable use terms; scraping is prohibited.  
+[Liability]: Services provided "AS IS"; liability limited to $100 or amount paid in last six months.

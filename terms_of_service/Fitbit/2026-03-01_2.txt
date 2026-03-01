@@ -1,7 +1,3 @@
-Fitbit Terms of Service -  Help
-Skip to main content
-Fitbit Terms of Service
-Note: If you use your Fitbit devices and services with a Google Account, then you are subject to the Google
 Terms of Service
 and these
 Fitbit Additional Terms of Service.
@@ -197,7 +193,12 @@ You agree to use these features at your sole risk and exercise independent judgm
 Give feedback about this article
 Choose a section to give feedback on
 true
-17968289841561604963
+Search
+Clear search
+Close search
+Google apps
+Main menu
+8427067892092333757
 true
 Search Help Center
 false
@@ -234,8 +235,3 @@ Terms
 .
 false
 false
-Search
-Clear search
-Close search
-Main menu
-Google apps

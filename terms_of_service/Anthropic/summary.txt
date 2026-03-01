@@ -1,1 +1,1 @@
-[AI Usage]: User conversations may be used to train Anthropic's AI models. [Liability]: Anthropic limits liability for AI-generated content.
+[Data Rights]: Users retain rights to Inputs; Anthropic may use Materials for service improvement and model training. [AI Usage]: Outputs may contain inaccuracies; independent verification is required. [Liability]: Users are responsible for all account activity and compliance with laws.

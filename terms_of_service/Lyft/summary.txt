@@ -1,1 +1,1 @@
-[Data Rights]: Extensive location, ride, and user preference data collected. [Liability]: Mandatory arbitration limits disputes to individual claims only.
+[Data Rights]: Lyft collects user information, including personal, location, and device data. [AI Usage]: AI may be used for processing collected data. [Liability]: Users assume responsibility for content shared.
