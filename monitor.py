@@ -57,6 +57,57 @@ SIMILARITY_THRESHOLD: float = 0.97
 PERCENT_CHANGE_THRESHOLD: float = 0.02
 
 # ---------------------------------------------------------------------------
+# Pre-cleaning: skip/ignore line patterns
+# ---------------------------------------------------------------------------
+
+# Lines matching any of these patterns are stripped from the raw fetched text
+# *before* any comparison or normalization step.  This eliminates false
+# positives caused by dynamic, per-request noise injected by certain
+# providers (e.g. Microsoft/Meta Trace IDs, scaffold error banners, or
+# rotating session tokens embedded in the ToS page).
+#
+# Each entry is a compiled regex; add new patterns here to handle new
+# providers.
+SKIPPED_LINE_PATTERNS: list[re.Pattern] = [
+    # Trace / request / session identifiers (Microsoft, Meta, Akamai, etc.)
+    re.compile(r"\btrace[\s\-]?id\b", re.IGNORECASE),
+    re.compile(r"\brequest[\s\-]?id\b", re.IGNORECASE),
+    re.compile(r"\bsession[\s\-]?id\b", re.IGNORECASE),
+    re.compile(r"\bcorrelation[\s\-]?id\b", re.IGNORECASE),
+    # Timestamps / "last updated" lines that change on every fetch
+    re.compile(r"^\s*last\s+updated\s*:", re.IGNORECASE),
+    re.compile(r"^\s*effective\s+date\s*:", re.IGNORECASE),
+    # Generic scaffold/error banners injected by CDN or server-side rendering
+    re.compile(r"\bverifying\s+you\s+are\s+human\b", re.IGNORECASE),
+    re.compile(r"\bbot[\s\-]?detection\b", re.IGNORECASE),
+    re.compile(r"\bcaptcha\b", re.IGNORECASE),
+    re.compile(r"\bjust\s+a\s+moment\b", re.IGNORECASE),
+    re.compile(r"\bcloudflare\s+ray\s+id\b", re.IGNORECASE),
+    re.compile(r"\bincident[\s\-]?id\b", re.IGNORECASE),
+    # Variable ToS version headers (e.g. "Version 2.3.1 – 2024-01-15")
+    re.compile(r"^\s*version\s+\d[\d\.]*\s*[\-–—]", re.IGNORECASE),
+]
+
+
+def pre_clean_text(text: str) -> str:
+    """Remove dynamic/scaffold lines from raw ToS text before comparison.
+
+    Filters out any line that matches one of the ``SKIPPED_LINE_PATTERNS``.
+    This is a platform-agnostic pre-cleaning step that reduces false positives
+    from per-request noise injected by CDNs or server-side rendering (e.g.
+    Microsoft/Meta Trace IDs, Cloudflare challenge pages, rotating version
+    headers, and similar scaffold lines).
+
+    Add new patterns to ``SKIPPED_LINE_PATTERNS`` to handle additional providers.
+    """
+    cleaned_lines = [
+        line for line in text.splitlines()
+        if not any(pat.search(line) for pat in SKIPPED_LINE_PATTERNS)
+    ]
+    return "\n".join(cleaned_lines)
+
+
+# ---------------------------------------------------------------------------
 # Appendix / footer filtering configuration
 # ---------------------------------------------------------------------------
 
@@ -230,6 +281,27 @@ def archive_tos_if_changed(company_name: str, new_text: str) -> bool:
     archive_path.write_text(new_text, encoding="utf-8")
     return True
 
+def prune_old_tos_archives(company_name: str) -> int:
+    """Delete all but the most-recent dated snapshot for a company.
+
+    Retains exactly one snapshot (the latest by filename sort order) and
+    leaves ``summary.txt`` untouched.  Returns the number of files deleted.
+
+    This is safe to call at any time; if there is only one snapshot (or
+    none) the function is a no-op.
+    """
+    archive_dir = tos_archive_dir(company_name)
+    if not archive_dir.exists():
+        return 0
+    dated_files = sorted(f for f in archive_dir.glob("*.txt") if f.name != "summary.txt")
+    if len(dated_files) <= 1:
+        return 0
+    to_delete = dated_files[:-1]  # all but the last (most recent)
+    for f in to_delete:
+        f.unlink()
+    return len(to_delete)
+
+
 def read_tos_summary(company_name: str) -> str | None:
     """Return the persisted summary for a company, or None if it doesn't exist."""
     summary_file = tos_archive_dir(company_name) / "summary.txt"
@@ -376,10 +448,11 @@ def detect_substantive_change(old_text: str, new_text: str) -> tuple[bool, str]:
     3. Flag if total document size change exceeds ``PERCENT_CHANGE_THRESHOLD``.
     4. Flag if overall semantic similarity < ``SIMILARITY_THRESHOLD``.
     """
-    # Strip appendix/footer regions before comparison so that changes
-    # limited to open-source notices, copyright footers, etc. are ignored.
-    old_norm = normalize_text(extract_core_content(old_text))
-    new_norm = normalize_text(extract_core_content(new_text))
+    # 1. Pre-clean: remove dynamic/scaffold lines (Trace IDs, error banners, etc.)
+    # 2. Strip appendix/footer regions before comparison so that changes
+    #    limited to open-source notices, copyright footers, etc. are ignored.
+    old_norm = normalize_text(extract_core_content(pre_clean_text(old_text)))
+    new_norm = normalize_text(extract_core_content(pre_clean_text(new_text)))
 
     if old_norm == new_norm:
         return False, ""

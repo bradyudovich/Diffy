@@ -705,3 +705,130 @@ class TestChangeIsSubstantialField:
         monkeypatch.setattr(monitor, "fetch_text", fetch_fail)
         result = monitor.monitor()["companies"][0]
         assert result["changeIsSubstantial"] is False
+
+
+# ---------------------------------------------------------------------------
+# SKIPPED_LINE_PATTERNS / pre_clean_text tests
+# ---------------------------------------------------------------------------
+
+class TestPreCleanText:
+    def test_trace_id_line_removed(self):
+        text = "Welcome to our Terms of Service.\nTrace ID: abc123xyz\nPlease read carefully."
+        cleaned = monitor.pre_clean_text(text)
+        assert "Trace ID" not in cleaned
+        assert "Welcome to our Terms of Service." in cleaned
+        assert "Please read carefully." in cleaned
+
+    def test_request_id_line_removed(self):
+        text = "Terms apply.\nRequest ID: 9f8e7d6c\nMore terms."
+        cleaned = monitor.pre_clean_text(text)
+        assert "Request ID" not in cleaned
+        assert "Terms apply." in cleaned
+
+    def test_session_id_line_removed(self):
+        text = "Our terms.\nSession ID: sess_001\nYour rights."
+        cleaned = monitor.pre_clean_text(text)
+        assert "Session ID" not in cleaned
+
+    def test_cloudflare_ray_id_removed(self):
+        text = "Terms.\nCloudflare Ray ID: 7abc1234def\nEnd."
+        cleaned = monitor.pre_clean_text(text)
+        assert "Cloudflare Ray ID" not in cleaned
+
+    def test_captcha_line_removed(self):
+        text = "Terms.\nPlease complete the CAPTCHA below.\nContinue."
+        cleaned = monitor.pre_clean_text(text)
+        assert "CAPTCHA" not in cleaned
+
+    def test_verifying_human_line_removed(self):
+        text = "Terms.\nVerifying you are human\nContent."
+        cleaned = monitor.pre_clean_text(text)
+        assert "Verifying you are human" not in cleaned
+
+    def test_version_header_line_removed(self):
+        text = "Version 2.3.1 – 2024-01-15\nActual ToS content.\nEnd."
+        cleaned = monitor.pre_clean_text(text)
+        assert "Version 2.3.1" not in cleaned
+        assert "Actual ToS content." in cleaned
+
+    def test_last_updated_line_removed(self):
+        text = "Last Updated: March 1, 2026\nActual ToS content."
+        cleaned = monitor.pre_clean_text(text)
+        assert "Last Updated" not in cleaned
+        assert "Actual ToS content." in cleaned
+
+    def test_effective_date_line_removed(self):
+        text = "Effective Date: January 1, 2025\nTerms follow."
+        cleaned = monitor.pre_clean_text(text)
+        assert "Effective Date" not in cleaned
+        assert "Terms follow." in cleaned
+
+    def test_normal_content_preserved(self):
+        text = "You agree to these terms.\nWe collect personal data.\nArbitration applies."
+        cleaned = monitor.pre_clean_text(text)
+        assert cleaned == text
+
+    def test_empty_string(self):
+        assert monitor.pre_clean_text("") == ""
+
+    def test_pre_clean_reduces_false_positives_in_detect(self):
+        """Trace ID change between two otherwise identical ToS texts must NOT be flagged."""
+        base = "\n".join(f"Term {i}: some substantive policy text." for i in range(30))
+        old = base + "\nTrace ID: old-abc123"
+        new = base + "\nTrace ID: new-xyz789"
+        is_sig, reason = monitor.detect_substantive_change(old, new)
+        assert is_sig is False, f"Trace ID change should not be significant; got reason: {reason!r}"
+
+    def test_skipped_line_patterns_is_list(self):
+        assert hasattr(monitor, "SKIPPED_LINE_PATTERNS")
+        assert isinstance(monitor.SKIPPED_LINE_PATTERNS, list)
+        assert len(monitor.SKIPPED_LINE_PATTERNS) > 0
+
+
+# ---------------------------------------------------------------------------
+# prune_old_tos_archives tests
+# ---------------------------------------------------------------------------
+
+class TestPruneOldTosArchives:
+    def test_no_archive_dir_returns_zero(self, tmp_env):
+        assert monitor.prune_old_tos_archives("NonExistentCo") == 0
+
+    def test_single_snapshot_not_pruned(self, tmp_env):
+        monitor.archive_tos_if_changed("Acme", "Version 1")
+        deleted = monitor.prune_old_tos_archives("Acme")
+        assert deleted == 0
+        dated = [f for f in monitor.tos_archive_dir("Acme").glob("*.txt") if f.name != "summary.txt"]
+        assert len(dated) == 1
+
+    def test_prunes_all_but_latest(self, tmp_env):
+        monitor.archive_tos_if_changed("Acme", "Version 1")
+        monitor.archive_tos_if_changed("Acme", "Version 2")
+        monitor.archive_tos_if_changed("Acme", "Version 3")
+        deleted = monitor.prune_old_tos_archives("Acme")
+        assert deleted == 2
+        dated = sorted(f for f in monitor.tos_archive_dir("Acme").glob("*.txt") if f.name != "summary.txt")
+        assert len(dated) == 1
+        assert dated[0].read_text() == "Version 3"
+
+    def test_summary_txt_not_deleted(self, tmp_env):
+        monitor.archive_tos_if_changed("Acme", "Version 1")
+        monitor.archive_tos_if_changed("Acme", "Version 2")
+        monitor.write_tos_summary("Acme", "My summary.")
+        monitor.prune_old_tos_archives("Acme")
+        assert monitor.read_tos_summary("Acme") == "My summary."
+
+    def test_two_snapshots_keeps_latest(self, tmp_env):
+        monitor.archive_tos_if_changed("Acme", "Older version")
+        monitor.archive_tos_if_changed("Acme", "Newer version")
+        deleted = monitor.prune_old_tos_archives("Acme")
+        assert deleted == 1
+        dated = [f for f in monitor.tos_archive_dir("Acme").glob("*.txt") if f.name != "summary.txt"]
+        assert len(dated) == 1
+        assert dated[0].read_text() == "Newer version"
+
+    def test_idempotent(self, tmp_env):
+        monitor.archive_tos_if_changed("Acme", "Version 1")
+        monitor.archive_tos_if_changed("Acme", "Version 2")
+        monitor.prune_old_tos_archives("Acme")
+        deleted_again = monitor.prune_old_tos_archives("Acme")
+        assert deleted_again == 0
