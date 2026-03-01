@@ -57,6 +57,35 @@ SIMILARITY_THRESHOLD: float = 0.97
 PERCENT_CHANGE_THRESHOLD: float = 0.02
 
 # ---------------------------------------------------------------------------
+# Appendix / footer filtering configuration
+# ---------------------------------------------------------------------------
+
+# Patterns identifying non-substantive appendix/footer sections (e.g. open-source
+# notices, legal attributions, copyright footers).  These are searched
+# case-insensitively only in the latter portion of the document
+# (see APPENDIX_SEARCH_START_FRACTION and extract_core_content).
+APPENDIX_TRIGGER_PATTERNS: list[str] = [
+    r"open[\s\-]source",
+    r"acknowledg",
+    r"third[\s\-]party\s+librar",
+    r"third[\s\-]party\s+software",
+    r"licens",
+    r"librar(?:ies|y)",
+    r"copyright",
+    r"attribution",
+]
+
+# The appendix search starts at this fraction of the document (by line count).
+# Trigger patterns found before this point are ignored so that legitimate
+# "license grant" or "open source" references in the main ToS body are not
+# mistakenly treated as appendix markers.
+APPENDIX_SEARCH_START_FRACTION: float = 0.60
+
+# Minimum number of lines a document must have before appendix detection is
+# attempted.  Very short documents are compared in full.
+MIN_LINES_FOR_APPENDIX_DETECTION: int = 5
+
+# ---------------------------------------------------------------------------
 # OpenAI API Settings
 # ---------------------------------------------------------------------------
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
@@ -242,6 +271,34 @@ def normalize_text(text: str) -> str:
     return text.strip()
 
 
+def extract_core_content(text: str) -> str:
+    """Return the main ToS content, excluding any trailing appendix/footer region.
+
+    Scans the latter portion of *text* (starting at APPENDIX_SEARCH_START_FRACTION
+    of the total line count) for the first line matching any
+    APPENDIX_TRIGGER_PATTERNS.  If found, returns only the text before that
+    line; otherwise returns the full text unchanged.
+
+    This allows detect_substantive_change to compare only core terms and
+    ignore changes limited to open-source notices, copyright attributions,
+    address/copyright footers, and similar non-substantial end-of-document
+    sections.  Applies to all companies by default.
+    """
+    if not text:
+        return text
+    lines = text.splitlines()
+    total = len(lines)
+    if total < MIN_LINES_FOR_APPENDIX_DETECTION:
+        return text
+    search_start = max(1, int(total * APPENDIX_SEARCH_START_FRACTION))
+    for i in range(search_start, total):
+        for pattern in APPENDIX_TRIGGER_PATTERNS:
+            if re.search(pattern, lines[i], re.IGNORECASE):
+                core = "\n".join(lines[:i]).rstrip()
+                return core if core else text
+    return text
+
+
 def fallback_similarity(a: str, b: str) -> float:
     """Return a similarity score (0–1) using difflib.SequenceMatcher.
 
@@ -319,8 +376,10 @@ def detect_substantive_change(old_text: str, new_text: str) -> tuple[bool, str]:
     3. Flag if total document size change exceeds ``PERCENT_CHANGE_THRESHOLD``.
     4. Flag if overall semantic similarity < ``SIMILARITY_THRESHOLD``.
     """
-    old_norm = normalize_text(old_text)
-    new_norm = normalize_text(new_text)
+    # Strip appendix/footer regions before comparison so that changes
+    # limited to open-source notices, copyright footers, etc. are ignored.
+    old_norm = normalize_text(extract_core_content(old_text))
+    new_norm = normalize_text(extract_core_content(new_text))
 
     if old_norm == new_norm:
         return False, ""
@@ -423,6 +482,7 @@ def monitor() -> dict:
                 "tosUrl": tos_url,
                 "lastChecked": last_checked,
                 "changed": False,
+                "changeIsSubstantial": False,
                 "changeReason": "",
                 "summary": read_tos_summary(name) or f"Connection Error: {exc}",
             })
@@ -448,6 +508,7 @@ def monitor() -> dict:
                 "tosUrl": tos_url,
                 "lastChecked": last_checked,
                 "changed": False,
+                "changeIsSubstantial": False,
                 "changeReason": "",
                 "summary": summary,
             })
@@ -473,6 +534,7 @@ def monitor() -> dict:
                 "tosUrl": tos_url,
                 "lastChecked": last_checked,
                 "changed": False,
+                "changeIsSubstantial": False,
                 "changeReason": "",
                 "summary": summary,
             })
@@ -501,6 +563,7 @@ def monitor() -> dict:
             "tosUrl": tos_url,
             "lastChecked": last_checked,
             "changed": True,
+            "changeIsSubstantial": True,
             "changeReason": change_reason,
             "summary": summary,
         })

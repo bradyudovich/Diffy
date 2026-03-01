@@ -6,6 +6,7 @@ interface CompanyResult {
   tosUrl: string;
   lastChecked?: string;
   changed?: boolean;
+  changeIsSubstantial?: boolean;
   summary?: string;
 }
 

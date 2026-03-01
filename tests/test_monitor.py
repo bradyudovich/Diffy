@@ -533,3 +533,175 @@ class TestHybridDiffMonitorIntegration:
         result = self._run(tmp_env, monkeypatch, "Same text.")
         assert result["changed"] is False
         assert result["changeReason"] == ""
+
+
+# ---------------------------------------------------------------------------
+# Appendix constants tests
+# ---------------------------------------------------------------------------
+
+class TestAppendixConstants:
+    def test_appendix_trigger_patterns_defined(self):
+        assert hasattr(monitor, "APPENDIX_TRIGGER_PATTERNS")
+        patterns = monitor.APPENDIX_TRIGGER_PATTERNS
+        assert isinstance(patterns, list)
+        assert len(patterns) > 0
+
+    def test_appendix_trigger_patterns_include_required_keywords(self):
+        """All required appendix trigger keywords must be present."""
+        patterns = monitor.APPENDIX_TRIGGER_PATTERNS
+        joined = " ".join(patterns)
+        for keyword in ("open", "acknowledg", "third", "licens", "copyright", "attribution"):
+            assert keyword in joined.lower(), f"Missing keyword: {keyword}"
+
+    def test_appendix_search_start_fraction_defined(self):
+        assert hasattr(monitor, "APPENDIX_SEARCH_START_FRACTION")
+        frac = monitor.APPENDIX_SEARCH_START_FRACTION
+        assert 0.0 < frac < 1.0
+
+    def test_min_lines_for_appendix_detection_defined(self):
+        assert hasattr(monitor, "MIN_LINES_FOR_APPENDIX_DETECTION")
+        assert monitor.MIN_LINES_FOR_APPENDIX_DETECTION > 0
+
+
+# ---------------------------------------------------------------------------
+# extract_core_content tests
+# ---------------------------------------------------------------------------
+
+class TestExtractCoreContent:
+    def _make_doc(self, n_main, appendix_lines):
+        main = [f"Main content line {i}. This covers substantive terms." for i in range(n_main)]
+        return "\n".join(main + appendix_lines)
+
+    def test_no_appendix_returns_full_text(self):
+        text = "\n".join(f"Line {i}." for i in range(20))
+        assert monitor.extract_core_content(text) == text
+
+    def test_copyright_trigger_in_latter_portion(self):
+        doc = self._make_doc(15, ["Copyright 2024 Acme Corp. All rights reserved."])
+        core = monitor.extract_core_content(doc)
+        assert "Copyright" not in core
+        assert "Main content" in core
+
+    def test_open_source_trigger_in_latter_portion(self):
+        doc = self._make_doc(15, ["Open Source Software Notices", "See below for licenses."])
+        core = monitor.extract_core_content(doc)
+        assert "Open Source" not in core
+        assert "Main content" in core
+
+    def test_attribution_trigger_in_latter_portion(self):
+        doc = self._make_doc(15, ["Attribution Notice", "We thank the following contributors."])
+        core = monitor.extract_core_content(doc)
+        assert "Attribution" not in core
+        assert "Main content" in core
+
+    def test_acknowledg_trigger_in_latter_portion(self):
+        doc = self._make_doc(15, ["Acknowledgements", "We thank the following open-source projects."])
+        core = monitor.extract_core_content(doc)
+        assert "Acknowledgements" not in core
+
+    def test_trigger_in_early_portion_not_stripped(self):
+        """A trigger keyword before the search start must NOT cut the document."""
+        # Line 0 has "open source" but search starts at ~60% of 20 lines = line 12
+        lines = ["We use open source components internally."]
+        lines += [f"Content line {i}." for i in range(19)]
+        doc = "\n".join(lines)
+        core = monitor.extract_core_content(doc)
+        assert "open source" in core.lower()
+        assert len(core.splitlines()) > 1
+
+    def test_short_document_returned_unchanged(self):
+        """Documents shorter than MIN_LINES_FOR_APPENDIX_DETECTION are not trimmed."""
+        text = "Terms.\nLicense: MIT\nCopyright Acme"
+        assert monitor.extract_core_content(text) == text
+
+    def test_empty_string_returned_unchanged(self):
+        assert monitor.extract_core_content("") == ""
+
+    def test_third_party_library_trigger(self):
+        doc = self._make_doc(15, ["Third Party Library Notices", "This software includes..."])
+        core = monitor.extract_core_content(doc)
+        assert "Third Party" not in core
+
+    def test_license_trigger_in_latter_portion(self):
+        doc = self._make_doc(15, ["License Information", "MIT License applies to..."])
+        core = monitor.extract_core_content(doc)
+        assert "License Information" not in core
+
+
+# ---------------------------------------------------------------------------
+# Appendix-only change detection tests
+# ---------------------------------------------------------------------------
+
+class TestDetectSubstantiveChangeAppendix:
+    def _main_content(self, n=20):
+        return "\n".join(
+            f"Main terms line {i}. This covers liability and data rights." for i in range(n)
+        )
+
+    def test_appendix_only_change_not_significant(self):
+        """Changing only the copyright footer must NOT be significant."""
+        main = self._main_content()
+        old = main + "\nCopyright 2023 Acme Corp. All rights reserved."
+        new = main + "\nCopyright 2024 Acme Corp. All rights reserved."
+        is_sig, reason = monitor.detect_substantive_change(old, new)
+        assert is_sig is False
+
+    def test_core_change_with_same_appendix_is_significant(self):
+        """A change in core content must be detected even when the appendix is unchanged."""
+        appendix = "\nCopyright 2024 Acme Corp."
+        old_main = self._main_content()
+        # Make new_main substantially different by appending a large block
+        new_main = self._main_content() + ("\nNew liability clause. " * 30)
+        is_sig, _ = monitor.detect_substantive_change(old_main + appendix, new_main + appendix)
+        assert is_sig is True
+
+    def test_both_core_and_appendix_change_is_significant(self):
+        """When both core and appendix change, the result must still be significant."""
+        old = self._main_content() + "\nCopyright 2023 Acme."
+        new = self._main_content() + ("\nNew liability clause. " * 30) + "\nCopyright 2024 Acme."
+        is_sig, _ = monitor.detect_substantive_change(old, new)
+        assert is_sig is True
+
+
+# ---------------------------------------------------------------------------
+# changeIsSubstantial field tests
+# ---------------------------------------------------------------------------
+
+class TestChangeIsSubstantialField:
+    def _run(self, tmp_env, monkeypatch, tos_text, ai_return="AI summary"):
+        monkeypatch.setattr(monitor, "load_config", lambda: [
+            {"name": "TestCo", "tosUrl": "https://example.com/tos", "category": "Tech"}
+        ])
+        monkeypatch.setattr(monitor, "fetch_text", lambda url: tos_text)
+        monkeypatch.setattr(monitor, "call_openai_overview", lambda text: ai_return)
+        monkeypatch.setattr(monitor, "call_openai", lambda diff: ai_return)
+        return monitor.monitor()["companies"][0]
+
+    def test_field_present_on_first_run(self, tmp_env, monkeypatch):
+        result = self._run(tmp_env, monkeypatch, "Some new ToS text.")
+        assert "changeIsSubstantial" in result
+
+    def test_field_false_when_content_unchanged(self, tmp_env, monkeypatch):
+        self._run(tmp_env, monkeypatch, "Same ToS text.")
+        result = self._run(tmp_env, monkeypatch, "Same ToS text.")
+        assert result["changeIsSubstantial"] is False
+
+    def test_field_true_when_substantive_change(self, tmp_env, monkeypatch):
+        self._run(tmp_env, monkeypatch, "Short terms.")
+        long_new = "Short terms. " + ("Extended liability clause. " * 50)
+        result = self._run(tmp_env, monkeypatch, long_new)
+        assert result["changed"] is True
+        assert result["changeIsSubstantial"] is True
+
+    def test_field_false_on_fetch_error(self, tmp_env, monkeypatch):
+        monitor.write_tos_summary("TestCo", "Cached summary.")
+        monkeypatch.setattr(monitor, "load_config", lambda: [
+            {"name": "TestCo", "tosUrl": "https://example.com/tos", "category": "Tech"}
+        ])
+
+        def fetch_fail(url):
+            raise RuntimeError("timeout")
+
+        monkeypatch.setattr(monitor, "fetch_text", fetch_fail)
+        result = monitor.monitor()["companies"][0]
+        assert result["changeIsSubstantial"] is False
