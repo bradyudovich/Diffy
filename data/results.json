@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-02-28T14:40:54.119832+00:00",
+  "updatedAt": "2026-03-01T01:45:04.365525+00:00",
   "companies": [
     {
       "name": "OpenAI",
       "category": "AI",
       "tosUrl": "https://openai.com/policies/terms-of-use",
-      "lastChecked": "2026-02-28T14:40:54.119845+00:00",
+      "lastChecked": "2026-03-01T01:45:04.365540+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Users retain ownership of Input and Output; OpenAI may use Content for service improvement. [AI Usage]: Output may not be accurate; human review recommended. [Liability]: OpenAI not liable for Output accuracy or third-party endorsements."
@@ -14,7 +14,7 @@
       "name": "Anthropic",
       "category": "AI",
       "tosUrl": "https://www.anthropic.com/legal/consumer-terms",
-      "lastChecked": "2026-02-28T14:40:58.296849+00:00",
+      "lastChecked": "2026-03-01T01:45:08.655698+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[AI Usage]: User conversations may be used to train Anthropic's AI models. [Liability]: Anthropic limits liability for AI-generated content."
@@ -23,7 +23,7 @@
       "name": "Midjourney",
       "category": "AI",
       "tosUrl": "https://docs.midjourney.com/docs/terms-of-service",
-      "lastChecked": "2026-02-28T14:41:04.510646+00:00",
+      "lastChecked": "2026-03-01T01:45:11.988508+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[AI Usage]: User-generated images used to improve AI models without opt-out. [Data Rights]: Personal and billing info collected."
@@ -32,7 +32,7 @@
       "name": "Google",
       "category": "AI",
       "tosUrl": "https://policies.google.com/terms",
-      "lastChecked": "2026-02-28T14:41:07.593128+00:00",
+      "lastChecked": "2026-03-01T01:45:16.443575+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Broad data collection with worldwide usage license granted to Google. [AI Usage]: Content used to train AI systems."
@@ -41,16 +41,16 @@
       "name": "Microsoft",
       "category": "AI",
       "tosUrl": "https://www.microsoft.com/en-us/servicesagreement/",
-      "lastChecked": "2026-02-28T14:41:10.359991+00:00",
+      "lastChecked": "2026-03-01T01:45:20.103186+00:00",
       "changed": true,
       "changeReason": "first version archived",
-      "summary": "[Data Rights]: Users retain ownership of their content but grant Microsoft a worldwide, royalty-free license to use it. [AI Usage]: Users must adhere to conduct rules when using AI services. [Liability]: Microsoft is not liable for user-generated content."
+      "summary": "[Data Rights]: Users retain ownership of their content but grant Microsoft a royalty-free license for service provision. [AI Usage]: Users must comply with conduct rules when using AI services. [Liability]: Microsoft is not responsible for user-generated content."
     },
     {
       "name": "Meta",
       "category": "Social",
       "tosUrl": "https://www.facebook.com/terms.php",
-      "lastChecked": "2026-02-28T14:41:15.706495+00:00",
+      "lastChecked": "2026-03-01T01:45:26.016914+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Meta uses personal data for ad personalization but does not sell or share identifiable information without consent.  \n[AI Usage]: Advanced technologies, including AI, are employed to enhance user experience and safety.  \n[Liability]: Meta may take action against harmful conduct and misuse, sharing data across its companies for safety."
@@ -59,7 +59,7 @@
       "name": "X (Twitter)",
       "category": "Social",
       "tosUrl": "https://x.com/en/tos",
-      "lastChecked": "2026-02-28T14:41:19.749333+00:00",
+      "lastChecked": "2026-03-01T01:45:30.185204+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: User data transferred internationally with varying protections. [AI Usage]: Content licensed for AI training without explicit opt-out."
@@ -68,7 +68,7 @@
       "name": "TikTok",
       "category": "Social",
       "tosUrl": "https://www.tiktok.com/legal/page/us/terms-of-service/en",
-      "lastChecked": "2026-02-28T14:41:22.000908+00:00",
+      "lastChecked": "2026-03-01T01:45:32.818263+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Extensive data collection including device settings and activity. [AI Usage]: Data used for personalization; may be transferred internationally."
@@ -77,7 +77,7 @@
       "name": "LinkedIn",
       "category": "Social",
       "tosUrl": "https://www.linkedin.com/legal/user-agreement",
-      "lastChecked": "2026-02-28T14:41:25.516765+00:00",
+      "lastChecked": "2026-03-01T01:45:36.919649+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Personal data shared with Microsoft and affiliates. [Liability]: Disputes resolved via mandatory arbitration; class action rights waived."
@@ -86,7 +86,7 @@
       "name": "Instagram",
       "category": "Social",
       "tosUrl": "https://help.instagram.com/581066165581870",
-      "lastChecked": "2026-02-28T14:41:29.352844+00:00",
+      "lastChecked": "2026-03-01T01:45:40.180171+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Users grant Instagram a worldwide license to use content. [AI Usage]: Instagram may use AI for content moderation. [Liability]: Instagram limits liability for user-generated content."
@@ -95,7 +95,7 @@
       "name": "Pinterest",
       "category": "Social",
       "tosUrl": "https://policy.pinterest.com/en/terms-of-service",
-      "lastChecked": "2026-02-28T14:41:32.260827+00:00",
+      "lastChecked": "2026-03-01T01:45:44.238934+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Users retain content rights; Pinterest uses data for personalization. [Liability]: Distributed content may not be fully removed on request."
@@ -104,7 +104,7 @@
       "name": "Reddit",
       "category": "Social",
       "tosUrl": "https://www.redditinc.com/policies/user-agreement",
-      "lastChecked": "2026-02-28T14:41:34.785539+00:00",
+      "lastChecked": "2026-03-01T01:45:47.844856+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Users consent to data collection per Privacy Policy. [AI Usage]: Content licensed for AI training; arbitration required for disputes."
@@ -113,7 +113,7 @@
       "name": "Discord",
       "category": "Social",
       "tosUrl": "https://discord.com/terms",
-      "lastChecked": "2026-02-28T14:41:38.464524+00:00",
+      "lastChecked": "2026-03-01T01:45:52.380824+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Extensive data collection includes monitoring active apps and games. [Liability]: Class action rights waived via arbitration clause."
@@ -122,7 +122,7 @@
       "name": "Slack",
       "category": "Productivity",
       "tosUrl": "https://slack.com/terms-of-service",
-      "lastChecked": "2026-02-28T14:41:41.144777+00:00",
+      "lastChecked": "2026-03-01T01:45:55.487560+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Data ownership for platform content is ambiguous. [Liability]: Business data governed by customer agreements; arbitration required."
@@ -131,7 +131,7 @@
       "name": "Zoom",
       "category": "Productivity",
       "tosUrl": "https://explore.zoom.us/en/terms/",
-      "lastChecked": "2026-02-28T14:41:44.612716+00:00",
+      "lastChecked": "2026-03-01T01:45:58.454847+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Personal info required; extent of data usage unclear. [AI Usage]: Meeting content may be processed for AI features."
@@ -140,7 +140,7 @@
       "name": "Notion",
       "category": "Productivity",
       "tosUrl": "https://www.notion.com/terms",
-      "lastChecked": "2026-02-28T14:41:48.125016+00:00",
+      "lastChecked": "2026-03-01T01:46:02.457976+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Extensive personal info and usage data collected. [Liability]: Data deletion requests subject to retention policy timelines."
@@ -149,7 +149,7 @@
       "name": "Adobe",
       "category": "Productivity",
       "tosUrl": "https://www.adobe.com/legal/terms.html",
-      "lastChecked": "2026-02-28T14:41:50.092475+00:00",
+      "lastChecked": "2026-03-01T01:46:04.523075+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "Connection Error: Playwright failed to fetch https://www.adobe.com/legal/terms.html: Page.goto: Timeout 90000ms exceeded.\nCall log:\n  - navigating to \"https://www.adobe.com/legal/terms.html\", waiting until \"domcontentloaded\"\n"
@@ -158,7 +158,7 @@
       "name": "Dropbox",
       "category": "Productivity",
       "tosUrl": "https://www.dropbox.com/terms",
-      "lastChecked": "2026-02-28T14:46:43.699757+00:00",
+      "lastChecked": "2026-03-01T01:50:54.925232+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Dropbox scans user files for OCR and personalization features. [Liability]: Limited liability for data loss or unauthorized access."
@@ -167,16 +167,16 @@
       "name": "Asana",
       "category": "Productivity",
       "tosUrl": "https://asana.com/terms",
-      "lastChecked": "2026-02-28T14:46:46.732935+00:00",
-      "changed": true,
-      "changeReason": "first version archived",
+      "lastChecked": "2026-03-01T01:50:58.269882+00:00",
+      "changed": false,
+      "changeReason": "",
       "summary": "[Data Rights]: Customer Data controlled by Customer; Asana has no liability for data processing. [AI Usage]: No specific AI usage terms provided. [Liability]: Asana not liable for unauthorized account use or data loss."
     },
     {
       "name": "GitHub",
       "category": "Productivity",
       "tosUrl": "https://docs.github.com/en/site-policy/github-terms/github-terms-of-service",
-      "lastChecked": "2026-02-28T14:46:52.522647+00:00",
+      "lastChecked": "2026-03-01T01:51:02.605027+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Users own content but GitHub holds broad usage rights. [AI Usage]: Public repositories may be used to train AI."
@@ -185,16 +185,16 @@
       "name": "Amazon",
       "category": "Retail",
       "tosUrl": "https://www.amazon.com/gp/help/customer/display.html?nodeId=508088",
-      "lastChecked": "2026-02-28T14:46:56.280427+00:00",
+      "lastChecked": "2026-03-01T01:51:06.103482+00:00",
       "changed": true,
       "changeReason": "first version archived",
-      "summary": "[Data Rights]: User data may be collected and used for service improvement. [AI Usage]: AI tools may analyze user data for personalized experiences. [Liability]: Limited liability for service interruptions or data breaches."
+      "summary": "[Data Rights]: User data may be collected and used for service improvement. [AI Usage]: AI may analyze user data for personalized experiences. [Liability]: Company limits liability for indirect damages."
     },
     {
       "name": "Walmart",
       "category": "Retail",
       "tosUrl": "https://www.walmart.com/help/article/walmart-com-terms-of-use/3b75080af40340d6bbd596f116fae5a2",
-      "lastChecked": "2026-02-28T14:46:59.101789+00:00",
+      "lastChecked": "2026-03-01T01:51:09.973799+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Personal data collection scope unspecified in terms. [Liability]: No explicit user consent mechanisms for data collection identified."
@@ -203,7 +203,7 @@
       "name": "Shopify",
       "category": "Retail",
       "tosUrl": "https://www.shopify.com/legal/terms",
-      "lastChecked": "2026-02-28T14:47:02.199079+00:00",
+      "lastChecked": "2026-03-01T01:51:12.854008+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Extensive personal and business data required for merchant use. [Liability]: Broad data licensing rights granted to Shopify."
@@ -212,7 +212,7 @@
       "name": "Netflix",
       "category": "Streaming",
       "tosUrl": "https://help.netflix.com/legal/termsofuse",
-      "lastChecked": "2026-02-28T14:47:04.800061+00:00",
+      "lastChecked": "2026-03-01T01:51:16.723640+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Device and payment data collected for promotional eligibility. [Liability]: Disputes resolved via mandatory arbitration; legal recourse limited."
@@ -221,7 +221,7 @@
       "name": "Disney+",
       "category": "Streaming",
       "tosUrl": "https://www.disneyplus.com/en-gb/legal/subscriber-agreement",
-      "lastChecked": "2026-02-28T14:47:08.855093+00:00",
+      "lastChecked": "2026-03-01T01:51:19.249374+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Extensive viewing habits and device data collected. [Liability]: Parental controls required for accounts linked to minors."
@@ -230,7 +230,7 @@
       "name": "Spotify",
       "category": "Streaming",
       "tosUrl": "https://www.spotify.com/us/legal/end-user-agreement/",
-      "lastChecked": "2026-02-28T14:47:13.998414+00:00",
+      "lastChecked": "2026-03-01T01:51:24.723531+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Listening data used for personalization and recommendations. [Liability]: Mandatory arbitration waives class action rights for users."
@@ -239,7 +239,7 @@
       "name": "Twitch",
       "category": "Streaming",
       "tosUrl": "https://www.twitch.tv/p/en/legal/terms-of-service/",
-      "lastChecked": "2026-02-28T14:47:16.467797+00:00",
+      "lastChecked": "2026-03-01T01:51:27.506871+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Data collection practices referenced but not detailed in terms. [AI Usage]: Streamed content may be archived and reused by Twitch."
@@ -248,7 +248,7 @@
       "name": "YouTube",
       "category": "Streaming",
       "tosUrl": "https://www.youtube.com/t/terms",
-      "lastChecked": "2026-02-28T14:47:20.206904+00:00",
+      "lastChecked": "2026-03-01T01:51:31.346809+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Content processed per YouTube Data Processing Terms. [AI Usage]: AI training use governed by separate terms not listed here."
@@ -257,7 +257,7 @@
       "name": "Hulu",
       "category": "Streaming",
       "tosUrl": "https://www.hulu.com/subscriber_agreement",
-      "lastChecked": "2026-02-28T14:47:22.912775+00:00",
+      "lastChecked": "2026-03-01T01:51:33.917889+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: User data shared with third-party advertisers. [Liability]: Users cannot fully opt out of third-party data sharing."
@@ -266,7 +266,7 @@
       "name": "Max",
       "category": "Streaming",
       "tosUrl": "https://www.max.com/terms-of-use",
-      "lastChecked": "2026-02-28T14:47:26.957215+00:00",
+      "lastChecked": "2026-03-01T01:51:37.671585+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Scope of personal data collection unclear in terms. [Liability]: Subscription cancellation may not immediately halt all data use."
@@ -275,7 +275,7 @@
       "name": "Uber",
       "category": "Services",
       "tosUrl": "https://www.uber.com/legal/en/document/?name=general-terms-of-use&country=united-states&lang=en",
-      "lastChecked": "2026-02-28T14:47:30.387604+00:00",
+      "lastChecked": "2026-03-01T01:51:41.000113+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Extensive location and ride data collected for operations. [Liability]: Binding arbitration waives jury trial and class action rights."
@@ -284,7 +284,7 @@
       "name": "Airbnb",
       "category": "Services",
       "tosUrl": "https://www.airbnb.com/help/article/2908",
-      "lastChecked": "2026-02-28T14:47:33.518226+00:00",
+      "lastChecked": "2026-03-01T01:51:44.592929+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: User data subject to international transfers and processing. [Liability]: Class action rights waived via mandatory arbitration agreement."
@@ -293,16 +293,16 @@
       "name": "DoorDash",
       "category": "Services",
       "tosUrl": "https://help.doordash.com/consumers/s/terms-and-conditions",
-      "lastChecked": "2026-02-28T14:47:36.497125+00:00",
-      "changed": true,
-      "changeReason": "first version archived",
+      "lastChecked": "2026-03-01T01:51:48.364992+00:00",
+      "changed": false,
+      "changeReason": "",
       "summary": "[Data Rights]: User data may be collected and used for AI development. [Liability]: Company is not liable for data breaches or AI inaccuracies. [Critical User Constraint]: Users consent to data usage upon service access."
     },
     {
       "name": "Lyft",
       "category": "Services",
       "tosUrl": "https://www.lyft.com/terms",
-      "lastChecked": "2026-02-28T14:47:42.158989+00:00",
+      "lastChecked": "2026-03-01T01:51:51.803014+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Extensive location, ride, and user preference data collected. [Liability]: Mandatory arbitration limits disputes to individual claims only."
@@ -311,7 +311,7 @@
       "name": "Grubhub",
       "category": "Services",
       "tosUrl": "https://www.grubhub.com/legal/terms-of-use",
-      "lastChecked": "2026-02-28T14:47:44.689696+00:00",
+      "lastChecked": "2026-03-01T01:51:56.066528+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Accounts may be created from transactions without explicit consent. [AI Usage]: Order history used for personalization and marketing."
@@ -320,25 +320,25 @@
       "name": "TaskRabbit",
       "category": "Services",
       "tosUrl": "https://www.taskrabbit.com/terms",
-      "lastChecked": "2026-02-28T14:47:47.060107+00:00",
-      "changed": true,
-      "changeReason": "first version archived",
+      "lastChecked": "2026-03-01T01:51:58.250563+00:00",
+      "changed": false,
+      "changeReason": "",
       "summary": "[Data Rights]: Users' personal data usage governed by Global Privacy Policy. [AI Usage]: Taskrabbit does not employ or supervise Taskers. [Liability]: Taskrabbit assumes no liability for Tasker actions or classifications."
     },
     {
       "name": "JPMorgan Chase",
       "category": "Finance",
       "tosUrl": "https://www.chase.com/digital/resources/terms-of-use",
-      "lastChecked": "2026-02-28T14:47:53.239676+00:00",
-      "changed": true,
-      "changeReason": "first version archived",
+      "lastChecked": "2026-03-01T01:52:02.226101+00:00",
+      "changed": false,
+      "changeReason": "",
       "summary": "[Data Rights]: User information may be disclosed to affiliates and third parties; consent for global data transfer is required. [AI Usage]: Monitoring and tracking of user interactions is permitted. [Liability]: Users indemnify JPMorgan Chase for unauthorized access and data breaches."
     },
     {
       "name": "PayPal",
       "category": "Finance",
       "tosUrl": "https://www.paypal.com/us/legalhub/useragreement-full",
-      "lastChecked": "2026-02-28T14:47:57.082134+00:00",
+      "lastChecked": "2026-03-01T01:52:05.832535+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Transaction data used for fraud detection. [Liability]: Disputes resolved via individual arbitration; class action rights waived."
@@ -347,7 +347,7 @@
       "name": "Stripe",
       "category": "Finance",
       "tosUrl": "https://stripe.com/legal/ssa",
-      "lastChecked": "2026-02-28T14:48:00.962069+00:00",
+      "lastChecked": "2026-03-01T01:52:10.126969+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Data collection scope unclear for business users. [Liability]: Merchants responsible for customer data compliance obligations."
@@ -356,7 +356,7 @@
       "name": "Venmo",
       "category": "Finance",
       "tosUrl": "https://venmo.com/legal/us-user-agreement/",
-      "lastChecked": "2026-02-28T14:48:04.852602+00:00",
+      "lastChecked": "2026-03-01T01:52:13.727853+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Extensive personal and financial data collected. [Liability]: Social transaction history publicly visible by default."
@@ -365,7 +365,7 @@
       "name": "Robinhood",
       "category": "Finance",
       "tosUrl": "https://robinhood.com/us/en/support/articles/customer-agreement/",
-      "lastChecked": "2026-02-28T14:48:08.841577+00:00",
+      "lastChecked": "2026-03-01T01:52:16.841661+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Limited clarity on investment data collection practices. [Liability]: Disputes resolved via mandatory arbitration; limited legal recourse."
@@ -374,7 +374,7 @@
       "name": "Coinbase",
       "category": "Finance",
       "tosUrl": "https://www.coinbase.com/legal/user_agreement/united_states",
-      "lastChecked": "2026-02-28T14:48:12.448250+00:00",
+      "lastChecked": "2026-03-01T01:52:18.628775+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Transaction data used for compliance and analytics. [Liability]: Arbitration waives class action and jury trial rights."
@@ -383,16 +383,16 @@
       "name": "Tesla",
       "category": "Auto",
       "tosUrl": "https://www.tesla.com/legal/additional-resources/tesla-legal",
-      "lastChecked": "2026-02-28T14:48:16.672079+00:00",
+      "lastChecked": "2026-03-01T01:52:22.842901+00:00",
       "changed": true,
       "changeReason": "first version archived",
-      "summary": "[Category]: Access Restrictions. [Key Data/Legal Policy]: No access to legal resources. [Critical User Constraint]: Users cannot retrieve terms or policies directly from the site."
+      "summary": "[Category]: Access Denied. [Key Data/Legal Policy]: No access to legal documents. [Critical User Constraint]: Users cannot view terms regarding data rights, AI usage, and liability."
     },
     {
       "name": "Ford",
       "category": "Auto",
       "tosUrl": "https://www.ford.com/help/terms/",
-      "lastChecked": "2026-02-28T14:48:19.692477+00:00",
+      "lastChecked": "2026-03-01T01:52:26.704111+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "Connection Error: Playwright failed to fetch https://www.ford.com/help/terms/: Page.goto: Timeout 90000ms exceeded.\nCall log:\n  - navigating to \"https://www.ford.com/help/terms/\", waiting until \"domcontentloaded\"\n"
@@ -401,7 +401,7 @@
       "name": "United Airlines",
       "category": "Travel",
       "tosUrl": "https://www.united.com/en/us/fly/legal.html",
-      "lastChecked": "2026-02-28T14:53:11.721002+00:00",
+      "lastChecked": "2026-03-01T01:57:18.387362+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "Connection Error: Playwright failed to fetch https://www.united.com/en/us/fly/legal.html: Page.goto: Timeout 90000ms exceeded.\nCall log:\n  - navigating to \"https://www.united.com/en/us/fly/legal.html\", waiting until \"domcontentloaded\"\n"
@@ -410,34 +410,34 @@
       "name": "Marriott",
       "category": "Travel",
       "tosUrl": "https://www.marriott.com/about/terms-of-use.mi",
-      "lastChecked": "2026-02-28T14:58:05.761523+00:00",
-      "changed": true,
-      "changeReason": "first version archived",
+      "lastChecked": "2026-03-01T02:02:08.871058+00:00",
+      "changed": false,
+      "changeReason": "",
       "summary": "[Data Rights]: User feedback becomes Marriott's property; no confidentiality obligation.  \n[AI Usage]: No explicit mention of AI; user-generated content may be monitored.  \n[Liability]: Users assume liability for site use; Marriott not liable for content in chat areas."
     },
     {
       "name": "Delta Airlines",
       "category": "Travel",
       "tosUrl": "https://www.delta.com/us/en/legal/conditions-of-carriage",
-      "lastChecked": "2026-02-28T14:58:12.687452+00:00",
+      "lastChecked": "2026-03-01T02:02:13.621456+00:00",
       "changed": true,
       "changeReason": "first version archived",
-      "summary": "[Data Rights]: User data may be collected and used for service improvement. [AI Usage]: AI tools may analyze user data. [Liability]: Company not liable for unauthorized access."
+      "summary": "[Data Rights]: User data may be collected and used for service improvement. [AI Usage]: AI tools may analyze user data. [Liability]: Company not liable for unauthorized access incidents."
     },
     {
       "name": "Hilton",
       "category": "Travel",
       "tosUrl": "https://www.hilton.com/en/hilton-honors/terms/",
-      "lastChecked": "2026-02-28T14:58:15.628677+00:00",
+      "lastChecked": "2026-03-01T02:02:17.571737+00:00",
       "changed": true,
       "changeReason": "first version archived",
-      "summary": "[Category]: No relevant terms available. [Key Data/Legal Policy]: N/A. [Critical User Constraint]: N/A."
+      "summary": "[Category]: No relevant terms available. [Key Data/Legal Policy]: Unable to summarize due to lack of content. [Critical User Constraint]: No data rights, AI usage, or liability information provided."
     },
     {
       "name": "Apple",
       "category": "Tech",
       "tosUrl": "https://www.apple.com/legal/internet-services/itunes/us/terms.html",
-      "lastChecked": "2026-02-28T14:58:18.774510+00:00",
+      "lastChecked": "2026-03-01T02:02:20.850774+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: User activity monitored for compliance with usage rules. [Liability]: Unauthorized content distribution is strictly prohibited per terms."
@@ -446,7 +446,7 @@
       "name": "Samsung",
       "category": "Tech",
       "tosUrl": "https://www.samsung.com/us/account/privacy-policy/",
-      "lastChecked": "2026-02-28T14:58:22.752491+00:00",
+      "lastChecked": "2026-03-01T02:02:23.680196+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Extensive personal data including sensitive info like SSNs collected. [Liability]: High data breach risk from broad collection scope."
@@ -455,7 +455,7 @@
       "name": "Steam",
       "category": "Gaming",
       "tosUrl": "https://store.steampowered.com/subscriber_agreement/",
-      "lastChecked": "2026-02-28T14:58:26.081818+00:00",
+      "lastChecked": "2026-03-01T02:02:28.042789+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Billing and account data collected; full scope unspecified. [Liability]: Digital purchases are licenses subject to potential revocation."
@@ -464,7 +464,7 @@
       "name": "Epic Games",
       "category": "Gaming",
       "tosUrl": "https://legal.epicgames.com/en-US/epicgames/tos",
-      "lastChecked": "2026-02-28T14:58:29.200791+00:00",
+      "lastChecked": "2026-03-01T02:02:31.564502+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Users receive a limited, non-transferable, revocable license to use Licensed Products; ownership remains with Epic Games. [AI Usage]: No specific AI usage terms provided. [Liability]: Epic limits liability and enforces mandatory arbitration."
@@ -473,7 +473,7 @@
       "name": "Roblox",
       "category": "Gaming",
       "tosUrl": "https://en.help.roblox.com/hc/en-us/articles/115004647846-Roblox-Terms-of-Use",
-      "lastChecked": "2026-02-28T14:58:32.018535+00:00",
+      "lastChecked": "2026-03-01T02:02:34.753786+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Personal data collection scope unclear; transparency concerns raised. [Liability]: User content licensed to Roblox; parental consent required for minors."
@@ -482,7 +482,7 @@
       "name": "Zillow",
       "category": "Real Estate",
       "tosUrl": "https://www.zillow.com/corp/Terms.htm",
-      "lastChecked": "2026-02-28T14:58:35.985766+00:00",
+      "lastChecked": "2026-03-01T02:02:38.407710+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Terms inaccessible; data and privacy practices unknown. [Liability]: Users cannot review governing terms for data rights."
@@ -491,16 +491,16 @@
       "name": "Redfin",
       "category": "Real Estate",
       "tosUrl": "https://www.redfin.com/about/terms-of-use",
-      "lastChecked": "2026-02-28T14:58:39.704524+00:00",
+      "lastChecked": "2026-03-01T02:02:41.837853+00:00",
       "changed": true,
       "changeReason": "first version archived",
-      "summary": "[Data Rights]: User content is governed by Privacy Notice; personally identifiable information is excluded. [AI Usage]: No explicit terms on AI usage. [Liability]: Claims resolved through binding arbitration; class action waiver applies."
+      "summary": "[Data Rights]: User content is governed by Redfin's Privacy Notice; personal data collection and usage are restricted. [AI Usage]: No explicit terms on AI usage provided. [Liability]: Users agree to binding arbitration and waive class action rights."
     },
     {
       "name": "Coursera",
       "category": "Education",
       "tosUrl": "https://www.coursera.org/about/terms",
-      "lastChecked": "2026-02-28T14:58:44.732174+00:00",
+      "lastChecked": "2026-03-01T02:02:46.518009+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Users grant Coursera a perpetual, royalty-free worldwide content license. [Liability]: Broad content rights transferred; user ownership effectively limited."
@@ -509,7 +509,7 @@
       "name": "Duolingo",
       "category": "Education",
       "tosUrl": "https://www.duolingo.com/terms",
-      "lastChecked": "2026-02-28T14:58:48.215112+00:00",
+      "lastChecked": "2026-03-01T02:02:51.068438+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Extensive data collected including usage patterns and personal info. [Liability]: Collection scope not clearly limited in current terms."
@@ -518,7 +518,7 @@
       "name": "Uber Eats",
       "category": "Services",
       "tosUrl": "https://www.uber.com/legal/en/document/?name=uber-eats-manager-terms-and-conditions",
-      "lastChecked": "2026-02-28T14:58:51.254733+00:00",
+      "lastChecked": "2026-03-01T02:02:53.642966+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Terms inaccessible; data handling practices unknown. [Liability]: Users unaware of rights due to missing service terms."
@@ -527,7 +527,7 @@
       "name": "FanDuel",
       "category": "Finance",
       "tosUrl": "https://www.fanduel.com/termsofuse",
-      "lastChecked": "2026-02-28T14:58:54.088170+00:00",
+      "lastChecked": "2026-03-01T02:02:57.015785+00:00",
       "changed": false,
       "changeReason": "",
       "summary": "[Data Rights]: Access denied; no data policy available for review. [Liability]: Users cannot access terms governing their betting activity."
@@ -536,10 +536,10 @@
       "name": "Fitbit",
       "category": "Health",
       "tosUrl": "https://www.fitbit.com/global/us/legal/terms-of-service",
-      "lastChecked": "2026-02-28T14:58:57.442797+00:00",
+      "lastChecked": "2026-03-01T02:02:59.483462+00:00",
       "changed": true,
       "changeReason": "first version archived",
-      "summary": "[Data Rights]: Users retain rights to their content but grant Fitbit a worldwide license for service improvement. [AI Usage]: No specific AI usage terms stated. [Liability]: Fitbit not liable for account-related losses."
+      "summary": "[Data Rights]: Users retain rights to their content; Fitbit obtains a non-exclusive license for service improvement. [AI Usage]: No explicit AI usage terms stated. [Liability]: Fitbit not liable for account security breaches."
     }
   ]
 }
