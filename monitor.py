@@ -108,6 +108,44 @@ def pre_clean_text(text: str) -> str:
 
 
 # ---------------------------------------------------------------------------
+# Navigation preamble filtering configuration
+# ---------------------------------------------------------------------------
+
+# Regex patterns for well-known ToS title headings.  The first line in a
+# fetched document that matches any of these patterns is treated as the true
+# start of the Terms of Service text.  All lines *above* it (product
+# navigation bars, site headers, breadcrumbs, and other UI chrome) are
+# discarded.  If no anchor is found, the document is returned unchanged.
+NAV_TITLE_ANCHORS: list[re.Pattern] = [
+    re.compile(r"^\s*terms\s+of\s+(?:use|service)\b", re.IGNORECASE),
+    re.compile(r"^\s*terms\s+and\s+conditions\b", re.IGNORECASE),
+    re.compile(r"^\s*user\s+agreement\b", re.IGNORECASE),
+    re.compile(r"^\s*acceptable\s+use\s+policy\b", re.IGNORECASE),
+    re.compile(r"^\s*legal\s+terms\b", re.IGNORECASE),
+]
+
+
+def strip_navigation_preamble(text: str) -> str:
+    """Remove leading navigation/UI content from fetched ToS text.
+
+    Scans lines from the top of the document for the first line matching a
+    known ToS title anchor (e.g. 'Terms of Use', 'Terms of Service').
+    Returns text starting from that line onwards, discarding any preceding
+    product navigation bar content, site headers, breadcrumbs, or other
+    UI-only elements.
+
+    If no anchor is found the full text is returned unchanged, so this
+    function is always safe to call regardless of the document format.
+    """
+    lines = text.splitlines()
+    for i, line in enumerate(lines):
+        for pattern in NAV_TITLE_ANCHORS:
+            if pattern.search(line):
+                return "\n".join(lines[i:])
+    return text
+
+
+# ---------------------------------------------------------------------------
 # Appendix / footer filtering configuration
 # ---------------------------------------------------------------------------
 
@@ -272,12 +310,21 @@ def archive_tos_if_changed(company_name: str, new_text: str) -> bool:
     if get_latest_archived_tos(company_name) == new_text:
         return False
     date_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    archive_path = archive_dir / f"{date_str}.txt"
-    # Avoid overwriting a same-day file with a numeric suffix
-    suffix = 1
-    while archive_path.exists():
+    # Find all existing dated files for today so that a new file always sorts
+    # *after* them.  This prevents re-using a lower-numbered slot after
+    # prune_old_tos_archives() deletes earlier versions.
+    existing_today = sorted(
+        f for f in archive_dir.glob("*.txt")
+        if f.name != "summary.txt" and f.stem.startswith(date_str)
+    )
+    if not existing_today:
+        archive_path = archive_dir / f"{date_str}.txt"
+    else:
+        suffix = len(existing_today)
         archive_path = archive_dir / f"{date_str}_{suffix}.txt"
-        suffix += 1
+        while archive_path.exists():
+            suffix += 1
+            archive_path = archive_dir / f"{date_str}_{suffix}.txt"
     archive_path.write_text(new_text, encoding="utf-8")
     return True
 
@@ -546,7 +593,7 @@ def monitor() -> dict:
         print(f"Scanning {name}...")
 
         try:
-            new_text = fetch_text(tos_url)
+            new_text = strip_navigation_preamble(fetch_text(tos_url))
         except Exception as exc:
             print(f"Error fetching {name}: {exc}")
             company_results.append({
@@ -570,6 +617,8 @@ def monitor() -> dict:
         # Every new version is always archived; significance is determined
         # separately by detect_substantive_change below.
         archived = archive_tos_if_changed(name, new_text)
+        # Enforce single-version retention: delete all but the latest snapshot.
+        prune_old_tos_archives(name)
 
         if not archived:
             # ToS content is unchanged – reuse the persisted summary without

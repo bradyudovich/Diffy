@@ -44,9 +44,14 @@ day a numeric suffix (`_1`, `_2`, …) is appended to keep both.
 
 ### Archive pruning
 
-To keep the repository lean, call `prune_old_tos_archives(company_name)` to
-delete all but the most-recent snapshot for a given company.  `summary.txt`
-is always preserved.
+Each time `monitor.py` runs it automatically calls
+`prune_old_tos_archives(company_name)` after archiving the freshly fetched
+ToS.  This enforces a **single-version retention policy**: only the most-recent
+snapshot is kept for each company, and all prior versions are deleted.
+`summary.txt` is always preserved.
+
+You can also call the function directly to perform a one-off clean-up of the
+`terms_of_service/` directory:
 
 ```python
 from monitor import prune_old_tos_archives, TOS_DIR
@@ -80,7 +85,25 @@ summary is only regenerated when the change is deemed significant.
 
 ### Change detection pipeline
 
-1. **Pre-clean** – dynamic, per-request noise is stripped from the raw fetched
+1. **Navigation preamble stripping** – immediately after fetching a ToS page,
+   leading navigation and UI chrome is removed before any further processing.
+   `strip_navigation_preamble(text)` scans the fetched text line-by-line for
+   the first line matching a known ToS title anchor (see `NAV_TITLE_ANCHORS`).
+   Everything above that line (product navigation bars, site headers,
+   breadcrumbs, and other UI-only elements) is discarded.  Examples of
+   content stripped:
+   ```
+   Home | Products | Support | Sign In   ← navigation bar
+   Shop | About Us | Contact             ← navigation bar
+   Terms of Use                          ← anchor – content starts HERE
+   1. Introduction …                     ← substantive ToS text (kept)
+   ```
+   If no anchor is found the full text is returned unchanged.  Because the
+   stripping happens before archiving *and* before any diff or AI summary
+   operation, cosmetic changes to navigation bars will never trigger a false
+   positive "Changed" flag.  Add new anchor patterns to `NAV_TITLE_ANCHORS`
+   near the top of `monitor.py` to cover additional heading styles.
+2. **Pre-clean** – dynamic, per-request noise is stripped from the raw fetched
    text *before* any comparison.  Lines matching any pattern in
    `SKIPPED_LINE_PATTERNS` are discarded entirely.  This eliminates false
    positives caused by CDN-injected content on providers such as Microsoft,
@@ -96,18 +119,18 @@ summary is only regenerated when the change is deemed significant.
    ```
    Add new patterns to the `SKIPPED_LINE_PATTERNS` list near the top of
    `monitor.py` to handle additional providers.
-2. **Normalize** – both texts are lowercased, whitespace is collapsed, and
+3. **Normalize** – both texts are lowercased, whitespace is collapsed, and
    blank lines are reduced before any comparison.  This eliminates false
    positives from purely cosmetic edits.
-3. **Hot-section check** – the document is split into paragraphs.  Any
+4. **Hot-section check** – the document is split into paragraphs.  Any
    paragraph matching one of the *hot section* keywords is extracted and
    compared old-vs-new using a semantic similarity score.  If the score falls
    below `SIMILARITY_THRESHOLD` (default **0.97**), the change is flagged and
    the reason is recorded (e.g. `"change detected in hot section: arbitration"`).
-4. **Percent-change check** – if total document character-length changes by
+5. **Percent-change check** – if total document character-length changes by
    more than `PERCENT_CHANGE_THRESHOLD` (default **2 %**), the change is
    flagged with a reason like `"document changed by 5.3%"`.
-5. **Overall semantic similarity** – if no earlier check triggered, the overall
+6. **Overall semantic similarity** – if no earlier check triggered, the overall
    similarity of the two normalized documents is measured.  A score below
    `SIMILARITY_THRESHOLD` flags the change with reason `"semantic meaning
    changed"`.
@@ -130,6 +153,7 @@ All thresholds and the list of hot-section keyword patterns live at the top of
 
 | Constant | Default | Description |
 |---|---|---|
+| `NAV_TITLE_ANCHORS` | see source | List of compiled regexes; first matching line is the ToS start — everything above is stripped |
 | `SKIPPED_LINE_PATTERNS` | see source | List of compiled regexes; matching lines are stripped before comparison |
 | `HOT_SECTION_KEYWORDS` | see source | Dict of section name → list of regex patterns |
 | `SIMILARITY_THRESHOLD` | `0.97` | Similarity score below which a change is substantive |
@@ -137,7 +161,8 @@ All thresholds and the list of hot-section keyword patterns live at the top of
 
 Edit these constants directly in `monitor.py` to tune sensitivity.  To suppress
 false positives from a new provider, add a `re.compile(…)` entry to
-`SKIPPED_LINE_PATTERNS`.
+`SKIPPED_LINE_PATTERNS`.  To recognise a new ToS heading style, add a
+`re.compile(…)` entry to `NAV_TITLE_ANCHORS`.
 
 ### Change reason in results
 
