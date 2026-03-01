@@ -42,8 +42,25 @@ version, so the folder accumulates one file per distinct version (not one
 file per day).  If two distinct versions are detected on the same calendar
 day a numeric suffix (`_1`, `_2`, …) is appended to keep both.
 
-Previous versions are **never deleted**, which enables historical diffs and
-audit trails.
+### Archive pruning
+
+To keep the repository lean, call `prune_old_tos_archives(company_name)` to
+delete all but the most-recent snapshot for a given company.  `summary.txt`
+is always preserved.
+
+```python
+from monitor import prune_old_tos_archives, TOS_DIR
+
+# Prune all companies
+for d in sorted(TOS_DIR.iterdir()):
+    if d.is_dir():
+        deleted = prune_old_tos_archives(d.name)
+        if deleted:
+            print(f"{d.name}: removed {deleted} old snapshot(s)")
+```
+
+The function returns the number of files deleted and is idempotent (safe to
+call repeatedly).
 
 ## ToS summarization
 
@@ -63,18 +80,34 @@ summary is only regenerated when the change is deemed significant.
 
 ### Change detection pipeline
 
-1. **Normalize** – both texts are lowercased, whitespace is collapsed, and
+1. **Pre-clean** – dynamic, per-request noise is stripped from the raw fetched
+   text *before* any comparison.  Lines matching any pattern in
+   `SKIPPED_LINE_PATTERNS` are discarded entirely.  This eliminates false
+   positives caused by CDN-injected content on providers such as Microsoft,
+   Meta, and Cloudflare-protected sites.  Examples of skipped lines:
+   ```
+   Trace ID: 9f3a2b1c-…          ← per-request identifier
+   Request ID: 0123456789abcdef  ← per-request identifier
+   Cloudflare Ray ID: 7abc1234   ← Cloudflare challenge page artefact
+   Verifying you are human       ← bot-detection scaffold line
+   Version 2.3.1 – 2024-01-15   ← rotating version header
+   Last Updated: March 1, 2026  ← date header that changes frequently
+   Effective Date: Jan 1, 2025  ← date header that changes frequently
+   ```
+   Add new patterns to the `SKIPPED_LINE_PATTERNS` list near the top of
+   `monitor.py` to handle additional providers.
+2. **Normalize** – both texts are lowercased, whitespace is collapsed, and
    blank lines are reduced before any comparison.  This eliminates false
    positives from purely cosmetic edits.
-2. **Hot-section check** – the document is split into paragraphs.  Any
+3. **Hot-section check** – the document is split into paragraphs.  Any
    paragraph matching one of the *hot section* keywords is extracted and
    compared old-vs-new using a semantic similarity score.  If the score falls
    below `SIMILARITY_THRESHOLD` (default **0.97**), the change is flagged and
    the reason is recorded (e.g. `"change detected in hot section: arbitration"`).
-3. **Percent-change check** – if total document character-length changes by
+4. **Percent-change check** – if total document character-length changes by
    more than `PERCENT_CHANGE_THRESHOLD` (default **2 %**), the change is
    flagged with a reason like `"document changed by 5.3%"`.
-4. **Overall semantic similarity** – if no earlier check triggered, the overall
+5. **Overall semantic similarity** – if no earlier check triggered, the overall
    similarity of the two normalized documents is measured.  A score below
    `SIMILARITY_THRESHOLD` flags the change with reason `"semantic meaning
    changed"`.
@@ -90,18 +123,21 @@ pip install spacy
 python -m spacy download en_core_web_md
 ```
 
-### Configuring thresholds and hot sections
+### Configuring thresholds, hot sections, and skip patterns
 
 All thresholds and the list of hot-section keyword patterns live at the top of
-`monitor.py` in three constants:
+`monitor.py` in these constants:
 
 | Constant | Default | Description |
 |---|---|---|
+| `SKIPPED_LINE_PATTERNS` | see source | List of compiled regexes; matching lines are stripped before comparison |
 | `HOT_SECTION_KEYWORDS` | see source | Dict of section name → list of regex patterns |
 | `SIMILARITY_THRESHOLD` | `0.97` | Similarity score below which a change is substantive |
 | `PERCENT_CHANGE_THRESHOLD` | `0.02` | Fractional size change (0.02 = 2 %) to trigger a flag |
 
-Edit these constants directly in `monitor.py` to tune sensitivity.
+Edit these constants directly in `monitor.py` to tune sensitivity.  To suppress
+false positives from a new provider, add a `re.compile(…)` entry to
+`SKIPPED_LINE_PATTERNS`.
 
 ### Change reason in results
 
