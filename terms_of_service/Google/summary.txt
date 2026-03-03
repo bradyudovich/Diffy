@@ -1,1 +1,1 @@
-[Data Rights]: Google retains intellectual property rights; users must respect privacy and IP rights. [AI Usage]: Prohibited from misleading use of generative AI content. [Liability]: Users responsible for compliance; abuse may lead to service termination.
+[Data Rights]: Google retains intellectual property rights; users must respect privacy and IP rights. [AI Usage]: Generative AI content must not mislead as human-created. [Liability]: Users are responsible for compliance; abuse may lead to service termination.
