@@ -1,1 +1,1 @@
-[Data Rights]: User data may be collected and used for AI training. [Liability]: Company not liable for data misuse or service interruptions. [Critical User Constraint]: Users must consent to data usage.
+[Data Rights]: User data may be collected and used for service improvement. [AI Usage]: AI may be employed for customer support. [Liability]: Company limits liability for service-related issues.

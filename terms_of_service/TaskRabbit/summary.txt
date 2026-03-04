@@ -1,1 +1,3 @@
-[Data Rights]: Users' personal data usage governed by the Global Privacy Policy. [AI Usage]: No specific AI usage terms provided. [Liability]: Taskrabbit disclaims liability for Tasker actions and responsibilities.
+[Data Rights]: Users' personal data usage governed by Global Privacy Policy.  
+[AI Usage]: No specific AI usage terms outlined.  
+[Liability]: Taskrabbit not liable for Taskers' actions or employment-related obligations.
