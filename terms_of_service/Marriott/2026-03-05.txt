@@ -267,6 +267,7 @@ Bahasa Indonesia
 한국어
 ภาษาไทย
 Tiếng Việt
+हिंदी
 International
 English
 العربية

@@ -79,10 +79,6 @@ You are prohibited from receiving our products, services, or software under appl
 3.2 What you can share and do on Meta Products
 We want people to use Meta Products to express themselves and to share content that is important to them, but not at the expense of the safety and well-being of others or the integrity of our community. You therefore agree not to engage in the conduct described below (or to facilitate or support others in doing so):
 You may not use our Products to do or share anything:
-• That violates these Terms, the Community Standards, or other terms and policies that apply to your use of our Products.
-• That is unlawful, misleading, discriminatory or fraudulent (or assists someone else in using our Products in such a way).
-• That you do not own or have the necessary rights to share.
-• That infringes or violates someone else's rights, including their intellectual property rights (such as by infringing another’s copyright or trademark, or distributing or selling counterfeit or pirated goods), unless an exception or limitation applies under applicable law.
 That violates these Terms, the
 Community Standards
 , or
@@ -135,10 +131,6 @@ Content will not be deleted within 90 days of the account deletion or content de
 where your content has been used by others in accordance with this license and they have not deleted it (in which case this license will continue to apply until that content is deleted);
 where deletion within 90 days is not possible due to technical limitations of our systems, in which case, we will complete the deletion as soon as technically feasible; or
 where immediate deletion would restrict our ability to:
-• investigate or identify illegal activity or violations of our terms and policies (for example, to identify or investigate misuse of our Products or systems);
-• protect the safety, integrity, and security of our Products, systems, services, our employees, and users, and to defend ourselves;
-• comply with legal obligations for the preservation of evidence, including data Meta Companies providing financial products and services preserve to comply with any record keeping obligations required by law; or
-• comply with a request of a judicial or administrative authority, law enforcement or a government agency;
 investigate or identify illegal activity or violations of our terms and policies (for example, to identify or investigate misuse of our Products or systems);
 protect the safety, integrity, and security of our Products, systems, services, our employees, and users, and to defend ourselves;
 comply with legal obligations for the preservation of evidence, including data Meta Companies providing financial products and services preserve to comply with any record keeping obligations required by law; or

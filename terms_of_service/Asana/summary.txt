@@ -1,1 +1,1 @@
-[Data Rights]: Users retain ownership of submitted content; Asana has a license to use it. [AI Usage]: Users must ensure oversight and accuracy when using Asana AI. [Liability]: Asana disclaims all warranties and limits liability for service disruptions.
+[Data Rights]: Users retain ownership of submitted content; Asana has a license to use it. [AI Usage]: Users must ensure oversight and accuracy when using Asana AI. [Liability]: Asana disclaims all warranties; no liability for service disruptions.

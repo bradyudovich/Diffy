@@ -1,3 +1,1 @@
-[Data Rights]: Users have no enforceable legal rights to Virtual Content.  
-[AI Usage]: Not explicitly mentioned.  
-[Liability]: Limitation of liability applies; disputes resolved via arbitration.
+[Data Rights]: Users have no enforceable legal rights to Virtual Content; Roblox retains ownership. [AI Usage]: Not specified. [Liability]: Limited liability; users must comply with community standards.

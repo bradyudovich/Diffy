@@ -56,7 +56,7 @@ OSA Annex
 Section 1: Illegal content
 Section 2: Content harmful to children
 Effective Date: December 19, 2025
-Last Updated: January 7, 2026
+Last Updated: March 4, 2026
 Introduction
 USER TERMS
 CREATOR TERMS
@@ -8571,20 +8571,25 @@ Class 1B material
 crime and violence material; or
 drug-related material.
 Roblox’s "Violent Content and Gore” and “Illegal and Regulated Goods” Community Standards are broad and cover class 1B material as defined within the AU OSA framework, among other types of violations.
+“
+Class 1C material
+”, which is any class 1 material which describes or depicts specific fetish practices or fantasies and is not class 1A material.
+Roblox’s “Harassment and Discrimination”, “Romantic and Sexual Content”, “Violent Content and Gore”, “Illegal and Regulated Goods” and “Suicide, Self Injury, and Harmful Behavior” Community Standards are broad and cover class 1C material as defined within the AU OSA framework, among other types of violations.
+“
+Class 2A material
+”, which is class 2 material that is a film which depicts actual (not simulated) sexual activity between consenting adults.
+Roblox’s “Romantic and Sexual Content” Community Standards are broad and cover class 2A material as defined within the AU OSA framework, among other types of violations.
+“
+Class 2B material
+”, which is class 2 material which depicts high-impact sexually explicit images (including high-impact nudity).
+Roblox’s “Romantic and Sexual Content” Community Standards are broad and cover class 2B material as defined within the AU OSA framework, among other types of violations.
 Under the AU OSA, we are required to include certain provisions in our terms of use. These provisions are contained in the
 Roblox Terms
 The terms and conditions that apply to and govern a User’s and Creator’s use of the Services. The Roblox Terms include the User Terms, Creator Terms, Roblox Community Standards, Roblox Privacy & Cookie Policy, and regional Supplemental Provisions and other Additional Terms.
 (which incorporate the Community Standards).
-The Community Standards prohibit certain types of content, including class 1A and class 1B material, on the
-Services
-Any service or application offered by Roblox, such as those allowing Users to develop Virtual Content, connect with others, and use Virtual Content created by you and other Users. It includes websites on the roblox.com domain, our Roblox mobile, virtual reality and Xbox, and PlayStation apps, the Roblox Player, the Roblox Studio, and our other websites, products, software, applications, content, data feeds, and other services.
-. For Users in Australia, this means you must ensure the
-Services
-Any service or application offered by Roblox, such as those allowing Users to develop Virtual Content, connect with others, and use Virtual Content created by you and other Users. It includes websites on the roblox.com domain, our Roblox mobile, virtual reality and Xbox, and PlayStation apps, the Roblox Player, the Roblox Studio, and our other websites, products, software, applications, content, data feeds, and other services.
-are not used, whether by you or by another person using your
-Account
-A Roblox Account, which a User must create in order to access certain elements and functionality of the Services.
-, to solicit, access, distribute, or store class 1A material or class 1B material.
+The Community Standards prohibit certain types of content, including class 1A, class 1B material, class 1C material, class 2A material, class 2B material and any sharing of material via the service in the course of engaging with non-consensual sharing of intimate images, grooming of children, or sexual extortion on the Services. For Users in Australia, this means you must ensure the Services are not used, whether by you or by another person using your Account to:
+solicit, access, distribute, or store class 1A material, class 1B material, class 1C material, class 2A material or class 2B material; or
+share material via the service in the course of engaging with non-consensual sharing of intimate images, grooming of children, or sexual extortion.
 Consistent with section 2(c) of the
 User Terms
 Terms applicable to all Users which provide an overview and the associated rules for things like (i) account creation, (ii) using Robux to make purchases, (iii) trading Virtual Items, and (iv) activities prohibited on the Platform. The User Terms also cover some of the more technical legal terms that govern use of the Services, including intellectual property ownership, online safety, disclaimers and other very important legal terms.
@@ -8976,7 +8981,7 @@ here
 here
 .
 Effective Date: December 19, 2025
-Last Updated: January 7, 2026
+Last Updated: March 4, 2026
 AR - شروط استخدام Roblox 20251219.pdf
 2 MB
 Download

@@ -1,1 +1,1 @@
-[Category]: Access Rights: Users denied access to server. [Critical User Constraint]: No data rights or AI usage specified.
+[Data Rights]: User data may be collected and used for service improvement. [AI Usage]: AI may analyze user data for functionality. [Liability]: Company not liable for unauthorized access or data breaches.

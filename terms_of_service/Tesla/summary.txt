@@ -1,1 +1,1 @@
-[Category]: Access Denied. [Key Data/Legal Policy]: No access to legal resources. [Critical User Constraint]: Users cannot retrieve or review terms or policies.
+[Category]: Access Restrictions. [Key Data/Legal Policy]: No access to legal resources. [Critical User Constraint]: Users cannot view terms or policies.
