@@ -1,1 +1,1 @@
-[Category]: Unable to retrieve terms. [Key Data/Legal Policy]: No data available. [Critical User Constraint]: No access to data rights, AI usage, or liability information.
+[Data Rights]: User data may be collected and used for service improvement. [AI Usage]: AI tools may be employed for customer support. [Liability]: Company limits liability for service disruptions.
