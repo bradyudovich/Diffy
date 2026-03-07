@@ -1,1 +1,1 @@
-[Data Rights]: Users retain ownership of Input and Output; OpenAI may use Content for service improvement. [AI Usage]: Output may not be accurate; human review recommended. [Liability]: OpenAI not liable for reliance on Output.
+[Data Rights]: Users retain ownership of Input; Output ownership assigned to users. [AI Usage]: Content may be used to improve services; opt-out available. [Liability]: Output may be inaccurate; users must verify before use.
