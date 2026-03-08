@@ -24,23 +24,22 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r scraper/requirements.txt
 
-      # NEW: This installs the actual Chromium browser inside the GitHub Runner
       - name: Install Playwright Browsers
         run: python -m playwright install --with-deps chromium
 
       - name: Run monitor
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: python monitor.py
+        run: python scraper/monitor.py
 
       - name: Commit and push data updates
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          # We add data, public/data, and terms_of_service to ensure the frontend sees it
-          git add data/ public/data/ terms_of_service/
+          # Add scraper outputs, public/data (served by frontend), and ToS archives
+          git add scraper/data/ scraper/terms_of_service/ public/data/ data/
           if git diff --cached --quiet; then
             echo "No changes to data – nothing to commit."
           else
