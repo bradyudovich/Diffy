@@ -14,27 +14,36 @@ function getLatestVerdict(company: CompanyResult): "Good" | "Neutral" | "Caution
 
 function CompanyLogo({ tosUrl, name }: { tosUrl: string; name: string }) {
   const [imgError, setImgError] = useState(false);
-  let src = "";
+  const [useLocal, setUseLocal] = useState(true);
+  let domain = "";
   try {
     const { hostname } = new URL(tosUrl);
-    const domain = hostname.replace(/^www\./, "");
-    src = `https://www.google.com/s2/favicons?sz=32&domain=${domain}`;
+    domain = hostname.replace(/^www\./, "");
   } catch {
     /* ignore */
   }
-  if (!src || imgError) {
+  if (!domain || imgError) {
     return (
       <span className="h-6 w-6 flex items-center justify-center text-base flex-shrink-0">
         🏢
       </span>
     );
   }
+  const src = useLocal
+    ? `/favicons/${domain}.png`
+    : `https://www.google.com/s2/favicons?sz=32&domain=${domain}`;
   return (
     <img
       src={src}
       alt={`${name} logo`}
       className="h-6 w-6 object-contain flex-shrink-0"
-      onError={() => setImgError(true)}
+      onError={() => {
+        if (useLocal) {
+          setUseLocal(false);
+        } else {
+          setImgError(true);
+        }
+      }}
     />
   );
 }

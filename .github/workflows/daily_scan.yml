@@ -38,8 +38,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          # Add scraper outputs, public/data (served by frontend), and ToS archives
-          git add scraper/data/ scraper/terms_of_service/ public/data/ data/
+          # Add scraper outputs, public/data (served by frontend), ToS archives, and favicons
+          git add scraper/data/ scraper/terms_of_service/ public/data/ public/favicons/ data/
           if git diff --cached --quiet; then
             echo "No changes to data – nothing to commit."
           else

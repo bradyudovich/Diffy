@@ -3,6 +3,7 @@ import type { CompanyResult, HistoryEntry, Results } from "./types";
 import ServiceCardGrid from "./components/ServiceCardGrid";
 import ChangeTimeline from "./components/ChangeTimeline";
 import DiffViewer from "./components/DiffViewer";
+import DiffViewerErrorBoundary from "./components/DiffViewerErrorBoundary";
 
 const RESULTS_URL =
   "https://raw.githubusercontent.com/bradyudovich/Diffy/main/data/results.json";
@@ -275,10 +276,12 @@ export default function App() {
               {/* Right: diff viewer */}
               <div>
                 {selectedEntry ? (
-                  <DiffViewer
-                    entry={selectedEntry}
-                    companyName={selectedCompany.name}
-                  />
+                  <DiffViewerErrorBoundary entry={selectedEntry} tosUrl={selectedCompany.tosUrl}>
+                    <DiffViewer
+                      entry={selectedEntry}
+                      companyName={selectedCompany.name}
+                    />
+                  </DiffViewerErrorBoundary>
                 ) : (
                   <div className="flex items-center justify-center h-40 text-gray-400 text-sm rounded-xl border border-dashed border-gray-300">
                     Select a change from the timeline to view details.
