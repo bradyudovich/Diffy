@@ -617,8 +617,6 @@ def monitor() -> dict:
         # Every new version is always archived; significance is determined
         # separately by detect_substantive_change below.
         archived = archive_tos_if_changed(name, new_text)
-        # Enforce single-version retention: delete all but the latest snapshot.
-        prune_old_tos_archives(name)
 
         if not archived:
             # ToS content is unchanged – reuse the persisted summary without
