@@ -21,6 +21,8 @@ export interface HistoryEntry {
   changeMagnitude?: number;
   /** High-risk legal terms found in the diff text. */
   watchlist_hits?: string[];
+  /** Trust score (0–100) computed from verdict and watchlist hits. */
+  trustScore?: number;
 }
 
 /** Per-company result from the scanner, v2 schema. */

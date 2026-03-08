@@ -5,6 +5,7 @@ import ServiceCardGrid from "./components/ServiceCardGrid";
 import ChangeTimeline from "./components/ChangeTimeline";
 import DiffViewer from "./components/DiffViewer";
 import DiffViewerErrorBoundary from "./components/DiffViewerErrorBoundary";
+import About from "./components/About";
 
 const RESULTS_URL =
   "https://raw.githubusercontent.com/bradyudovich/Diffy/main/data/results.json";
@@ -60,6 +61,9 @@ export default function App() {
   // Drill-down state: selected company and selected history entry
   const [selectedCompany, setSelectedCompany] = useState<CompanyResult | null>(null);
   const [selectedEntry, setSelectedEntry] = useState<HistoryEntry | null>(null);
+
+  // About / FAQ page
+  const [showAbout, setShowAbout] = useState(false);
 
   useEffect(() => {
     const url = `${RESULTS_URL}?t=${Date.now()}`;
@@ -128,6 +132,12 @@ export default function App() {
     );
   }
 
+  function handleShowAbout() {
+    setShowAbout(true);
+    setSelectedCompany(null);
+    setSelectedEntry(null);
+  }
+
   const pageTitle = selectedCompany
     ? `Track ${selectedCompany.name} Terms of Service Changes | Diffy`
     : "Diffy – Terms of Service Change Tracker";
@@ -145,17 +155,29 @@ export default function App() {
       <div className="min-h-screen bg-gray-50 text-gray-900">
       {/* Header */}
       <header className="bg-indigo-700 text-white py-6 shadow">
-        <div className="max-w-6xl mx-auto px-4">
-          <h1 className="text-3xl font-bold">Diffy</h1>
-          <p className="mt-1 text-indigo-200 text-sm">
-            Terms of Service change tracker
-          </p>
+        <div className="max-w-6xl mx-auto px-4 flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold">Diffy</h1>
+            <p className="mt-1 text-indigo-200 text-sm">
+              Terms of Service change tracker
+            </p>
+          </div>
+          <button
+            onClick={handleShowAbout}
+            className="text-sm text-indigo-200 hover:text-white transition-colors underline-offset-2 hover:underline"
+          >
+            About / FAQ
+          </button>
         </div>
       </header>
 
       <main className="max-w-6xl mx-auto px-4 py-8">
+        {/* About / FAQ page */}
+        {showAbout && (
+          <About onBack={() => setShowAbout(false)} />
+        )}
         {/* Loading */}
-        {loading && (
+        {!showAbout && loading && (
           <div className="flex items-center justify-center py-16 text-indigo-600">
             <svg className="animate-spin h-8 w-8 mr-3" viewBox="0 0 24 24" fill="none">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
@@ -166,7 +188,7 @@ export default function App() {
         )}
 
         {/* Error */}
-        {error && (
+        {!showAbout && error && (
           <div className="rounded-lg bg-red-50 border border-red-200 p-6 text-red-700">
             <h2 className="text-lg font-semibold mb-1">Error loading data</h2>
             <p className="text-sm">{error}</p>
@@ -177,7 +199,7 @@ export default function App() {
         )}
 
         {/* Main content: card grid */}
-        {results && !selectedCompany && (
+        {!showAbout && results && !selectedCompany && (
           <>
             {results.updatedAt && (
               <p className="text-xs text-gray-500 mb-4">
@@ -235,7 +257,7 @@ export default function App() {
         )}
 
         {/* Company detail view */}
-        {results && selectedCompany && (
+        {!showAbout && results && selectedCompany && (
           <div>
             {/* Back button */}
             <button

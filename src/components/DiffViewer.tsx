@@ -2,6 +2,8 @@ import { useState } from "react";
 import type { HistoryEntry } from "../types";
 import VerdictBadge from "./VerdictBadge";
 import RawDiffView from "./RawDiffView";
+import ScoreGauge from "./ScoreGauge";
+import { getGlossaryDefinition } from "../LegalGlossary";
 
 interface Props {
   entry: HistoryEntry;
@@ -27,6 +29,34 @@ const CATEGORY_ICONS: Record<string, string> = {
 const NO_CHANGE = "No significant changes detected";
 
 type TabId = "summary" | "raw";
+
+/** Lightweight tooltip that shows on hover without external dependencies. */
+function Tooltip({ content, children }: { content: string; children: React.ReactNode }) {
+  const [visible, setVisible] = useState(false);
+  const tooltipId = `tooltip-${content.slice(0, 20).replace(/\s+/g, "-").toLowerCase()}`;
+  return (
+    <span
+      className="relative inline-block"
+      onMouseEnter={() => setVisible(true)}
+      onMouseLeave={() => setVisible(false)}
+      onFocus={() => setVisible(true)}
+      onBlur={() => setVisible(false)}
+      aria-describedby={visible ? tooltipId : undefined}
+    >
+      {children}
+      {visible && (
+        <span
+          id={tooltipId}
+          role="tooltip"
+          className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-1.5 -translate-x-1/2 w-56 rounded-lg bg-gray-900 px-2.5 py-1.5 text-xs text-white shadow-lg"
+        >
+          {content}
+          <span className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900" aria-hidden="true" />
+        </span>
+      )}
+    </span>
+  );
+}
 
 function HashBadge({ label, hash }: { label: string; hash: string | null }) {
   if (!hash) {
@@ -116,14 +146,19 @@ export default function DiffViewer({ entry, companyName, previousRawText = "", c
       {/* Header */}
       <div className="px-4 py-3 border-b border-current border-opacity-20">
         <div className="flex items-center justify-between flex-wrap gap-2">
-          <div>
-            <div className="flex items-center gap-2">
-              <h3 className="text-sm font-bold text-gray-800">
-                {companyName}
-              </h3>
-              <VerdictBadge verdict={entry.verdict} />
+          <div className="flex items-center gap-3">
+            {entry.trustScore !== undefined && (
+              <ScoreGauge score={entry.trustScore} size="sm" />
+            )}
+            <div>
+              <div className="flex items-center gap-2">
+                <h3 className="text-sm font-bold text-gray-800">
+                  {companyName}
+                </h3>
+                <VerdictBadge verdict={entry.verdict} />
+              </div>
+              <p className="text-xs text-gray-500 mt-0.5">{date}</p>
             </div>
-            <p className="text-xs text-gray-500 mt-0.5">{date}</p>
           </div>
           {entry.changeReason && (
             <span className="rounded-full bg-white/70 border px-3 py-0.5 text-xs text-gray-600">
@@ -184,14 +219,24 @@ export default function DiffViewer({ entry, companyName, previousRawText = "", c
                 ⚠️ High-Risk Terms Detected
               </p>
               <div className="flex flex-wrap gap-1.5">
-                {entry.watchlist_hits.map((term) => (
-                  <span
-                    key={term}
-                    className="rounded-full bg-amber-100 border border-amber-300 px-2 py-0.5 text-xs font-medium text-amber-800"
-                  >
-                    {term}
-                  </span>
-                ))}
+                {entry.watchlist_hits.map((term) => {
+                  const definition = getGlossaryDefinition(term);
+                  const badge = (
+                    <span
+                      key={term}
+                      className="rounded-full bg-amber-100 border border-amber-300 px-2 py-0.5 text-xs font-medium text-amber-800 cursor-help"
+                    >
+                      {term}
+                    </span>
+                  );
+                  return definition ? (
+                    <Tooltip key={term} content={definition}>
+                      {badge}
+                    </Tooltip>
+                  ) : (
+                    badge
+                  );
+                })}
               </div>
             </div>
           )}

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { CompanyResult } from "../types";
 import VerdictBadge from "./VerdictBadge";
+import ScoreGauge from "./ScoreGauge";
 
 interface Props {
   company: CompanyResult;
@@ -57,6 +58,7 @@ const CARD_STYLES: Record<string, { bg: string; border: string }> = {
 export default function ServiceCard({ company, onSelectCompany }: Props) {
   const verdict = getLatestVerdict(company);
   const latestEntry = company.history?.[company.history.length - 1];
+  const trustScore = latestEntry?.trustScore;
 
   return (
     <li
@@ -72,9 +74,12 @@ export default function ServiceCard({ company, onSelectCompany }: Props) {
           </h2>
         </div>
 
-        {/* Verdict badge */}
-        <span className="absolute top-3 right-3">
+        {/* Verdict badge + Trust Score gauge */}
+        <span className="absolute top-3 right-3 flex flex-col items-center gap-1">
           <VerdictBadge verdict={verdict} />
+          {trustScore !== undefined && (
+            <ScoreGauge score={trustScore} size="sm" />
+          )}
         </span>
 
         {/* Category */}
