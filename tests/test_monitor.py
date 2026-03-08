@@ -485,11 +485,11 @@ class TestHybridDiffConstants:
 
     def test_similarity_threshold_defined(self):
         assert hasattr(monitor, "SIMILARITY_THRESHOLD")
-        assert monitor.SIMILARITY_THRESHOLD == 0.97
+        assert monitor.SIMILARITY_THRESHOLD == 0.95
 
     def test_percent_change_threshold_defined(self):
         assert hasattr(monitor, "PERCENT_CHANGE_THRESHOLD")
-        assert monitor.PERCENT_CHANGE_THRESHOLD == 0.02
+        assert monitor.PERCENT_CHANGE_THRESHOLD == 0.04
 
 
 class TestHybridDiffMonitorIntegration:

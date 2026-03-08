@@ -124,10 +124,10 @@ summary is only regenerated when the change is deemed significant.
 4. **Hot-section check** – the document is split into paragraphs.  Any
    paragraph matching one of the *hot section* keywords is extracted and
    compared old-vs-new using a semantic similarity score.  If the score falls
-   below `SIMILARITY_THRESHOLD` (default **0.97**), the change is flagged and
+   below `SIMILARITY_THRESHOLD` (default **0.95**), the change is flagged and
    the reason is recorded (e.g. `"change detected in hot section: arbitration"`).
 5. **Percent-change check** – if total document character-length changes by
-   more than `PERCENT_CHANGE_THRESHOLD` (default **2 %**), the change is
+   more than `PERCENT_CHANGE_THRESHOLD` (default **4 %**), the change is
    flagged with a reason like `"document changed by 5.3%"`.
 6. **Overall semantic similarity** – if no earlier check triggered, the overall
    similarity of the two normalized documents is measured.  A score below
@@ -155,8 +155,8 @@ All thresholds and the list of hot-section keyword patterns live at the top of
 | `NAV_TITLE_ANCHORS` | see source | List of compiled regexes; first matching line is the ToS start — everything above is stripped |
 | `SKIPPED_LINE_PATTERNS` | see source | List of compiled regexes; matching lines are stripped before comparison |
 | `HOT_SECTION_KEYWORDS` | see source | Dict of section name → list of regex patterns |
-| `SIMILARITY_THRESHOLD` | `0.97` | Similarity score below which a change is substantive |
-| `PERCENT_CHANGE_THRESHOLD` | `0.02` | Fractional size change (0.02 = 2 %) to trigger a flag |
+| `SIMILARITY_THRESHOLD` | `0.95` | Similarity score below which a change is substantive |
+| `PERCENT_CHANGE_THRESHOLD` | `0.04` | Fractional size change (0.04 = 4 %) to trigger a flag |
 
 Edit these constants directly in `monitor.py` to tune sensitivity.  To suppress
 false positives from a new provider, add a `re.compile(…)` entry to

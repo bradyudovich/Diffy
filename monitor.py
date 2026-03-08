@@ -50,11 +50,13 @@ HOT_SECTION_KEYWORDS: dict[str, list[str]] = {
 # Similarity score below which a section change is considered substantive.
 # Applies to both spaCy vector similarity (when available) and the
 # SequenceMatcher fallback.  Range: 0.0 (totally different) – 1.0 (identical).
-SIMILARITY_THRESHOLD: float = 0.97
+# Lowered from 0.97 to 0.95 to reduce sensitivity to minor, superficial changes.
+SIMILARITY_THRESHOLD: float = 0.95
 
-# Fractional document-size change (0.02 = 2%) that triggers a flag for
-# non-hot-section changes.
-PERCENT_CHANGE_THRESHOLD: float = 0.02
+# Fractional document-size change that triggers a flag for non-hot-section changes.
+# Raised from 0.02 (2%) to 0.04 (4%) to require a more substantial edit before
+# flagging cosmetic or minor text updates.
+PERCENT_CHANGE_THRESHOLD: float = 0.04
 
 # ---------------------------------------------------------------------------
 # Pre-cleaning: skip/ignore line patterns
