@@ -73,16 +73,55 @@ export default function App() {
 
   useEffect(() => {
     const url = `${RESULTS_URL}?t=${Date.now()}`;
+    // DEBUG: log the URL being fetched to confirm the correct endpoint is used.
+    // Remove this log once the "string did not match expected pattern" error is resolved.
+    console.debug("[DEBUG] Fetching results from:", url);
     fetch(url)
       .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json() as Promise<Results>;
+        // DEBUG: log response status to distinguish network failures from parse errors.
+        console.debug("[DEBUG] Response status:", res.status, res.statusText);
+        if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`);
+        // Read as text first so we can inspect the raw payload if JSON parsing fails.
+        return res.text();
+      })
+      .then((text) => {
+        // DEBUG: log payload size and a short preview to help spot truncated or
+        // HTML error pages being returned instead of valid JSON.
+        // Remove this block once the root cause has been confirmed.
+        console.debug(
+          "[DEBUG] Response payload length:",
+          text.length,
+          "| preview:",
+          text.slice(0, 120).replace(/\n/g, " ")
+        );
+        let parsed: Results;
+        try {
+          parsed = JSON.parse(text) as Results;
+        } catch (parseErr) {
+          // DEBUG: surface the raw parse error and a snippet of the response body
+          // so developers can identify malformed JSON without needing devtools.
+          const snippet = text.slice(0, 120).replace(/\n/g, " ");
+          console.error(
+            "[DEBUG] JSON parse failed. Error:",
+            parseErr,
+            "| Response snippet:",
+            snippet
+          );
+          throw new Error(
+            `Failed to parse results (${parseErr instanceof Error ? parseErr.message : String(parseErr)}). ` +
+              `Response starts with: ${text.slice(0, 120)}`
+          );
+        }
+        return parsed;
       })
       .then((data) => {
         setResults(data);
         setLoading(false);
       })
       .catch((err: unknown) => {
+        // DEBUG: log the full error object for additional context in the console.
+        // Remove this log once the issue is resolved.
+        console.error("[DEBUG] Error loading results data. URL:", url, "| Error:", err);
         setError(err instanceof Error ? err.message : String(err));
         setLoading(false);
       });
@@ -144,6 +183,12 @@ export default function App() {
           <div className="rounded-lg bg-red-50 border border-red-200 p-6 text-red-700">
             <h2 className="text-lg font-semibold mb-1">Error loading data</h2>
             <p className="text-sm">{error}</p>
+            {/* DEBUG: hint to guide developers toward the browser console for details. */}
+            {/* Remove this paragraph once the root cause has been confirmed and fixed. */}
+            <p className="text-xs mt-2 text-red-500">
+              Check the browser console for detailed debug output (search for
+              &quot;[DEBUG]&quot;).
+            </p>
           </div>
         )}
 
