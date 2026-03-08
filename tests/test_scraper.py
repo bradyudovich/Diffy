@@ -165,9 +165,9 @@ class TestCallOpenAIDiffSummary:
     def test_returns_default_values_when_no_api_key(self, monkeypatch):
         monkeypatch.setattr(scraper_monitor, "OPENAI_API_KEY", "")
         result = scraper_monitor.call_openai_diff_summary("some diff")
-        assert result["Privacy"] == "No significant change"
-        assert result["DataOwnership"] == "No significant change"
-        assert result["UserRights"] == "No significant change"
+        assert result["Privacy"] == "No significant changes detected"
+        assert result["DataOwnership"] == "No significant changes detected"
+        assert result["UserRights"] == "No significant changes detected"
 
     def test_parses_valid_json_response(self, monkeypatch):
         monkeypatch.setattr(scraper_monitor, "OPENAI_API_KEY", "test-key")

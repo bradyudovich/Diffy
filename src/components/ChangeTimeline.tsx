@@ -9,7 +9,7 @@ interface Props {
 
 const VERDICT_STYLES = {
   Caution: { dot: "bg-red-500", label: "text-red-700", icon: "⚠️" },
-  Neutral: { dot: "bg-yellow-400", label: "text-yellow-700", icon: "📋" },
+  Neutral: { dot: "bg-blue-400", label: "text-blue-700", icon: "📋" },
   Good:    { dot: "bg-green-500", label: "text-green-700", icon: "✅" },
 };
 
@@ -84,7 +84,7 @@ export default function ChangeTimeline({ companyName, history, onSelectEntry, se
                 {entry.diffSummary && (
                   <p className="text-xs text-gray-400 mt-0.5 truncate">
                     {Object.entries(entry.diffSummary)
-                      .filter(([, v]) => v && v !== "No significant change")
+                      .filter(([, v]) => v && v !== "No significant changes detected" && v !== "No significant change")
                       .map(([k]) => k)
                       .join(", ") || "No flagged categories"}
                   </p>
