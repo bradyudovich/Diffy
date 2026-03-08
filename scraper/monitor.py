@@ -468,7 +468,7 @@ def call_openai_overview(tos_text: str) -> str:
     """Generate a plain-text overview summary of the full ToS."""
     if not OPENAI_API_KEY:
         return "AI analysis skipped: OPENAI_API_KEY not set."
-    truncated = tos_text[:8000]
+    truncated = tos_text[:8000]  # ~2 000 GPT-4o-mini tokens; keeps costs low and avoids context limits
     try:
         return _openai_post([
             {"role": "system", "content": AI_TOS_SUMMARY_PROMPT},

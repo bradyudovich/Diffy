@@ -4,11 +4,11 @@
 - Structured diff summary parsing
 - History tracking and schema v2 output
 """
-import importlib
+import importlib.util
 import sys
 import types
 from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 import pytest
 
@@ -35,7 +35,6 @@ def _stub_scraper_modules():
 _stub_scraper_modules()
 
 # Import scraper/monitor.py as a separate module
-import importlib.util
 _scraper_spec = importlib.util.spec_from_file_location(
     "scraper_monitor",
     Path(__file__).parent.parent / "scraper" / "monitor.py",
@@ -163,7 +162,7 @@ class TestAssignVerdict:
 # ---------------------------------------------------------------------------
 
 class TestCallOpenAIDiffSummary:
-    def test_returns_empty_dict_when_no_api_key(self, monkeypatch):
+    def test_returns_default_values_when_no_api_key(self, monkeypatch):
         monkeypatch.setattr(scraper_monitor, "OPENAI_API_KEY", "")
         result = scraper_monitor.call_openai_diff_summary("some diff")
         assert result["Privacy"] == "No significant change"
