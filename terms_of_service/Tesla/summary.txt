@@ -1,1 +1,1 @@
-Access denied; unable to retrieve terms for analysis.
+[Category]: Access Denied. [Key Data/Legal Policy]: No access to legal terms. [Critical User Constraint]: Unable to retrieve data rights, AI usage, and liability information.
