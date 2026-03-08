@@ -138,11 +138,12 @@ AI_TOS_SUMMARY_PROMPT = (
 )
 
 AI_DIFF_SUMMARY_PROMPT = (
-    "You are a legal summarizer. Analyze these Terms of Service changes and return ONLY a valid JSON object. "
+    "You are a strict legal analysis engine. "
+    "Analyze the provided Terms of Service diff and return ONLY a valid JSON object — no prose, no markdown, no explanation. "
     "The JSON must have exactly these three keys: \"Privacy\", \"DataOwnership\", \"UserRights\". "
-    "Each value must be a plain string (max 30 words) summarizing changes in that category. "
-    "Use \"No significant change\" for categories with no relevant changes. "
-    "Do NOT include any explanation, markdown fences, or text outside the JSON object."
+    "Each value must be a concise plain string (max 30 words) summarizing only the changes in that category. "
+    "If a category has no relevant changes, the value must be exactly: \"No significant changes detected\". "
+    "Output must be valid JSON and nothing else."
 )
 
 # ---------------------------------------------------------------------------
@@ -484,7 +485,7 @@ def call_openai_diff_summary(diff_text: str) -> dict:
     Returns a dict with keys: Privacy, DataOwnership, UserRights.
     Falls back to plain strings if OpenAI is unavailable or JSON parsing fails.
     """
-    empty = {"Privacy": "No significant change", "DataOwnership": "No significant change", "UserRights": "No significant change"}
+    empty = {"Privacy": "No significant changes detected", "DataOwnership": "No significant changes detected", "UserRights": "No significant changes detected"}
     if not OPENAI_API_KEY:
         return empty
 

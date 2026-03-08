@@ -1,14 +1,16 @@
+import { useState } from "react";
 import type { HistoryEntry } from "../types";
+import VerdictBadge from "./VerdictBadge";
 
 interface Props {
   entry: HistoryEntry;
   companyName: string;
 }
 
-const VERDICT_COLORS = {
-  Caution: { bg: "bg-red-50", border: "border-red-300", title: "text-red-700" },
-  Neutral: { bg: "bg-yellow-50", border: "border-yellow-300", title: "text-yellow-700" },
-  Good:    { bg: "bg-green-50", border: "border-green-300", title: "text-green-700" },
+const WRAPPER_COLORS = {
+  Caution: { bg: "bg-red-50", border: "border-red-300" },
+  Neutral: { bg: "bg-blue-50", border: "border-blue-200" },
+  Good:    { bg: "bg-green-50", border: "border-green-300" },
 };
 
 const CATEGORY_ICONS: Record<string, string> = {
@@ -16,6 +18,8 @@ const CATEGORY_ICONS: Record<string, string> = {
   DataOwnership: "🗂️",
   UserRights: "⚖️",
 };
+
+const NO_CHANGE = "No significant changes detected";
 
 function HashBadge({ label, hash }: { label: string; hash: string | null }) {
   if (!hash) {
@@ -39,8 +43,64 @@ function HashBadge({ label, hash }: { label: string; hash: string | null }) {
   );
 }
 
+function AccordionRow({
+  categoryKey,
+  value,
+}: {
+  categoryKey: "Privacy" | "DataOwnership" | "UserRights";
+  value: string;
+}) {
+  const [open, setOpen] = useState(true);
+  const isChanged = value && value !== NO_CHANGE && value !== "No significant change";
+
+  return (
+    <div className="rounded-lg border border-gray-200 bg-white/70">
+      <button
+        type="button"
+        className="flex w-full items-center justify-between px-3 py-2 text-left"
+        onClick={() => setOpen((prev) => !prev)}
+        aria-expanded={open}
+      >
+        <span className="flex items-center gap-2 text-xs font-semibold text-gray-700">
+          <span aria-hidden="true">{CATEGORY_ICONS[categoryKey]}</span>
+          {categoryKey}
+          {isChanged && (
+            <span className="rounded-full bg-amber-100 px-1.5 py-0.5 text-amber-700 font-medium">
+              changed
+            </span>
+          )}
+        </span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          className={`h-4 w-4 text-gray-400 transition-transform ${open ? "rotate-180" : ""}`}
+        >
+          <path
+            fillRule="evenodd"
+            d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+            clipRule="evenodd"
+          />
+        </svg>
+      </button>
+
+      {open && (
+        <div className="border-t border-gray-100 px-3 py-2">
+          <p
+            className={`text-xs leading-relaxed ${
+              isChanged ? "text-gray-800" : "text-gray-400 italic"
+            }`}
+          >
+            {value || NO_CHANGE}
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function DiffViewer({ entry, companyName }: Props) {
-  const colors = VERDICT_COLORS[entry.verdict] ?? VERDICT_COLORS.Good;
+  const colors = WRAPPER_COLORS[entry.verdict] ?? WRAPPER_COLORS.Good;
   const date = new Date(entry.timestamp).toLocaleString();
 
   return (
@@ -49,9 +109,12 @@ export default function DiffViewer({ entry, companyName }: Props) {
       <div className="px-4 py-3 border-b border-current border-opacity-20">
         <div className="flex items-center justify-between flex-wrap gap-2">
           <div>
-            <h3 className={`text-sm font-bold ${colors.title}`}>
-              {companyName} — {entry.verdict} Change
-            </h3>
+            <div className="flex items-center gap-2">
+              <h3 className="text-sm font-bold text-gray-800">
+                {companyName}
+              </h3>
+              <VerdictBadge verdict={entry.verdict} />
+            </div>
             <p className="text-xs text-gray-500 mt-0.5">{date}</p>
           </div>
           {entry.changeReason && (
@@ -68,34 +131,20 @@ export default function DiffViewer({ entry, companyName }: Props) {
         </div>
       </div>
 
-      {/* AI-labeled breakdown */}
+      {/* AI-labeled breakdown – accordion */}
       {entry.diffSummary && (
         <div className="px-4 py-3">
           <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
             AI-Labeled Breakdown
           </p>
           <div className="space-y-2">
-            {(["Privacy", "DataOwnership", "UserRights"] as const).map((key) => {
-              const val = entry.diffSummary[key];
-              const isChanged = val && val !== "No significant change";
-              return (
-                <div key={key} className="flex gap-2 items-start">
-                  <span className="text-base flex-shrink-0 mt-0.5">
-                    {CATEGORY_ICONS[key]}
-                  </span>
-                  <div className="min-w-0">
-                    <p className="text-xs font-semibold text-gray-600">{key}</p>
-                    <p
-                      className={`text-xs mt-0.5 ${
-                        isChanged ? "text-gray-800" : "text-gray-400 italic"
-                      }`}
-                    >
-                      {val || "No significant change"}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
+            {(["Privacy", "DataOwnership", "UserRights"] as const).map((key) => (
+              <AccordionRow
+                key={key}
+                categoryKey={key}
+                value={entry.diffSummary[key]}
+              />
+            ))}
           </div>
         </div>
       )}

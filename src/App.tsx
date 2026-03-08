@@ -36,8 +36,8 @@ function normaliseLegacyCompany(c: CompanyResult): CompanyResult {
       verdict: "Neutral",
       diffSummary: {
         Privacy: c.summary ?? "",
-        DataOwnership: "No significant change",
-        UserRights: "No significant change",
+        DataOwnership: "No significant changes detected",
+        UserRights: "No significant changes detected",
       },
       changeIsSubstantial: c.changeIsSubstantial ?? false,
       changeReason: c.changeReason ?? "",
