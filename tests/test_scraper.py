@@ -244,7 +244,7 @@ class TestGetCompanyHistory:
 class TestValidateResults:
     def _make_valid_results(self):
         return {
-            "schemaVersion": "2.0",
+            "schemaVersion": "2.1",
             "updatedAt": "2026-03-08T00:00:00Z",
             "companies": [
                 {
@@ -275,9 +275,15 @@ class TestValidateResults:
     def test_valid_results_passes(self):
         scraper_monitor.validate_results(self._make_valid_results())
 
+    def test_valid_results_passes_schema_v2(self):
+        """Schema version 2.0 (legacy) should also be accepted."""
+        results = self._make_valid_results()
+        results["schemaVersion"] = "2.0"
+        scraper_monitor.validate_results(results)
+
     def test_missing_companies_key_raises(self):
         with pytest.raises(AssertionError):
-            scraper_monitor.validate_results({"schemaVersion": "2.0", "updatedAt": "t"})
+            scraper_monitor.validate_results({"schemaVersion": "2.1", "updatedAt": "t"})
 
     def test_wrong_schema_version_raises(self):
         results = self._make_valid_results()
@@ -387,7 +393,7 @@ class TestMonitorHistoryAccumulation:
                             lambda text: {"Privacy": "ok", "DataOwnership": "ok", "UserRights": "ok"})
 
         results = scraper_monitor.monitor()
-        assert results.get("schemaVersion") == "2.0"
+        assert results.get("schemaVersion") == "2.1"
 
     def test_results_have_latest_summary(self, tmp_env, monkeypatch):
         monkeypatch.setattr(scraper_monitor, "load_config", self._make_company_config)
@@ -399,3 +405,143 @@ class TestMonitorHistoryAccumulation:
         company = next(c for c in results["companies"] if c["name"] == "TestCo")
         assert "latestSummary" in company
         assert company["latestSummary"]  # non-empty
+
+
+# ---------------------------------------------------------------------------
+# Premium features: watchlist scanning and change magnitude
+# ---------------------------------------------------------------------------
+
+class TestScanWatchlist:
+    def test_returns_matched_terms(self):
+        hits = scraper_monitor.scan_watchlist(
+            "This policy includes mandatory arbitration and class action waiver.",
+            ["Arbitration", "Class Action", "Biometric"],
+        )
+        assert "Arbitration" in hits
+        assert "Class Action" in hits
+        assert "Biometric" not in hits
+
+    def test_case_insensitive_match(self):
+        hits = scraper_monitor.scan_watchlist(
+            "Users must agree to ARBITRATION of all disputes.",
+            ["Arbitration"],
+        )
+        assert "Arbitration" in hits
+
+    def test_no_matches_returns_empty_list(self):
+        hits = scraper_monitor.scan_watchlist(
+            "All disputes resolved amicably.",
+            ["Arbitration", "Class Action"],
+        )
+        assert hits == []
+
+    def test_empty_text_returns_empty_list(self):
+        assert scraper_monitor.scan_watchlist("", ["Arbitration"]) == []
+
+    def test_default_watchlist_loads_from_file(self, tmp_path, monkeypatch):
+        import json
+        wl_path = tmp_path / "watchlist.json"
+        wl_path.write_text(json.dumps({"terms": ["Arbitration", "Biometric"]}))
+        monkeypatch.setattr(scraper_monitor, "WATCHLIST_PATH", wl_path)
+        hits = scraper_monitor.scan_watchlist("biometric data processing")
+        assert "Biometric" in hits
+
+
+class TestComputeChangeMagnitude:
+    def test_identical_texts_return_zero(self):
+        result = scraper_monitor.compute_change_magnitude("hello world", "hello world")
+        assert result == 0.0
+
+    def test_completely_different_texts_return_high_value(self):
+        result = scraper_monitor.compute_change_magnitude("aaa", "zzz")
+        assert result > 0.0
+
+    def test_empty_both_return_zero(self):
+        assert scraper_monitor.compute_change_magnitude("", "") == 0.0
+
+    def test_result_rounded_to_one_decimal(self):
+        result = scraper_monitor.compute_change_magnitude(
+            "The quick brown fox", "The quick brown dog"
+        )
+        assert isinstance(result, float)
+        assert result == round(result, 1)
+
+    def test_partial_change_between_0_and_100(self):
+        old = "Terms of service: we collect your data."
+        new = "Terms of service: we collect and sell your data to third parties."
+        result = scraper_monitor.compute_change_magnitude(old, new)
+        assert 0.0 < result <= 100.0
+
+
+class TestLoadWatchlist:
+    def test_loads_terms_from_file(self, tmp_path, monkeypatch):
+        import json
+        wl_path = tmp_path / "watchlist.json"
+        wl_path.write_text(json.dumps({"terms": ["Arbitration", "Sub-processor"]}))
+        monkeypatch.setattr(scraper_monitor, "WATCHLIST_PATH", wl_path)
+        terms = scraper_monitor.load_watchlist()
+        assert "Arbitration" in terms
+        assert "Sub-processor" in terms
+
+    def test_missing_file_returns_empty_list(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(scraper_monitor, "WATCHLIST_PATH", tmp_path / "missing.json")
+        assert scraper_monitor.load_watchlist() == []
+
+
+class TestMonitorPremiumFields:
+    """Verify that monitor() includes changeMagnitude and watchlist_hits in history entries."""
+
+    def _make_company_config(self):
+        return [{"name": "TestCo", "category": "Tech", "tosUrl": "https://test.com/tos"}]
+
+    def test_history_entry_has_change_magnitude(self, tmp_env, monkeypatch):
+        monkeypatch.setattr(scraper_monitor, "load_config", self._make_company_config)
+        monkeypatch.setattr(scraper_monitor, "fetch_text", lambda url, **kw: "ToS content v1")
+        monkeypatch.setattr(scraper_monitor, "call_openai_first_summary",
+                            lambda text: {"Privacy": "ok", "DataOwnership": "ok", "UserRights": "ok"})
+
+        results = scraper_monitor.monitor()
+        company = next(c for c in results["companies"] if c["name"] == "TestCo")
+        assert len(company["history"]) == 1
+        assert "changeMagnitude" in company["history"][0]
+        assert isinstance(company["history"][0]["changeMagnitude"], float)
+
+    def test_history_entry_has_watchlist_hits(self, tmp_env, monkeypatch):
+        monkeypatch.setattr(scraper_monitor, "load_config", self._make_company_config)
+        monkeypatch.setattr(scraper_monitor, "fetch_text",
+                            lambda url, **kw: "Mandatory arbitration clause applies.")
+        monkeypatch.setattr(scraper_monitor, "call_openai_first_summary",
+                            lambda text: {"Privacy": "ok", "DataOwnership": "ok", "UserRights": "ok"})
+        monkeypatch.setattr(scraper_monitor, "load_watchlist",
+                            lambda: ["Arbitration", "Class Action"])
+
+        results = scraper_monitor.monitor()
+        company = next(c for c in results["companies"] if c["name"] == "TestCo")
+        assert "watchlist_hits" in company["history"][0]
+        assert isinstance(company["history"][0]["watchlist_hits"], list)
+        assert "Arbitration" in company["history"][0]["watchlist_hits"]
+
+    def test_change_magnitude_on_second_run(self, tmp_env, monkeypatch):
+        calls = {"count": 0}
+
+        def fetch_changing(url, **kw):
+            calls["count"] += 1
+            if calls["count"] == 1:
+                return "ToS version one with lots of privacy terms."
+            return "ToS version two significantly different arbitration clause."
+
+        monkeypatch.setattr(scraper_monitor, "load_config", self._make_company_config)
+        monkeypatch.setattr(scraper_monitor, "fetch_text", fetch_changing)
+        monkeypatch.setattr(scraper_monitor, "call_openai_diff_summary",
+                            lambda diff: {"Privacy": "changed", "DataOwnership": "ok", "UserRights": "ok"})
+        monkeypatch.setattr(scraper_monitor, "call_openai_first_summary",
+                            lambda text: {"Privacy": "v1", "DataOwnership": "ok", "UserRights": "ok"})
+
+        r1 = scraper_monitor.monitor()
+        scraper_monitor.write_results(r1)
+        r2 = scraper_monitor.monitor()
+        company = next(c for c in r2["companies"] if c["name"] == "TestCo")
+        assert len(company["history"]) == 2
+        second_entry = company["history"][1]
+        assert "changeMagnitude" in second_entry
+        assert 0.0 <= second_entry["changeMagnitude"] <= 100.0

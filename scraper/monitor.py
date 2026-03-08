@@ -26,11 +26,14 @@ from playwright_stealth import Stealth
 # ---------------------------------------------------------------------------
 BASE_DIR = Path(__file__).parent
 CONFIG_PATH = BASE_DIR / "config.json"
+WATCHLIST_PATH = BASE_DIR / "watchlist.json"
 SNAPSHOTS_DIR = BASE_DIR / "data" / "snapshots"
 DATA_RESULTS_PATH = BASE_DIR / "data" / "results.json"
 # Also write to public/data so the Vite frontend picks it up during dev/build
 PUBLIC_RESULTS_PATH = BASE_DIR.parent / "public" / "data" / "results.json"
 TOS_DIR = BASE_DIR / "terms_of_service"
+
+SCHEMA_VERSION = "2.1"
 
 # ---------------------------------------------------------------------------
 # Hybrid substantive diff configuration
@@ -207,6 +210,39 @@ def load_config() -> list[dict]:
     with open(CONFIG_PATH, encoding="utf-8") as f:
         data = json.load(f)
     return data.get("companies", [])
+
+
+def load_watchlist() -> list[str]:
+    """Load high-risk keyword terms from watchlist.json."""
+    if WATCHLIST_PATH.exists():
+        try:
+            with open(WATCHLIST_PATH, encoding="utf-8") as f:
+                data = json.load(f)
+            return [str(t) for t in data.get("terms", [])]
+        except (json.JSONDecodeError, OSError):
+            pass
+    return []
+
+
+def scan_watchlist(text: str, watchlist: list[str] | None = None) -> list[str]:
+    """Return watchlist terms found (case-insensitive) in the given text."""
+    if watchlist is None:
+        watchlist = load_watchlist()
+    text_lower = text.lower()
+    return [term for term in watchlist if term.lower() in text_lower]
+
+
+def compute_change_magnitude(old_text: str, new_text: str) -> float:
+    """Return the percentage of difference between two texts (0.0–100.0).
+
+    Uses difflib.SequenceMatcher: a similarity ratio of 0.85 means
+    15.0% difference (changeMagnitude = 15.0).
+    Rounded to one decimal place.
+    """
+    if not old_text and not new_text:
+        return 0.0
+    ratio = difflib.SequenceMatcher(None, old_text, new_text).ratio()
+    return round((1.0 - ratio) * 100, 1)
 
 
 def snapshot_path(company_name: str) -> Path:
@@ -557,6 +593,7 @@ def monitor() -> dict:
     now = datetime.now(timezone.utc).isoformat()
     existing_results = load_existing_results()
     company_results: list[dict] = []
+    watchlist = load_watchlist()
 
     for company in companies_config:
         name: str = company.get("name", "")
@@ -630,6 +667,7 @@ def monitor() -> dict:
             diff_text = build_diff(old_text, new_text)
             diff_summary = call_openai_diff_summary(diff_text)
         else:
+            diff_text = ""
             diff_summary = call_openai_first_summary(new_text)
 
         verdict = assign_verdict(change_reason, diff_summary)
@@ -642,6 +680,13 @@ def monitor() -> dict:
 
         write_tos_summary(name, latest_summary)
 
+        # Compute change magnitude (percentage difference between versions)
+        change_magnitude = compute_change_magnitude(old_text or "", new_text)
+
+        # Scan for high-risk watchlist terms in the diff (or full text for first version)
+        scan_target = diff_text if diff_text else new_text
+        watchlist_hits = scan_watchlist(scan_target, watchlist)
+
         # Append new history entry (chronological; oldest first)
         new_entry: dict = {
             "previous_hash": previous_hash,
@@ -651,6 +696,8 @@ def monitor() -> dict:
             "diffSummary": diff_summary,
             "changeIsSubstantial": True,
             "changeReason": change_reason,
+            "changeMagnitude": change_magnitude,
+            "watchlist_hits": watchlist_hits,
         }
         history.append(new_entry)
 
@@ -664,7 +711,7 @@ def monitor() -> dict:
         })
 
     results = {
-        "schemaVersion": "2.0",
+        "schemaVersion": SCHEMA_VERSION,
         "updatedAt": now,
         "companies": company_results,
     }
@@ -759,7 +806,8 @@ def fetch_and_store_favicons(companies_config: list[dict]) -> None:
 def validate_results(results: dict) -> None:
     assert isinstance(results, dict), "results must be a dict"
     assert "companies" in results, "results must have 'companies' key"
-    assert results.get("schemaVersion") == "2.0", "schemaVersion must be '2.0'"
+    assert results.get("schemaVersion") in ("2.0", "2.1"), \
+        f"schemaVersion must be '2.0' or '2.1', got: {results.get('schemaVersion')!r}"
     for company in results["companies"]:
         assert "name" in company, f"company missing 'name': {company}"
         assert "history" in company, f"company '{company.get('name')}' missing 'history'"

@@ -17,6 +17,10 @@ export interface HistoryEntry {
   diffSummary: DiffSummary;
   changeIsSubstantial: boolean;
   changeReason: string;
+  /** Percentage of text that changed (0.0–100.0), e.g. 14.2 for 14.2% difference. */
+  changeMagnitude?: number;
+  /** High-risk legal terms found in the diff text. */
+  watchlist_hits?: string[];
 }
 
 /** Per-company result from the scanner, v2 schema. */

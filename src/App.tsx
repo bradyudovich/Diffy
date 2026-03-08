@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { HelmetProvider, Helmet } from "react-helmet-async";
 import type { CompanyResult, HistoryEntry, Results } from "./types";
 import ServiceCardGrid from "./components/ServiceCardGrid";
 import ChangeTimeline from "./components/ChangeTimeline";
@@ -127,8 +128,21 @@ export default function App() {
     );
   }
 
+  const pageTitle = selectedCompany
+    ? `Track ${selectedCompany.name} Terms of Service Changes | Diffy`
+    : "Diffy – Terms of Service Change Tracker";
+
+  const pageDescription = selectedCompany
+    ? `Stay informed about ${selectedCompany.name} Terms of Service updates. Diffy monitors ToS changes and alerts you to high-risk legal terms.`
+    : "Diffy monitors Terms of Service changes across popular platforms and alerts you when important policies are updated.";
+
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900">
+    <HelmetProvider>
+      <Helmet>
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDescription} />
+      </Helmet>
+      <div className="min-h-screen bg-gray-50 text-gray-900">
       {/* Header */}
       <header className="bg-indigo-700 text-white py-6 shadow">
         <div className="max-w-6xl mx-auto px-4">
@@ -293,5 +307,6 @@ export default function App() {
         )}
       </main>
     </div>
+    </HelmetProvider>
   );
 }
