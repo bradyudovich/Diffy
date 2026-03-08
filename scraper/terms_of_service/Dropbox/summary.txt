@@ -1,0 +1,3 @@
+[Privacy]: [Data Rights]: Users retain ownership of their content; Dropbox requires permission to host, back up, and share.  
+[AI Usage]: Dropbox accesses and scans user content for service features.  
+[Liability]: Dropbox not liable for user-generated content; templates not legal advice.

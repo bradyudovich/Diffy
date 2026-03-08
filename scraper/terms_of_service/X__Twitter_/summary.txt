@@ -1,0 +1,3 @@
+[Privacy]: [Data Rights]: Users retain ownership of their Content but grant X a broad, royalty-free license.  
+[AI Usage]: Services provided on an "AS IS" basis; users may encounter harmful Content.  
+[Liability]: Limited liability; maximum compensation capped at $100 or recent service fees.

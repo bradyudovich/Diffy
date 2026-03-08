@@ -1,0 +1,3 @@
+[Privacy]: [Data Rights]: Users have no enforceable legal rights to Virtual Content.  
+[AI Usage]: Not explicitly defined in terms.  
+[Liability]: Limitation of liability applies; users must resolve disputes via arbitration.
