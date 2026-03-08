@@ -1,10 +1,15 @@
 import { useState } from "react";
 import type { HistoryEntry } from "../types";
 import VerdictBadge from "./VerdictBadge";
+import RawDiffView from "./RawDiffView";
 
 interface Props {
   entry: HistoryEntry;
   companyName: string;
+  /** Raw text of the previous version, used for the Raw Changes tab. */
+  previousRawText?: string;
+  /** Raw text of the current version, used for the Raw Changes tab. */
+  currentRawText?: string;
 }
 
 const WRAPPER_COLORS = {
@@ -20,6 +25,8 @@ const CATEGORY_ICONS: Record<string, string> = {
 };
 
 const NO_CHANGE = "No significant changes detected";
+
+type TabId = "summary" | "raw";
 
 function HashBadge({ label, hash }: { label: string; hash: string | null }) {
   if (!hash) {
@@ -99,7 +106,8 @@ function AccordionRow({
   );
 }
 
-export default function DiffViewer({ entry, companyName }: Props) {
+export default function DiffViewer({ entry, companyName, previousRawText = "", currentRawText = "" }: Props) {
+  const [activeTab, setActiveTab] = useState<TabId>("summary");
   const colors = WRAPPER_COLORS[entry.verdict] ?? WRAPPER_COLORS.Good;
   const date = new Date(entry.timestamp).toLocaleString();
 
@@ -131,21 +139,72 @@ export default function DiffViewer({ entry, companyName }: Props) {
         </div>
       </div>
 
-      {/* AI-labeled breakdown – accordion */}
-      {entry.diffSummary && (
+      {/* Tab bar */}
+      <div className="flex border-b border-current border-opacity-10 px-4 pt-2 gap-1">
+        {(["summary", "raw"] as TabId[]).map((tab) => (
+          <button
+            key={tab}
+            type="button"
+            onClick={() => setActiveTab(tab)}
+            className={`px-3 py-1.5 text-xs font-medium rounded-t-md transition-colors ${
+              activeTab === tab
+                ? "bg-white/80 text-indigo-700 border border-b-white border-gray-200 -mb-px"
+                : "text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            {tab === "summary" ? "AI Summary" : "Raw Changes"}
+          </button>
+        ))}
+      </div>
+
+      {/* Tab: AI-labeled breakdown */}
+      {activeTab === "summary" && (
+        <div className="px-4 py-3">
+          {entry.diffSummary && (
+            <>
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+                AI-Labeled Breakdown
+              </p>
+              <div className="space-y-2">
+                {(["Privacy", "DataOwnership", "UserRights"] as const).map((key) => (
+                  <AccordionRow
+                    key={key}
+                    categoryKey={key}
+                    value={entry.diffSummary[key]}
+                  />
+                ))}
+              </div>
+            </>
+          )}
+
+          {/* Watchlist hits */}
+          {entry.watchlist_hits && entry.watchlist_hits.length > 0 && (
+            <div className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2">
+              <p className="text-xs font-semibold text-amber-700 mb-1.5">
+                ⚠️ High-Risk Terms Detected
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {entry.watchlist_hits.map((term) => (
+                  <span
+                    key={term}
+                    className="rounded-full bg-amber-100 border border-amber-300 px-2 py-0.5 text-xs font-medium text-amber-800"
+                  >
+                    {term}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Tab: Raw diff */}
+      {activeTab === "raw" && (
         <div className="px-4 py-3">
           <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
-            AI-Labeled Breakdown
+            Raw Text Changes
           </p>
-          <div className="space-y-2">
-            {(["Privacy", "DataOwnership", "UserRights"] as const).map((key) => (
-              <AccordionRow
-                key={key}
-                categoryKey={key}
-                value={entry.diffSummary[key]}
-              />
-            ))}
-          </div>
+          <RawDiffView oldText={previousRawText} newText={currentRawText} />
         </div>
       )}
 
@@ -158,6 +217,11 @@ export default function DiffViewer({ entry, companyName }: Props) {
         >
           {entry.changeIsSubstantial ? "Substantive change" : "Minor change"}
         </span>
+        {entry.changeMagnitude !== undefined && (
+          <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-white/60 border text-gray-600">
+            {entry.changeMagnitude.toFixed(1)}% changed
+          </span>
+        )}
         <span className="text-xs text-gray-400 font-mono">
           SHA-256: {entry.current_hash.slice(0, 20)}…
         </span>
@@ -165,3 +229,4 @@ export default function DiffViewer({ entry, companyName }: Props) {
     </div>
   );
 }
+
