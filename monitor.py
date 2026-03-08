@@ -695,12 +695,29 @@ def monitor() -> dict:
 
 def write_results(results: dict) -> None:
     payload = json.dumps(results, indent=2, ensure_ascii=False)
+    # DEBUG: validate that the serialised payload is parseable JSON before writing,
+    # to catch any serialisation bugs early and prevent a corrupt results.json from
+    # reaching the front-end.  Remove this check once the root cause has been fixed.
+    try:
+        json.loads(payload)
+    except json.JSONDecodeError as exc:
+        raise ValueError(
+            f"write_results: serialised payload is not valid JSON – aborting write. "
+            f"JSONDecodeError: {exc}"
+        ) from exc
     PUBLIC_RESULTS_PATH.write_text(payload, encoding="utf-8")
     DATA_RESULTS_PATH.write_text(payload, encoding="utf-8")
 
 def validate_results(results: dict) -> None:
     assert isinstance(results, dict)
     assert "companies" in results
+    # DEBUG: round-trip the results through JSON to confirm the output is parseable.
+    # Remove this check once the root cause of the malformed results.json is confirmed.
+    try:
+        round_tripped = json.loads(json.dumps(results, ensure_ascii=False))
+        assert isinstance(round_tripped, dict)
+    except (json.JSONDecodeError, AssertionError) as exc:
+        raise ValueError(f"validate_results: JSON round-trip check failed – {exc}") from exc
     print("✅ Validation passed: results.json structure is correct.")
 
 if __name__ == "__main__":
