@@ -684,6 +684,78 @@ def write_results(results: dict) -> None:
     PUBLIC_RESULTS_PATH.write_text(payload, encoding="utf-8")
 
 
+# ---------------------------------------------------------------------------
+# Summary index – lightweight snapshot for fast initial page loads
+# ---------------------------------------------------------------------------
+
+SUMMARY_INDEX_PATH = BASE_DIR / "data" / "summary_index.json"
+PUBLIC_SUMMARY_INDEX_PATH = BASE_DIR.parent / "public" / "data" / "summary_index.json"
+
+
+def write_summary_index(results: dict) -> None:
+    """Write a trimmed summary_index.json containing only the latest history
+    entry per company. The frontend can load this for a fast initial render;
+    full history stays in results.json and is fetched on demand.
+    """
+    summary_companies = []
+    for company in results.get("companies", []):
+        history = company.get("history", [])
+        latest_entry = history[-1] if history else None
+        summary_companies.append({
+            "name": company.get("name"),
+            "category": company.get("category"),
+            "tosUrl": company.get("tosUrl"),
+            "lastChecked": company.get("lastChecked"),
+            "latestSummary": company.get("latestSummary"),
+            "history": [latest_entry] if latest_entry else [],
+        })
+
+    index = {
+        "schemaVersion": results.get("schemaVersion", "2.0"),
+        "updatedAt": results.get("updatedAt"),
+        "companies": summary_companies,
+    }
+    payload = json.dumps(index, indent=2, ensure_ascii=False)
+    SUMMARY_INDEX_PATH.parent.mkdir(parents=True, exist_ok=True)
+    SUMMARY_INDEX_PATH.write_text(payload, encoding="utf-8")
+    PUBLIC_SUMMARY_INDEX_PATH.parent.mkdir(parents=True, exist_ok=True)
+    PUBLIC_SUMMARY_INDEX_PATH.write_text(payload, encoding="utf-8")
+    print(f"Summary index written ({len(summary_companies)} companies).")
+
+
+# ---------------------------------------------------------------------------
+# Favicon fetching
+# ---------------------------------------------------------------------------
+
+FAVICONS_DIR = BASE_DIR.parent / "public" / "favicons"
+
+
+def fetch_and_store_favicons(companies_config: list[dict]) -> None:
+    """Fetch company favicons from Google S2 and cache them locally under
+    public/favicons/{domain}.png so the frontend can serve them without
+    an external request.
+    """
+    FAVICONS_DIR.mkdir(parents=True, exist_ok=True)
+    for company in companies_config:
+        tos_url = company.get("tosUrl", "")
+        try:
+            from urllib.parse import urlparse
+            hostname = urlparse(tos_url).hostname or ""
+            domain = hostname.replace("www.", "", 1)
+            if not domain:
+                continue
+            dest = FAVICONS_DIR / f"{domain}.png"
+            if dest.exists():
+                continue  # already cached
+            favicon_url = f"https://www.google.com/s2/favicons?sz=32&domain={domain}"
+            resp = requests.get(favicon_url, timeout=10)
+            if resp.status_code == 200:
+                dest.write_bytes(resp.content)
+                print(f"  Saved favicon for {domain}")
+        except Exception as exc:
+            print(f"  [favicon] Could not fetch for {company.get('name')}: {exc}")
+
+
 def validate_results(results: dict) -> None:
     assert isinstance(results, dict), "results must be a dict"
     assert "companies" in results, "results must have 'companies' key"
@@ -710,6 +782,8 @@ def validate_results(results: dict) -> None:
 if __name__ == "__main__":
     final_results = monitor()
     write_results(final_results)
+    write_summary_index(final_results)
     validate_results(final_results)
+    fetch_and_store_favicons(load_config())
     print(f"Done. Checked {len(final_results['companies'])} companies.")
     sys.exit(0)
