@@ -44,19 +44,18 @@ day a numeric suffix (`_1`, `_2`, …) is appended to keep both.
 
 ### Archive pruning
 
-Each time `monitor.py` runs it automatically calls
-`prune_old_tos_archives(company_name)` after archiving the freshly fetched
-ToS.  This enforces a **single-version retention policy**: only the most-recent
-snapshot is kept for each company, and all prior versions are deleted.
-`summary.txt` is always preserved.
+By default **all historical snapshots are retained** — `monitor.py` never
+deletes old archive files automatically.  Every distinct ToS version accumulates
+in `terms_of_service/{company_slug}/`, giving a full audit trail.
 
-You can also call the function directly to perform a one-off clean-up of the
-`terms_of_service/` directory:
+If you ever want to clean up old snapshots you can call
+`prune_old_tos_archives(company_name)` manually.  It deletes all but the most
+recent dated snapshot and leaves `summary.txt` untouched:
 
 ```python
 from monitor import prune_old_tos_archives, TOS_DIR
 
-# Prune all companies
+# Prune all companies (manual, one-off cleanup)
 for d in sorted(TOS_DIR.iterdir()):
     if d.is_dir():
         deleted = prune_old_tos_archives(d.name)

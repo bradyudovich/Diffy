@@ -913,8 +913,8 @@ class TestStripNavigationPreamble:
         assert is_sig is False, f"Nav-only change should not be flagged; reason: {reason!r}"
 
 
-class TestMonitorPrunesAfterArchiving:
-    """monitor() must keep only the latest ToS snapshot per company."""
+class TestMonitorKeepsAllSnapshots:
+    """monitor() must retain all distinct ToS snapshots per company."""
 
     def _run(self, tmp_env, monkeypatch, tos_text, ai_return="AI summary"):
         monkeypatch.setattr(monitor, "load_config", lambda: [
@@ -925,16 +925,15 @@ class TestMonitorPrunesAfterArchiving:
         monkeypatch.setattr(monitor, "call_openai", lambda diff: ai_return)
         return monitor.monitor()["companies"][0]
 
-    def test_only_latest_snapshot_kept_after_multiple_runs(self, tmp_env, monkeypatch):
+    def test_all_snapshots_kept_after_multiple_runs(self, tmp_env, monkeypatch):
         self._run(tmp_env, monkeypatch, "Version 1")
         self._run(tmp_env, monkeypatch, "Version 2")
         self._run(tmp_env, monkeypatch, "Version 3")
         archive_dir = monitor.tos_archive_dir("TestCo")
         dated = [f for f in archive_dir.glob("*.txt") if f.name != "summary.txt"]
-        assert len(dated) == 1
-        assert dated[0].read_text() == "Version 3"
+        assert len(dated) == 3
 
-    def test_summary_preserved_after_pruning(self, tmp_env, monkeypatch):
+    def test_summary_preserved_across_runs(self, tmp_env, monkeypatch):
         self._run(tmp_env, monkeypatch, "Version 1", "Summary v1")
         self._run(tmp_env, monkeypatch, "Version 2", "Summary v2")
         assert monitor.read_tos_summary("TestCo") == "Summary v2"
