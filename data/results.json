@@ -6,9 +6,9 @@
       "category": "AI",
       "tosUrl": "https://openai.com/policies/terms-of-use",
       "lastChecked": "2026-03-08T01:26:40.120724+00:00",
-      "changed": true,
-      "changeIsSubstantial": true,
-      "changeReason": "first version archived",
+      "changed": false,
+      "changeIsSubstantial": false,
+      "changeReason": "",
       "summary": "[Data Rights]: Users retain ownership of Input; Output is owned by users. [AI Usage]: OpenAI may use Content for service improvement. [Liability]: Output accuracy not guaranteed; users must verify before use."
     },
     {
@@ -46,9 +46,9 @@
       "category": "AI",
       "tosUrl": "https://www.microsoft.com/en-us/servicesagreement/",
       "lastChecked": "2026-03-08T01:26:57.997928+00:00",
-      "changed": true,
-      "changeIsSubstantial": true,
-      "changeReason": "first version archived",
+      "changed": false,
+      "changeIsSubstantial": false,
+      "changeReason": "",
       "summary": "[Data Rights]: Users retain ownership of their content but grant Microsoft a royalty-free license for service provision. [AI Usage]: Users must adhere to conduct rules when using AI services. [Liability]: Microsoft is not liable for user-generated content."
     },
     {
@@ -186,9 +186,9 @@
       "category": "Productivity",
       "tosUrl": "https://asana.com/terms",
       "lastChecked": "2026-03-08T01:32:39.819316+00:00",
-      "changed": true,
-      "changeIsSubstantial": true,
-      "changeReason": "first version archived",
+      "changed": false,
+      "changeIsSubstantial": false,
+      "changeReason": "",
       "summary": "[Data Rights]: Users retain ownership of submitted content; Asana has a license to use it. [AI Usage]: Users must oversee AI outputs and accept liability for decisions made. [Liability]: Asana limits liability for service disruptions."
     },
     {
@@ -326,9 +326,9 @@
       "category": "Services",
       "tosUrl": "https://help.doordash.com/consumers/s/terms-and-conditions",
       "lastChecked": "2026-03-08T01:33:30.652883+00:00",
-      "changed": true,
-      "changeIsSubstantial": true,
-      "changeReason": "first version archived",
+      "changed": false,
+      "changeIsSubstantial": false,
+      "changeReason": "",
       "summary": "[Data Rights]: User data may be collected and used for service improvement. [AI Usage]: AI tools may be employed for customer support. [Liability]: Company limits liability for service-related issues."
     },
     {
@@ -426,9 +426,9 @@
       "category": "Auto",
       "tosUrl": "https://www.tesla.com/legal/additional-resources/tesla-legal",
       "lastChecked": "2026-03-08T01:34:03.551852+00:00",
-      "changed": true,
-      "changeIsSubstantial": true,
-      "changeReason": "first version archived",
+      "changed": false,
+      "changeIsSubstantial": false,
+      "changeReason": "",
       "summary": "Access denied; unable to retrieve terms for analysis."
     },
     {
@@ -466,9 +466,9 @@
       "category": "Travel",
       "tosUrl": "https://www.delta.com/us/en/legal/conditions-of-carriage",
       "lastChecked": "2026-03-08T01:43:56.097546+00:00",
-      "changed": true,
-      "changeIsSubstantial": true,
-      "changeReason": "first version archived",
+      "changed": false,
+      "changeIsSubstantial": false,
+      "changeReason": "",
       "summary": "[Data Rights]: User data may be collected and used for service improvement. [AI Usage]: AI tools may analyze user data. [Liability]: Company not liable for indirect damages."
     },
     {
@@ -546,9 +546,9 @@
       "category": "Real Estate",
       "tosUrl": "https://www.redfin.com/about/terms-of-use",
       "lastChecked": "2026-03-08T01:44:25.489523+00:00",
-      "changed": true,
-      "changeIsSubstantial": true,
-      "changeReason": "first version archived",
+      "changed": false,
+      "changeIsSubstantial": false,
+      "changeReason": "",
       "summary": "[Data Rights]: User content is governed by the Privacy Notice; no rights to reproduce or distribute Redfin's content. [AI Usage]: No automated data scraping allowed. [Liability]: Claims resolved via binding arbitration; class action waiver applies."
     },
     {
@@ -596,9 +596,9 @@
       "category": "Health",
       "tosUrl": "https://www.fitbit.com/global/us/legal/terms-of-service",
       "lastChecked": "2026-03-08T01:44:50.019648+00:00",
-      "changed": true,
-      "changeIsSubstantial": true,
-      "changeReason": "first version archived",
+      "changed": false,
+      "changeIsSubstantial": false,
+      "changeReason": "",
       "summary": "[Data Rights]: Users retain rights to their content but grant Fitbit a broad license for use. [AI Usage]: No specific AI usage terms provided. [Liability]: Fitbit not liable for account-related damages; users responsible for content compliance."
     }
   ]
