@@ -937,3 +937,56 @@ class TestMonitorKeepsAllSnapshots:
         self._run(tmp_env, monkeypatch, "Version 1", "Summary v1")
         self._run(tmp_env, monkeypatch, "Version 2", "Summary v2")
         assert monitor.read_tos_summary("TestCo") == "Summary v2"
+
+
+# ---------------------------------------------------------------------------
+# calculate_trust_score tests
+# ---------------------------------------------------------------------------
+
+class TestCalculateTrustScore:
+    def test_good_verdict_no_hits_returns_100(self):
+        entry = {"verdict": "Good", "watchlist_hits": []}
+        assert monitor.calculate_trust_score(entry) == 100
+
+    def test_neutral_verdict_deducts_10(self):
+        entry = {"verdict": "Neutral", "watchlist_hits": []}
+        assert monitor.calculate_trust_score(entry) == 90
+
+    def test_caution_verdict_deducts_20(self):
+        entry = {"verdict": "Caution", "watchlist_hits": []}
+        assert monitor.calculate_trust_score(entry) == 80
+
+    def test_each_unique_watchlist_hit_deducts_5(self):
+        entry = {"verdict": "Good", "watchlist_hits": ["Arbitration", "Tracking"]}
+        assert monitor.calculate_trust_score(entry) == 90  # 100 - 5*2
+
+    def test_duplicate_watchlist_hits_counted_once(self):
+        entry = {"verdict": "Good", "watchlist_hits": ["Arbitration", "Arbitration"]}
+        assert monitor.calculate_trust_score(entry) == 95  # 100 - 5*1
+
+    def test_combined_caution_and_hits(self):
+        entry = {"verdict": "Caution", "watchlist_hits": ["Arbitration", "Tracking", "Sell"]}
+        # 100 - 20 - 15 = 65
+        assert monitor.calculate_trust_score(entry) == 65
+
+    def test_score_clamped_to_zero(self):
+        # 100 - 20 - 5*20 = 100 - 20 - 100 = -20 → 0
+        hits = [f"term{i}" for i in range(20)]
+        entry = {"verdict": "Caution", "watchlist_hits": hits}
+        assert monitor.calculate_trust_score(entry) == 0
+
+    def test_missing_or_none_watchlist_hits_defaults_to_zero_deduction(self):
+        for entry in ({"verdict": "Good"}, {"verdict": "Good", "watchlist_hits": None}):
+            assert monitor.calculate_trust_score(entry) == 100
+
+    def test_trust_score_stored_in_history_entry(self, tmp_env, monkeypatch):
+        """calculate_trust_score integrates correctly with a typical entry dict."""
+        entry = {
+            "verdict": "Caution",
+            "watchlist_hits": ["Arbitration", "Tracking"],
+        }
+        score = monitor.calculate_trust_score(entry)
+        # 100 - 20 (Caution) - 10 (2 unique hits) = 70
+        assert score == 70
+        assert isinstance(score, int)
+        assert 0 <= score <= 100

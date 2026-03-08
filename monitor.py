@@ -577,6 +577,31 @@ def call_openai_overview(tos_text: str) -> str:
     return resp.json()["choices"][0]["message"]["content"].strip()
 
 # ---------------------------------------------------------------------------
+# Trust score
+# ---------------------------------------------------------------------------
+
+def calculate_trust_score(history_entry: dict) -> int:
+    """Compute a trust score (0–100) for a single history entry.
+
+    Scoring rules:
+    - Start at 100.
+    - Deduct 20 for a 'Caution' verdict, 10 for 'Neutral'.
+    - Deduct 5 for each *unique* watchlist_hit present in the entry.
+    - Clamp the result to a minimum of 0.
+    """
+    score = 100
+    verdict = history_entry.get("verdict", "Good")
+    if verdict == "Caution":
+        score -= 20
+    elif verdict == "Neutral":
+        score -= 10
+    watchlist_hits = history_entry.get("watchlist_hits") or []
+    unique_hits = set(watchlist_hits)
+    score -= 5 * len(unique_hits)
+    return max(score, 0)
+
+
+# ---------------------------------------------------------------------------
 # Main monitoring loop
 # ---------------------------------------------------------------------------
 
