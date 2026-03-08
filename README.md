@@ -1,256 +1,136 @@
 # Diffy
 
-**Diffy** is a GitHub Pages–hosted web app that tracks changes to companies' Terms of Service pages.
+**Diffy** is a GitHub Pages–hosted web app that tracks changes to companies'
+Terms of Service pages. It uses AI to summarize each change and categorizes
+them by Privacy, Data Ownership, and User Rights impact, with a **Caution /
+Neutral / Good** verdict system.
 
 ## Live site
 
-The app is deployed at: **https://bradyudovich.github.io/Diffy/**
-
-![Diffy screenshot](docs/screenshot.png)
-
-## How it works
-
-1. `config.json` at the repo root lists the companies and their ToS URLs to monitor.
-2. The `.github/workflows/daily_scan.yml` workflow runs `monitor.py` every day at midnight UTC (and can be triggered manually). It uses a headless Chromium browser (via Playwright) to fetch each ToS page, stores snapshots in `data/snapshots/`, archives changed versions under `terms_of_service/`, generates AI summaries via the OpenAI API, and commits updated results to `data/results.json`.
-3. The frontend (`src/App.tsx`) fetches `data/results.json` directly from the `main` branch via `raw.githubusercontent.com` on every page load (with a cache-busting timestamp query param), so it always reflects the latest committed data without needing a rebuild.
-4. On every push to `main` (including when `data/results.json` changes), the Pages deployment workflow (`.github/workflows/deploy.yml`) rebuilds and redeploys the site automatically.
+**https://bradyudovich.github.io/Diffy/**
 
 ## Project structure
 
 ```
-config.json              # List of companies and their ToS URLs — edit this to add/remove companies
-data/
-  results.json           # Latest diff results, committed by the update workflow
-  snapshots/             # Raw ToS snapshots stored by the update workflow
-terms_of_service/
-  {company_slug}/        # One folder per company (slug replaces non-word chars with _)
-    {YYYY-MM-DD}.txt     # Full ToS text archived each time a change is detected
-    summary.txt          # Latest plain-English summary of the current ToS
-src/
-  App.tsx                # React frontend; fetches data/results.json from raw.githubusercontent.com
+scraper/                        # Python backend (ToS fetching & summarization)
+  monitor.py                    # Main scraper — run by CI or manually
+  config.json                   # Company list (edit to add/remove companies)
+  requirements.txt              # Python dependencies
+  data/
+    results.json                # Schema v2 output (history, hashes, verdicts)
+    snapshots/                  # Raw per-company ToS snapshots
+  terms_of_service/
+    {company_slug}/
+      {YYYY-MM-DD}.txt          # Archived ToS versions (one per distinct change)
+      summary.txt               # Latest plain-text summary (backward compat)
+
+src/                            # React + TypeScript frontend (Vite)
+  App.tsx                       # Root component — card grid + detail view
+  types.ts                      # Shared TypeScript interfaces (v2 schema)
+  components/
+    ServiceCardGrid.tsx         # Overview grid: all companies + verdict badge
+    ChangeTimeline.tsx          # Per-company change history timeline
+    DiffViewer.tsx              # AI-labeled breakdown for a selected change
+
+public/
+  data/results.json             # Copy of scraper output served to the frontend
+
 .github/workflows/
-  deploy.yml             # GitHub Actions: build Vite app and deploy to GitHub Pages
-  daily_scan.yml         # GitHub Actions: daily ToS scan, archiving, and summarization
+  daily_scan.yml                # CI: daily ToS scan (runs scraper/monitor.py)
+  deploy.yml                    # CI: build Vite app → GitHub Pages
 ```
 
-## ToS version archiving
+## How it works
 
-Each time `monitor.py` runs it archives the full ToS text under
-`terms_of_service/{company_slug}/{YYYY-MM-DD}.txt`.  A new file is only
-written when the fetched content differs from the most-recently archived
-version, so the folder accumulates one file per distinct version (not one
-file per day).  If two distinct versions are detected on the same calendar
-day a numeric suffix (`_1`, `_2`, …) is appended to keep both.
+1. **`scraper/config.json`** lists companies and their ToS URLs.
+2. **`daily_scan.yml`** runs `scraper/monitor.py` every day at midnight UTC.
+   The scraper uses Playwright (headless Chromium) to fetch each page,
+   detects substantive changes, calls OpenAI to generate a structured summary,
+   and commits the new `data/results.json`.
+3. **`src/App.tsx`** fetches `data/results.json` from `raw.githubusercontent.com`
+   on every page load (cache-busted), so it always shows the latest data
+   without a full rebuild.
+4. **`deploy.yml`** rebuilds and redeploys the site on every push to `main`.
 
-### Archive pruning
-
-By default **all historical snapshots are retained** — `monitor.py` never
-deletes old archive files automatically.  Every distinct ToS version accumulates
-in `terms_of_service/{company_slug}/`, giving a full audit trail.
-
-If you ever want to clean up old snapshots you can call
-`prune_old_tos_archives(company_name)` manually.  It deletes all but the most
-recent dated snapshot and leaves `summary.txt` untouched:
-
-```python
-from monitor import prune_old_tos_archives, TOS_DIR
-
-# Prune all companies (manual, one-off cleanup)
-for d in sorted(TOS_DIR.iterdir()):
-    if d.is_dir():
-        deleted = prune_old_tos_archives(d.name)
-        if deleted:
-            print(f"{d.name}: removed {deleted} old snapshot(s)")
-```
-
-The function returns the number of files deleted and is idempotent (safe to
-call repeatedly).
-
-## ToS summarization
-
-`monitor.py` uses the **hybrid substantive diff method** to decide when to
-regenerate a ToS summary and alert users.  Raw legal text is fetched from the
-company's ToS page, normalized, and compared against the most-recently archived
-version.  A new AI summary is generated **only** when a *substantive* change is
-detected.
-
-### Archiving vs. alerting
-
-Every new version of a ToS is always archived under
-`terms_of_service/{company_slug}/` for audit purposes, even if the change is
-not considered substantive (e.g. a pure whitespace re-flow).  However, the
-`changed` field in `data/results.json` is only set to `true` and the AI
-summary is only regenerated when the change is deemed significant.
-
-### Change detection pipeline
-
-1. **Navigation preamble stripping** – immediately after fetching a ToS page,
-   leading navigation and UI chrome is removed before any further processing.
-   `strip_navigation_preamble(text)` scans the fetched text line-by-line for
-   the first line matching a known ToS title anchor (see `NAV_TITLE_ANCHORS`).
-   Everything above that line (product navigation bars, site headers,
-   breadcrumbs, and other UI-only elements) is discarded.  Examples of
-   content stripped:
-   ```
-   Home | Products | Support | Sign In   ← navigation bar
-   Shop | About Us | Contact             ← navigation bar
-   Terms of Use                          ← anchor – content starts HERE
-   1. Introduction …                     ← substantive ToS text (kept)
-   ```
-   If no anchor is found the full text is returned unchanged.  Because the
-   stripping happens before archiving *and* before any diff or AI summary
-   operation, cosmetic changes to navigation bars will never trigger a false
-   positive "Changed" flag.  Add new anchor patterns to `NAV_TITLE_ANCHORS`
-   near the top of `monitor.py` to cover additional heading styles.
-2. **Pre-clean** – dynamic, per-request noise is stripped from the raw fetched
-   text *before* any comparison.  Lines matching any pattern in
-   `SKIPPED_LINE_PATTERNS` are discarded entirely.  This eliminates false
-   positives caused by CDN-injected content on providers such as Microsoft,
-   Meta, and Cloudflare-protected sites.  Examples of skipped lines:
-   ```
-   Trace ID: 9f3a2b1c-…          ← per-request identifier
-   Request ID: 0123456789abcdef  ← per-request identifier
-   Cloudflare Ray ID: 7abc1234   ← Cloudflare challenge page artefact
-   Verifying you are human       ← bot-detection scaffold line
-   Version 2.3.1 – 2024-01-15   ← rotating version header
-   Last Updated: March 1, 2026  ← date header that changes frequently
-   Effective Date: Jan 1, 2025  ← date header that changes frequently
-   ```
-   Add new patterns to the `SKIPPED_LINE_PATTERNS` list near the top of
-   `monitor.py` to handle additional providers.
-3. **Normalize** – both texts are lowercased, whitespace is collapsed, and
-   blank lines are reduced before any comparison.  This eliminates false
-   positives from purely cosmetic edits.
-4. **Hot-section check** – the document is split into paragraphs.  Any
-   paragraph matching one of the *hot section* keywords is extracted and
-   compared old-vs-new using a semantic similarity score.  If the score falls
-   below `SIMILARITY_THRESHOLD` (default **0.95**), the change is flagged and
-   the reason is recorded (e.g. `"change detected in hot section: arbitration"`).
-5. **Percent-change check** – if total document character-length changes by
-   more than `PERCENT_CHANGE_THRESHOLD` (default **4 %**), the change is
-   flagged with a reason like `"document changed by 5.3%"`.
-6. **Overall semantic similarity** – if no earlier check triggered, the overall
-   similarity of the two normalized documents is measured.  A score below
-   `SIMILARITY_THRESHOLD` flags the change with reason `"semantic meaning
-   changed"`.
-
-### Semantic similarity
-
-spaCy (`en_core_web_md`) is used when installed.  If spaCy is unavailable the
-code falls back transparently to `difflib.SequenceMatcher`, which uses the same
-`SIMILARITY_THRESHOLD`.  Install spaCy for higher-quality semantic comparison:
-
-```bash
-pip install spacy
-python -m spacy download en_core_web_md
-```
-
-### Configuring thresholds, hot sections, and skip patterns
-
-All thresholds and the list of hot-section keyword patterns live at the top of
-`monitor.py` in these constants:
-
-| Constant | Default | Description |
-|---|---|---|
-| `NAV_TITLE_ANCHORS` | see source | List of compiled regexes; first matching line is the ToS start — everything above is stripped |
-| `SKIPPED_LINE_PATTERNS` | see source | List of compiled regexes; matching lines are stripped before comparison |
-| `HOT_SECTION_KEYWORDS` | see source | Dict of section name → list of regex patterns |
-| `SIMILARITY_THRESHOLD` | `0.95` | Similarity score below which a change is substantive |
-| `PERCENT_CHANGE_THRESHOLD` | `0.04` | Fractional size change (0.04 = 4 %) to trigger a flag |
-
-Edit these constants directly in `monitor.py` to tune sensitivity.  To suppress
-false positives from a new provider, add a `re.compile(…)` entry to
-`SKIPPED_LINE_PATTERNS`.  To recognise a new ToS heading style, add a
-`re.compile(…)` entry to `NAV_TITLE_ANCHORS`.
-
-### Change reason in results
-
-When a substantive change is detected, the `data/results.json` entry for that
-company includes a `changeReason` field explaining why the change was flagged,
-e.g.:
+## Data schema (v2)
 
 ```json
 {
-  "name": "Example Corp",
-  "changed": true,
-  "changeReason": "change detected in hot section: arbitration",
-  "summary": "..."
-}
-```
-
-- **No change detected** (`archive_tos_if_changed` returns `False`): the
-  existing `summary.txt` is returned as-is.  The AI is **never** called.
-- **Change detected but not substantive**: the new version is archived, the
-  existing summary is reused, and `changed` is `false`.
-- **Substantive change detected**: the new version is archived, a fresh AI
-  summary is generated, `changed` is `true`, and `changeReason` explains the
-  flag.
-
-
-## Editing the company list
-
-Open `config.json` and add or remove entries:
-
-```json
-{
+  "schemaVersion": "2.0",
+  "updatedAt": "2026-03-08T03:01:44Z",
   "companies": [
-    { "name": "Acme Inc.", "category": "Tech", "tosUrl": "https://acme.example/terms" }
+    {
+      "name": "OpenAI",
+      "category": "AI",
+      "tosUrl": "https://openai.com/policies/terms-of-use",
+      "lastChecked": "2026-03-08T03:01:44Z",
+      "latestSummary": "[Privacy]: Data may be used for model training.",
+      "history": [
+        {
+          "previous_hash": null,
+          "current_hash": "e3b0c44298fc1c149afb...",
+          "timestamp": "2026-03-08T03:01:44Z",
+          "verdict": "Caution",
+          "diffSummary": {
+            "Privacy": "Data may be used for model training without opt-out.",
+            "DataOwnership": "Users retain rights to inputs; outputs owned by OpenAI.",
+            "UserRights": "Arbitration clause added; class actions waived."
+          },
+          "changeIsSubstantial": true,
+          "changeReason": "change detected in hot section: privacy"
+        }
+      ]
+    }
   ]
 }
 ```
 
-The `category` field is used by the frontend to populate the category filter bar. Recognized categories with built-in icons are: `AI`, `Social`, `Productivity`, `Retail`, `Streaming`, `Services`, `Finance`, `Auto`, `Travel`, and `Tech`. Any other value falls back to a 🏢 icon.
+### Verdict values
 
-## Company logos
+| Verdict   | Meaning |
+|-----------|---------|
+| `Good`    | No substantive change |
+| `Neutral` | Substantive change with low risk |
+| `Caution` | Change in a high-risk section (privacy, arbitration, AI training, termination, …) |
 
-Each company card displays a favicon fetched from Google's favicon API:
+### `latestSummary`
 
+A backward-compatible plain-text flattening of the most recent `diffSummary`,
+matching the `summary` field format used in schema v1.
+
+## Running the scraper locally
+
+```bash
+pip install -r scraper/requirements.txt
+python -m playwright install --with-deps chromium
+OPENAI_API_KEY=sk-... python scraper/monitor.py
 ```
-https://www.google.com/s2/favicons?sz=32&domain=<company-domain>
-```
 
-If the favicon fails to load, a 🏢 fallback icon is shown instead.
-
-## ToS summary click-through
-
-Clicking any company card opens a modal dialog showing a privacy- and
-AI-focused summary of that company's Terms of Service. The summary is
-sourced from the `summary` field in `data/results.json`.
-
-- **When changes are detected** between versions, the summary lists what
-  changed in terms of privacy, data use, and AI training, with an overall
-  severity rating (High, Medium, or Low).
-- **When no changes are detected** (or on the first snapshot), the summary
-  lists privacy risks, AI training concerns, data collection red flags, and
-  other significant user rights issues found in the current ToS.
-
-The modal displays a 📁 folder icon in the bottom-right corner that links
-to the full Terms of Service page. There is no visible URL text link in
-the modal or on the company card.
-
-## Local development
-
-**Frontend**
+## Running the frontend locally
 
 ```bash
 npm install
 npm run dev
 ```
 
-The dev server runs at `http://localhost:5173/Diffy/`.
+## Adding companies
 
-**Backend (monitor.py)**
+Edit `scraper/config.json`:
 
-`monitor.py` requires Python 3.11+, Playwright's Chromium browser, and an OpenAI API key:
-
-```bash
-pip install -r requirements.txt
-python -m playwright install --with-deps chromium
-OPENAI_API_KEY=<your-key> python monitor.py
+```json
+{
+  "companies": [
+    { "name": "Example Corp", "category": "Tech", "tosUrl": "https://example.com/terms" }
+  ]
+}
 ```
 
-## Deployment
+## Frontend components
 
-Pushes to `main` automatically trigger the `.github/workflows/deploy.yml` workflow, which builds the Vite app and deploys the `dist/` folder to GitHub Pages.
+| Component | Purpose |
+|-----------|---------|
+| `ServiceCardGrid` | Responsive grid of all tracked companies; shows name, category, latest verdict badge, and change count |
+| `ChangeTimeline` | Vertical timeline of all recorded changes for a selected company; click an entry to view its diff |
+| `DiffViewer` | Detail card for a selected change: SHA-256 hashes, verdict, and AI-labeled breakdown by Privacy / Data Ownership / User Rights |
 
-The `.github/workflows/daily_scan.yml` workflow runs `monitor.py` on a daily schedule (midnight UTC) and can also be triggered manually from the Actions tab. It commits any updated data files back to `main`, which in turn triggers a fresh Pages deployment.
+See [`scraper/README.md`](scraper/README.md) for full backend documentation.
