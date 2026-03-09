@@ -55,6 +55,55 @@ const FAQ_ITEMS: FaqItem[] = [
   },
 ];
 
+interface ScoringRule {
+  condition: string;
+  deduction: string;
+  example: string;
+}
+
+const SCORING_RULES: ScoringRule[] = [
+  {
+    condition: "Caution verdict",
+    deduction: "−20 points",
+    example: "A change that grants the company new data-sharing rights or removes user protections.",
+  },
+  {
+    condition: "Neutral verdict",
+    deduction: "−10 points",
+    example: "A change in formatting, contact details, or language with no clear user impact.",
+  },
+  {
+    condition: "Each unique high-risk term detected",
+    deduction: "−5 points each",
+    example: "'Arbitration', 'Sell', 'Tracking', 'Class Action', etc. found in the changed text.",
+  },
+];
+
+function ScoringTable() {
+  return (
+    <div className="overflow-x-auto rounded-lg border border-gray-200">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="bg-gray-50 text-left">
+            <th className="px-4 py-2 font-semibold text-gray-700 border-b border-gray-200">Condition</th>
+            <th className="px-4 py-2 font-semibold text-gray-700 border-b border-gray-200">Deduction</th>
+            <th className="px-4 py-2 font-semibold text-gray-700 border-b border-gray-200">Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          {SCORING_RULES.map((rule) => (
+            <tr key={rule.condition} className="border-b border-gray-100 last:border-b-0">
+              <td className="px-4 py-2 font-medium text-gray-800">{rule.condition}</td>
+              <td className="px-4 py-2 font-bold text-red-600">{rule.deduction}</td>
+              <td className="px-4 py-2 text-gray-600">{rule.example}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 function FaqRow({ item }: { item: FaqItem }) {
   return (
     <div className="border-b border-gray-200 py-5 last:border-b-0">
@@ -82,6 +131,66 @@ export default function About({ onBack }: Props) {
       <p className="text-sm text-gray-500 mb-8">
         Frequently asked questions about how Diffy works and what its data means.
       </p>
+
+      {/* How we score section */}
+      <section className="mb-8 bg-indigo-50 rounded-xl border border-indigo-100 px-6 py-5">
+        <h2 className="text-lg font-bold text-indigo-900 mb-1 flex items-center gap-2">
+          <span aria-hidden="true">📊</span> How we score
+        </h2>
+        <p className="text-sm text-indigo-800 mb-4 leading-relaxed">
+          Every company starts with a perfect score of <strong>100</strong>. Points are deducted each
+          time a substantive Terms of Service change is detected, based on its severity and the
+          high-risk legal terms it introduces. The score always reflects the <em>most recent</em>{" "}
+          change, so a company can recover if a later update reverses a harmful clause.
+        </p>
+
+        <ScoringTable />
+
+        <div className="mt-4 space-y-2">
+          <p className="text-xs font-semibold text-indigo-700 uppercase tracking-wide">Score bands</p>
+          <div className="flex flex-wrap gap-2">
+            <span className="rounded-full bg-green-100 border border-green-300 px-3 py-1 text-xs font-medium text-green-800">
+              🟢 70–100 · Good
+            </span>
+            <span className="rounded-full bg-yellow-100 border border-yellow-300 px-3 py-1 text-xs font-medium text-yellow-800">
+              🟡 40–69 · Fair
+            </span>
+            <span className="rounded-full bg-red-100 border border-red-300 px-3 py-1 text-xs font-medium text-red-800">
+              🔴 0–39 · Poor
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-5 rounded-lg bg-white/70 border border-indigo-100 px-4 py-3">
+          <p className="text-xs font-semibold text-indigo-700 mb-2">Real-world examples</p>
+          <ul className="space-y-1 text-xs text-indigo-900 leading-relaxed">
+            <li>
+              <strong>OpenAI</strong> — a Caution change (−20) that mentions &quot;Arbitration&quot;,
+              &quot;Sell&quot;, and &quot;Tracking&quot; (3 terms × −5 = −15) leaves a score of{" "}
+              <strong className="text-yellow-700">65 (Fair)</strong>.
+            </li>
+            <li>
+              <strong>A privacy-focused tool</strong> — no Caution changes and only one watchlist
+              term (−5) gives a score of <strong className="text-green-700">95 (Good)</strong>.
+            </li>
+          </ul>
+        </div>
+
+        <p className="mt-4 text-xs text-indigo-600">
+          The scoring system is fully open-source. You can inspect the{" "}
+          <code className="bg-indigo-100 px-1 py-0.5 rounded text-indigo-800">calculate_score()</code>{" "}
+          function in{" "}
+          <a
+            href="https://github.com/bradyudovich/Diffy/blob/main/scraper/monitor.py"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-indigo-900"
+          >
+            scraper/monitor.py
+          </a>{" "}
+          on GitHub.
+        </p>
+      </section>
 
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm px-6">
         {FAQ_ITEMS.map((item) => (

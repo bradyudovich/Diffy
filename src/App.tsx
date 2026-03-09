@@ -6,6 +6,7 @@ import ChangeTimeline from "./components/ChangeTimeline";
 import DiffViewer from "./components/DiffViewer";
 import DiffViewerErrorBoundary from "./components/DiffViewerErrorBoundary";
 import About from "./components/About";
+import Leaderboard from "./components/Leaderboard";
 
 const RESULTS_URL =
   "https://raw.githubusercontent.com/bradyudovich/Diffy/main/data/results.json";
@@ -248,11 +249,19 @@ export default function App() {
               </div>
             )}
 
-            {/* Service Card Grid */}
-            <ServiceCardGrid
-              companies={visibleCompanies}
-              onSelectCompany={handleSelectCompany}
-            />
+            {/* Two-column layout: card grid + leaderboard sidebar */}
+            <div className="grid gap-6 lg:grid-cols-[1fr_220px]">
+              <div>
+                <ServiceCardGrid
+                  companies={visibleCompanies}
+                  onSelectCompany={handleSelectCompany}
+                />
+              </div>
+              <Leaderboard
+                companies={results.companies}
+                onSelectCompany={handleSelectCompany}
+              />
+            </div>
           </>
         )}
 
