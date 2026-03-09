@@ -6,9 +6,9 @@
       "category": "AI",
       "tosUrl": "https://openai.com/policies/terms-of-use",
       "lastChecked": "2026-03-08T03:01:44.439708+00:00",
-      "changed": true,
-      "changeIsSubstantial": true,
-      "changeReason": "first version archived",
+      "changed": false,
+      "changeIsSubstantial": false,
+      "changeReason": "",
       "summary": "[Data Rights]: Users retain ownership of Input and Output; OpenAI may use Content for service improvement. [AI Usage]: Output may not be accurate; users must verify before use. [Liability]: OpenAI disclaims responsibility for Output accuracy and potential legal impacts."
     },
     {
@@ -46,9 +46,9 @@
       "category": "AI",
       "tosUrl": "https://www.microsoft.com/en-us/servicesagreement/",
       "lastChecked": "2026-03-08T03:01:59.907554+00:00",
-      "changed": true,
-      "changeIsSubstantial": true,
-      "changeReason": "first version archived",
+      "changed": false,
+      "changeIsSubstantial": false,
+      "changeReason": "",
       "summary": "[Data Rights]: Users retain ownership of their content but grant Microsoft a worldwide, royalty-free license for service provision. [AI Usage]: Users must adhere to conduct rules when using AI services. [Liability]: Microsoft is not responsible for user-generated content."
     },
     {
@@ -56,9 +56,9 @@
       "category": "Social",
       "tosUrl": "https://www.facebook.com/terms.php",
       "lastChecked": "2026-03-08T03:02:05.328645+00:00",
-      "changed": true,
-      "changeIsSubstantial": true,
-      "changeReason": "first version archived",
+      "changed": false,
+      "changeIsSubstantial": false,
+      "changeReason": "",
       "summary": "[Data Rights]: Personal data used for personalized ads; no sale of personal data without consent.  \n[AI Usage]: Advanced technologies like AI and machine learning enhance services and safety.  \n[Liability]: Meta may share data for safety; users must adhere to community standards."
     },
     {
@@ -185,7 +185,6 @@
       "name": "Asana",
       "category": "Productivity",
       "tosUrl": "https://asana.com/terms",
-      "lastChecked": "2026-03-08T01:32:39.819316+00:00",
       "lastChecked": "2026-03-08T03:07:42.336037+00:00",
       "changed": false,
       "changeIsSubstantial": false,
@@ -207,9 +206,9 @@
       "category": "Retail",
       "tosUrl": "https://www.amazon.com/gp/help/customer/display.html?nodeId=508088",
       "lastChecked": "2026-03-08T03:07:49.432955+00:00",
-      "changed": true,
-      "changeIsSubstantial": true,
-      "changeReason": "first version archived",
+      "changed": false,
+      "changeIsSubstantial": false,
+      "changeReason": "",
       "summary": "[Data Rights]: User data may be collected and used for service improvement. [AI Usage]: AI may be employed for personalized recommendations. [Liability]: Amazon disclaims liability for third-party content."
     },
     {
@@ -327,9 +326,9 @@
       "category": "Services",
       "tosUrl": "https://help.doordash.com/consumers/s/terms-and-conditions",
       "lastChecked": "2026-03-08T03:08:29.860748+00:00",
-      "changed": true,
-      "changeIsSubstantial": true,
-      "changeReason": "first version archived",
+      "changed": false,
+      "changeIsSubstantial": false,
+      "changeReason": "",
       "summary": "[Data Rights]: User data may be used for service improvement and marketing. [AI Usage]: AI tools may analyze user data for operational efficiency. [Liability]: Limited liability for service disruptions or inaccuracies."
     },
     {
@@ -427,9 +426,9 @@
       "category": "Auto",
       "tosUrl": "https://www.tesla.com/legal/additional-resources/tesla-legal",
       "lastChecked": "2026-03-08T03:09:04.669113+00:00",
-      "changed": true,
-      "changeIsSubstantial": true,
-      "changeReason": "first version archived",
+      "changed": false,
+      "changeIsSubstantial": false,
+      "changeReason": "",
       "summary": "[Category]: Access Denied. [Key Data/Legal Policy]: No access to legal terms. [Critical User Constraint]: Unable to retrieve data rights, AI usage, and liability information."
     },
     {
@@ -467,9 +466,9 @@
       "category": "Travel",
       "tosUrl": "https://www.delta.com/us/en/legal/conditions-of-carriage",
       "lastChecked": "2026-03-08T03:18:58.070295+00:00",
-      "changed": true,
-      "changeIsSubstantial": true,
-      "changeReason": "first version archived",
+      "changed": false,
+      "changeIsSubstantial": false,
+      "changeReason": "",
       "summary": "[Data Rights]: User data may be collected and utilized for service improvement. [AI Usage]: AI tools may be employed for data processing. [Liability]: Company disclaims liability for data breaches."
     },
     {
@@ -477,9 +476,9 @@
       "category": "Travel",
       "tosUrl": "https://www.hilton.com/en/hilton-honors/terms/",
       "lastChecked": "2026-03-08T03:19:01.883028+00:00",
-      "changed": true,
-      "changeIsSubstantial": true,
-      "changeReason": "first version archived",
+      "changed": false,
+      "changeIsSubstantial": false,
+      "changeReason": "",
       "summary": "[Category]: No relevant terms available. [Key Data/Legal Policy]: N/A. [Critical User Constraint]: N/A."
     },
     {
@@ -547,9 +546,9 @@
       "category": "Real Estate",
       "tosUrl": "https://www.redfin.com/about/terms-of-use",
       "lastChecked": "2026-03-08T03:19:29.632944+00:00",
-      "changed": true,
-      "changeIsSubstantial": true,
-      "changeReason": "first version archived",
+      "changed": false,
+      "changeIsSubstantial": false,
+      "changeReason": "",
       "summary": "[Data Rights]: User content is owned by the user but governed by Redfin's Privacy Notice. [AI Usage]: No automated data extraction allowed. [Liability]: Users waive class action rights and agree to arbitration for disputes."
     },
     {
@@ -597,9 +596,9 @@
       "category": "Health",
       "tosUrl": "https://www.fitbit.com/global/us/legal/terms-of-service",
       "lastChecked": "2026-03-08T03:19:47.354425+00:00",
-      "changed": true,
-      "changeIsSubstantial": true,
-      "changeReason": "first version archived",
+      "changed": false,
+      "changeIsSubstantial": false,
+      "changeReason": "",
       "summary": "[Data Rights]: Users retain rights to their content but grant Fitbit a license to use it for service improvement. [AI Usage]: No specific AI usage terms outlined. [Liability]: Fitbit not liable for account-related losses; users responsible for account security."
     }
   ]
