@@ -253,6 +253,36 @@ def calculate_trust_score(history_entry: dict) -> int:
     return max(score, 0)
 
 
+def calculate_score(entry: dict) -> int:
+    """Compute the Diffy score (0–100) for a history entry or company summary.
+
+    This is the public-facing scoring function used by the Scoring Engine.
+    It applies a weighted deduction system:
+
+    Verdict penalty:
+      - 'Caution'  → −20 points  (high-risk change detected)
+      - 'Neutral'  → −10 points  (informational / ambiguous change)
+      - 'Good'     →   0 points  (no deduction)
+
+    Watchlist penalty:
+      - −5 points per *unique* high-risk term found in the change
+        (e.g. 'Arbitration', 'Tracking', 'Sell', …)
+
+    The score is clamped to [0, 100].
+
+    Example: a company whose latest change is 'Caution' with 4 unique
+    watchlist hits would score 100 − 20 − (4 × 5) = 60.
+
+    Args:
+        entry: A history entry dict (must contain 'verdict' and optionally
+               'watchlist_hits').
+
+    Returns:
+        Integer score in the range [0, 100].
+    """
+    return calculate_trust_score(entry)
+
+
 def compute_change_magnitude(old_text: str, new_text: str) -> float:
     """Return the percentage of difference between two texts (0.0–100.0).
 
@@ -632,12 +662,14 @@ def monitor() -> dict:
         except Exception as exc:
             print(f"Error fetching {name}: {exc}")
             latest_summary = read_tos_summary(name) or f"Connection Error: {exc}"
+            company_score = calculate_score(history[-1]) if history else 100
             company_results.append({
                 "name": name,
                 "category": category,
                 "tosUrl": tos_url,
                 "lastChecked": last_checked,
                 "latestSummary": latest_summary,
+                "score": company_score,
                 "history": history,
             })
             continue
@@ -652,12 +684,14 @@ def monitor() -> dict:
         if not archived:
             # Content unchanged – no new history entry needed
             latest_summary = read_tos_summary(name) or "Initial snapshot created. Monitoring active."
+            company_score = calculate_score(history[-1]) if history else 100
             company_results.append({
                 "name": name,
                 "category": category,
                 "tosUrl": tos_url,
                 "lastChecked": last_checked,
                 "latestSummary": latest_summary,
+                "score": company_score,
                 "history": history,
             })
             continue
@@ -673,12 +707,14 @@ def monitor() -> dict:
             # Non-substantive change (whitespace / cosmetic) – archive written,
             # but we do NOT add a history entry or regenerate the summary.
             latest_summary = read_tos_summary(name) or "Initial snapshot created. Monitoring active."
+            company_score = calculate_score(history[-1]) if history else 100
             company_results.append({
                 "name": name,
                 "category": category,
                 "tosUrl": tos_url,
                 "lastChecked": last_checked,
                 "latestSummary": latest_summary,
+                "score": company_score,
                 "history": history,
             })
             continue
@@ -726,12 +762,14 @@ def monitor() -> dict:
         }
         history.append(new_entry)
 
+        company_score = calculate_score(history[-1]) if history else 100
         company_results.append({
             "name": name,
             "category": category,
             "tosUrl": tos_url,
             "lastChecked": last_checked,
             "latestSummary": latest_summary,
+            "score": company_score,
             "history": history,
         })
 
@@ -768,17 +806,45 @@ def write_summary_index(results: dict) -> None:
     """Write a trimmed summary_index.json containing only the latest history
     entry per company. The frontend can load this for a fast initial render;
     full history stays in results.json and is fetched on demand.
+
+    Each company entry includes:
+      - score         – Diffy score (0–100) derived from the latest history entry
+      - latest_verdict – verdict string of the latest history entry
+      - favicon_url   – relative URL to the cached favicon image
     """
     summary_companies = []
     for company in results.get("companies", []):
         history = company.get("history", [])
         latest_entry = history[-1] if history else None
+
+        # Derive per-company aggregate fields
+        score: int = company.get("score", calculate_score(latest_entry) if latest_entry else 100)
+        latest_verdict: Optional[str] = (
+            latest_entry.get("verdict") if isinstance(latest_entry, dict) else None
+        )
+
+        # Build favicon URL from the tosUrl domain (mirrors fetch_and_store_favicons)
+        tos_url = company.get("tosUrl", "")
+        favicon_url: Optional[str] = None
+        if tos_url:
+            try:
+                from urllib.parse import urlparse
+                hostname = urlparse(tos_url).hostname or ""
+                domain = hostname.replace("www.", "", 1)
+                if domain:
+                    favicon_url = f"/favicons/{domain}.png"
+            except Exception:
+                pass
+
         summary_companies.append({
             "name": company.get("name"),
             "category": company.get("category"),
-            "tosUrl": company.get("tosUrl"),
+            "tosUrl": tos_url,
             "lastChecked": company.get("lastChecked"),
             "latestSummary": company.get("latestSummary"),
+            "score": score,
+            "latest_verdict": latest_verdict,
+            "favicon_url": favicon_url,
             "history": [latest_entry] if latest_entry else [],
         })
 

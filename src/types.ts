@@ -35,6 +35,13 @@ export interface CompanyResult {
   latestSummary?: string;
   /** Chronological history of all substantive changes. */
   history: HistoryEntry[];
+  /**
+   * Diffy score (0–100) derived from the latest history entry.
+   * Computed by calculate_score() in scraper/monitor.py.
+   */
+  score?: number;
+  /** Relative URL to the cached favicon, e.g. "/favicons/openai.com.png". */
+  favicon_url?: string;
 
   // Legacy v1 fields kept for backward compat when loading old data
   changed?: boolean;

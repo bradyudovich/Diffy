@@ -545,3 +545,150 @@ class TestMonitorPremiumFields:
         second_entry = company["history"][1]
         assert "changeMagnitude" in second_entry
         assert 0.0 <= second_entry["changeMagnitude"] <= 100.0
+
+
+# ---------------------------------------------------------------------------
+# calculate_score (Scoring Engine)
+# ---------------------------------------------------------------------------
+
+class TestCalculateScore:
+    """Verify the public calculate_score() function used by the Scoring Engine."""
+
+    def test_good_verdict_no_hits_returns_100(self):
+        entry = {"verdict": "Good", "watchlist_hits": []}
+        assert scraper_monitor.calculate_score(entry) == 100
+
+    def test_caution_verdict_deducts_20(self):
+        entry = {"verdict": "Caution", "watchlist_hits": []}
+        assert scraper_monitor.calculate_score(entry) == 80
+
+    def test_neutral_verdict_deducts_10(self):
+        entry = {"verdict": "Neutral", "watchlist_hits": []}
+        assert scraper_monitor.calculate_score(entry) == 90
+
+    def test_deducts_5_per_unique_watchlist_hit(self):
+        entry = {"verdict": "Good", "watchlist_hits": ["Arbitration", "Tracking", "Sell"]}
+        assert scraper_monitor.calculate_score(entry) == 85  # 100 - 3*5
+
+    def test_duplicate_watchlist_hits_counted_once(self):
+        entry = {"verdict": "Good", "watchlist_hits": ["Arbitration", "Arbitration"]}
+        assert scraper_monitor.calculate_score(entry) == 95  # 100 - 1*5
+
+    def test_combined_caution_and_hits(self):
+        entry = {"verdict": "Caution", "watchlist_hits": ["Arbitration", "Sell", "Tracking", "Profiling"]}
+        # 100 - 20 - 4*5 = 60
+        assert scraper_monitor.calculate_score(entry) == 60
+
+    def test_score_clamped_to_zero(self):
+        entry = {
+            "verdict": "Caution",
+            "watchlist_hits": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
+                               "K", "L", "M", "N", "O", "P"],
+        }
+        assert scraper_monitor.calculate_score(entry) == 0
+
+    def test_matches_calculate_trust_score(self):
+        entry = {"verdict": "Caution", "watchlist_hits": ["Arbitration", "Tracking"]}
+        assert scraper_monitor.calculate_score(entry) == scraper_monitor.calculate_trust_score(entry)
+
+    def test_missing_watchlist_hits_defaults_to_none(self):
+        entry = {"verdict": "Neutral"}
+        assert scraper_monitor.calculate_score(entry) == 90
+
+
+# ---------------------------------------------------------------------------
+# write_summary_index includes score, latest_verdict, favicon_url
+# ---------------------------------------------------------------------------
+
+class TestWriteSummaryIndex:
+    """Verify that write_summary_index() writes score, latest_verdict, favicon_url."""
+
+    def _make_results(self, tos_url="https://openai.com/tos", verdict="Caution", score=60):
+        return {
+            "schemaVersion": "2.1",
+            "updatedAt": "2026-03-01T00:00:00Z",
+            "companies": [
+                {
+                    "name": "TestCo",
+                    "category": "AI",
+                    "tosUrl": tos_url,
+                    "lastChecked": "2026-03-01T00:00:00Z",
+                    "latestSummary": "Some summary",
+                    "score": score,
+                    "history": [
+                        {
+                            "previous_hash": None,
+                            "current_hash": "abc123",
+                            "timestamp": "2026-03-01T00:00:00Z",
+                            "verdict": verdict,
+                            "diffSummary": {"Privacy": "ok", "DataOwnership": "ok", "UserRights": "ok"},
+                            "changeIsSubstantial": True,
+                            "changeReason": "first version archived",
+                        }
+                    ],
+                }
+            ],
+        }
+
+    def test_score_field_included(self, tmp_env, monkeypatch):
+        import json
+        monkeypatch.setattr(scraper_monitor, "SUMMARY_INDEX_PATH",
+                            tmp_env / "summary_index.json")
+        monkeypatch.setattr(scraper_monitor, "PUBLIC_SUMMARY_INDEX_PATH",
+                            tmp_env / "public_summary_index.json")
+        results = self._make_results(score=65)
+        scraper_monitor.write_summary_index(results)
+        data = json.loads((tmp_env / "summary_index.json").read_text())
+        company = data["companies"][0]
+        assert "score" in company
+        assert company["score"] == 65
+
+    def test_latest_verdict_field_included(self, tmp_env, monkeypatch):
+        import json
+        monkeypatch.setattr(scraper_monitor, "SUMMARY_INDEX_PATH",
+                            tmp_env / "summary_index.json")
+        monkeypatch.setattr(scraper_monitor, "PUBLIC_SUMMARY_INDEX_PATH",
+                            tmp_env / "public_summary_index.json")
+        results = self._make_results(verdict="Caution")
+        scraper_monitor.write_summary_index(results)
+        data = json.loads((tmp_env / "summary_index.json").read_text())
+        company = data["companies"][0]
+        assert company.get("latest_verdict") == "Caution"
+
+    def test_favicon_url_field_included(self, tmp_env, monkeypatch):
+        import json
+        monkeypatch.setattr(scraper_monitor, "SUMMARY_INDEX_PATH",
+                            tmp_env / "summary_index.json")
+        monkeypatch.setattr(scraper_monitor, "PUBLIC_SUMMARY_INDEX_PATH",
+                            tmp_env / "public_summary_index.json")
+        results = self._make_results(tos_url="https://openai.com/tos")
+        scraper_monitor.write_summary_index(results)
+        data = json.loads((tmp_env / "summary_index.json").read_text())
+        company = data["companies"][0]
+        assert company.get("favicon_url") == "/favicons/openai.com.png"
+
+    def test_no_history_gives_default_score_100(self, tmp_env, monkeypatch):
+        import json
+        monkeypatch.setattr(scraper_monitor, "SUMMARY_INDEX_PATH",
+                            tmp_env / "summary_index.json")
+        monkeypatch.setattr(scraper_monitor, "PUBLIC_SUMMARY_INDEX_PATH",
+                            tmp_env / "public_summary_index.json")
+        results = {
+            "schemaVersion": "2.1",
+            "updatedAt": "2026-03-01T00:00:00Z",
+            "companies": [
+                {
+                    "name": "NewCo",
+                    "category": "Tech",
+                    "tosUrl": "https://newco.com/tos",
+                    "lastChecked": "2026-03-01T00:00:00Z",
+                    "latestSummary": "",
+                    "history": [],
+                }
+            ],
+        }
+        scraper_monitor.write_summary_index(results)
+        data = json.loads((tmp_env / "summary_index.json").read_text())
+        company = data["companies"][0]
+        assert company["score"] == 100
+        assert company["latest_verdict"] is None
