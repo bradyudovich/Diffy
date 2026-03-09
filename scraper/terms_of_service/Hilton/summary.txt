@@ -1,1 +1,1 @@
-[Privacy]: [Category]: No relevant data available. [Key Data/Legal Policy]: N/A. [Critical User Constraint]: N/A.
+[Privacy]: No significant changes detected | [DataOwnership]: No significant changes detected | [UserRights]: No significant changes detected
