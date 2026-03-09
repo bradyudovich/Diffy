@@ -1,1 +1,1 @@
-[Privacy]: No significant changes detected | [DataOwnership]: No significant changes detected | [UserRights]: No significant changes detected
+[Privacy]: Changes include clearer data usage descriptions and consent for personal information processing. | [DataOwnership]: No significant changes detected | [UserRights]: Members can now request the transfer of Points from a deceased Member's account.
