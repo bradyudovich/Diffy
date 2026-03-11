@@ -1,1 +1,1 @@
-[Privacy]: Expanded details on cookie usage and user consent preferences. | [DataOwnership]: No significant changes detected | [UserRights]: No significant changes detected
+[Privacy]: Significant reduction in details regarding cookie categories and user consent management. | [DataOwnership]: No significant changes detected | [UserRights]: No significant changes detected

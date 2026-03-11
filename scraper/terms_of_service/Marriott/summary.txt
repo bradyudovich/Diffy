@@ -1,1 +1,1 @@
-[Privacy]: [Data Rights]: User feedback becomes Marriott's property; no confidentiality obligations. [AI Usage]: No automated scraping or monitoring without consent. [Liability]: Users are liable for their actions on the site.
+[Privacy]: No significant changes detected | [DataOwnership]: Feedback submitted is owned by Marriott without confidentiality obligations. | [UserRights]: No significant changes detected
