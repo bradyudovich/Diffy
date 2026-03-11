@@ -1,13 +1,14 @@
 {
   "schemaVersion": "2.1",
-  "updatedAt": "2026-03-09T02:24:52.576381+00:00",
+  "updatedAt": "2026-03-10T01:21:14.341480+00:00",
   "companies": [
     {
       "name": "OpenAI",
       "category": "AI",
       "tosUrl": "https://openai.com/policies/terms-of-use",
-      "lastChecked": "2026-03-09T02:24:52.576812+00:00",
+      "lastChecked": "2026-03-10T01:21:14.341952+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Users retain ownership of Input and Output; OpenAI may use Content for service improvement. [AI Usage]: Output may not be accurate; human review is recommended. [Liability]: OpenAI disclaims liability for Output accuracy and user decisions based on it.",
+      "score": 65,
       "history": [
         {
           "previous_hash": null,
@@ -39,8 +40,9 @@
       "name": "Anthropic",
       "category": "AI",
       "tosUrl": "https://www.anthropic.com/legal/consumer-terms",
-      "lastChecked": "2026-03-09T02:24:56.731860+00:00",
+      "lastChecked": "2026-03-10T01:21:17.543098+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Users retain rights to Inputs; Anthropic retains rights to Outputs. [AI Usage]: Materials may be used for service improvement unless opted out. [Liability]: Outputs may contain inaccuracies; users must verify independently.",
+      "score": 80,
       "history": [
         {
           "previous_hash": null,
@@ -69,8 +71,9 @@
       "name": "Midjourney",
       "category": "AI",
       "tosUrl": "https://docs.midjourney.com/docs/terms-of-service",
-      "lastChecked": "2026-03-09T02:25:01.616446+00:00",
+      "lastChecked": "2026-03-10T01:21:20.470146+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Users own generated Assets unless revenue exceeds $1M; ownership subject to terms. [AI Usage]: Midjourney retains rights to use user-generated Content. [Liability]: Services provided \"AS IS\"; no guarantees on quality or reliability.",
+      "score": 75,
       "history": [
         {
           "previous_hash": null,
@@ -100,8 +103,9 @@
       "name": "Google",
       "category": "AI",
       "tosUrl": "https://policies.google.com/terms",
-      "lastChecked": "2026-03-09T02:25:05.932821+00:00",
+      "lastChecked": "2026-03-10T01:21:23.850892+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Google retains intellectual property rights; users must respect privacy and IP rights. [AI Usage]: Generative AI content must not mislead as human-created. [Liability]: Users are responsible for compliance and potential abuse consequences.",
+      "score": 85,
       "history": [
         {
           "previous_hash": null,
@@ -129,8 +133,9 @@
       "name": "Microsoft",
       "category": "AI",
       "tosUrl": "https://www.microsoft.com/en-us/servicesagreement/",
-      "lastChecked": "2026-03-09T02:25:09.883537+00:00",
+      "lastChecked": "2026-03-10T01:21:26.027524+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Users retain ownership of their content but grant Microsoft a royalty-free license to use it. [AI Usage]: Users must comply with conduct rules when using AI services. [Liability]: Microsoft is not responsible for user content or third-party material.",
+      "score": 60,
       "history": [
         {
           "previous_hash": null,
@@ -163,8 +168,9 @@
       "name": "Meta",
       "category": "Social",
       "tosUrl": "https://www.facebook.com/terms.php",
-      "lastChecked": "2026-03-09T02:25:13.510995+00:00",
+      "lastChecked": "2026-03-10T01:21:31.190735+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Personal data used for personalized ads; no sale of personal data without consent. [AI Usage]: Advanced technologies employed for safety and functionality. [Liability]: Meta may share data for safety; users assume risk of misuse.",
+      "score": 90,
       "history": [
         {
           "previous_hash": null,
@@ -191,8 +197,9 @@
       "name": "X (Twitter)",
       "category": "Social",
       "tosUrl": "https://x.com/en/tos",
-      "lastChecked": "2026-03-09T02:25:17.321695+00:00",
+      "lastChecked": "2026-03-10T01:21:35.278323+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Users retain ownership of their Content but grant X a broad, royalty-free license.  \n[AI Usage]: Services provided on an \"AS IS\" basis; users may encounter harmful Content.  \n[Liability]: Limited liability; maximum compensation capped at $100 or recent service fees.",
+      "score": 80,
       "history": [
         {
           "previous_hash": null,
@@ -221,8 +228,9 @@
       "name": "TikTok",
       "category": "Social",
       "tosUrl": "https://www.tiktok.com/legal/page/us/terms-of-service/en",
-      "lastChecked": "2026-03-09T02:25:20.713032+00:00",
+      "lastChecked": "2026-03-10T01:21:37.950643+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: User content may be customized and used for ads; users can control data usage settings. [AI Usage]: Automated means may identify policy violations. [Liability]: TikTok may revoke accounts for violations or inactivity.",
+      "score": 80,
       "history": [
         {
           "previous_hash": null,
@@ -251,8 +259,9 @@
       "name": "LinkedIn",
       "category": "Social",
       "tosUrl": "https://www.linkedin.com/legal/user-agreement",
-      "lastChecked": "2026-03-09T02:25:24.713587+00:00",
+      "lastChecked": "2026-03-10T01:21:40.972848+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: LinkedIn controls personal data based on user location; users consent to data collection and sharing. [AI Usage]: No specific AI usage terms provided. [Liability]: Users are responsible for account activity; LinkedIn limits liability for service-related issues.",
+      "score": 85,
       "history": [
         {
           "previous_hash": null,
@@ -280,8 +289,9 @@
       "name": "Instagram",
       "category": "Social",
       "tosUrl": "https://help.instagram.com/581066165581870",
-      "lastChecked": "2026-03-09T02:25:28.459196+00:00",
+      "lastChecked": "2026-03-10T01:21:45.069356+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: User content remains owned by users; Instagram has a license to use it. [AI Usage]: No specific AI usage terms stated. [Liability]: Instagram not liable for user content or third-party actions.",
+      "score": 100,
       "history": [
         {
           "previous_hash": null,
@@ -305,8 +315,9 @@
       "name": "Pinterest",
       "category": "Social",
       "tosUrl": "https://policy.pinterest.com/en/terms-of-service",
-      "lastChecked": "2026-03-09T02:25:32.765460+00:00",
+      "lastChecked": "2026-03-10T01:21:48.431016+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Users retain rights to posted content but must ensure compliance with policies. [AI Usage]: Pinterest uses personal data for content relevance. [Liability]: Users are responsible for their content; violations may lead to account suspension.",
+      "score": 70,
       "history": [
         {
           "previous_hash": null,
@@ -337,8 +348,9 @@
       "name": "Reddit",
       "category": "Social",
       "tosUrl": "https://www.redditinc.com/policies/user-agreement",
-      "lastChecked": "2026-03-09T02:25:36.711322+00:00",
+      "lastChecked": "2026-03-10T01:21:51.402993+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Users retain ownership of their content but grant Reddit a worldwide, perpetual license to use it, including for AI training. [Liability]: Reddit is not liable for modifications or discontinuation of services.",
+      "score": 80,
       "history": [
         {
           "previous_hash": null,
@@ -367,8 +379,9 @@
       "name": "Discord",
       "category": "Social",
       "tosUrl": "https://discord.com/terms",
-      "lastChecked": "2026-03-09T02:25:40.341472+00:00",
+      "lastChecked": "2026-03-10T01:21:54.963793+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Users retain ownership of their content; Discord may use it for service improvement. [AI Usage]: Discord may utilize AI for personalized experiences. [Liability]: Limited liability for service issues; arbitration clause applies.",
+      "score": 65,
       "history": [
         {
           "previous_hash": null,
@@ -400,8 +413,9 @@
       "name": "Slack",
       "category": "Productivity",
       "tosUrl": "https://slack.com/terms-of-service",
-      "lastChecked": "2026-03-09T02:25:42.919786+00:00",
+      "lastChecked": "2026-03-10T01:21:58.858344+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: User data may be processed under Slack's Privacy Policy. [AI Usage]: AI tools are integrated for productivity. [Liability]: Users assume responsibility for data shared on the platform.",
+      "score": 100,
       "history": [
         {
           "previous_hash": null,
@@ -425,8 +439,9 @@
       "name": "Zoom",
       "category": "Productivity",
       "tosUrl": "https://explore.zoom.us/en/terms/",
-      "lastChecked": "2026-03-09T02:25:45.937609+00:00",
+      "lastChecked": "2026-03-10T01:22:02.660651+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: User data must be accurate; Zoom has no liability for inaccuracies. [AI Usage]: Limited to internal use; software access is revocable. [Liability]: Users waive rights to recover certain damages from Zoom.",
+      "score": 65,
       "history": [
         {
           "previous_hash": null,
@@ -458,8 +473,9 @@
       "name": "Notion",
       "category": "Productivity",
       "tosUrl": "https://www.notion.com/terms",
-      "lastChecked": "2026-03-09T02:25:49.710912+00:00",
+      "lastChecked": "2026-03-10T01:22:06.428041+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Users retain ownership of their content; Notion has a license to use it for service provision. [AI Usage]: Notion may utilize AI for enhancing services. [Liability]: Notion limits liability to the maximum extent permitted by law.",
+      "score": 100,
       "history": [
         {
           "previous_hash": null,
@@ -483,16 +499,18 @@
       "name": "Adobe",
       "category": "Productivity",
       "tosUrl": "https://www.adobe.com/legal/terms.html",
-      "lastChecked": "2026-03-09T02:25:52.313119+00:00",
+      "lastChecked": "2026-03-10T01:22:09.215091+00:00",
       "latestSummary": "Connection Error: Playwright failed to fetch https://www.adobe.com/legal/terms.html: Page.goto: Timeout 90000ms exceeded.\nCall log:\n  - navigating to \"https://www.adobe.com/legal/terms.html\", waiting until \"domcontentloaded\"\n",
+      "score": 100,
       "history": []
     },
     {
       "name": "Dropbox",
       "category": "Productivity",
       "tosUrl": "https://www.dropbox.com/terms",
-      "lastChecked": "2026-03-09T02:30:44.208105+00:00",
+      "lastChecked": "2026-03-10T01:27:01.495267+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Users retain ownership of their content; Dropbox requires permission to host, back up, and share.  \n[AI Usage]: Dropbox accesses and scans user content for service features.  \n[Liability]: Dropbox not liable for user-generated content; templates not legal advice.",
+      "score": 75,
       "history": [
         {
           "previous_hash": null,
@@ -522,8 +540,9 @@
       "name": "Asana",
       "category": "Productivity",
       "tosUrl": "https://asana.com/terms",
-      "lastChecked": "2026-03-09T02:30:47.280632+00:00",
-      "latestSummary": "[Privacy]: [Data Rights]: Users retain ownership of submitted content; Asana has a license to use it. [AI Usage]: Users must ensure oversight and accuracy when using Asana AI. [Liability]: Asana disclaims all warranties and limits liability for service disruptions.",
+      "lastChecked": "2026-03-10T01:27:04.768637+00:00",
+      "latestSummary": "[Privacy]: Expanded details on cookie usage and user consent preferences. | [DataOwnership]: No significant changes detected | [UserRights]: No significant changes detected",
+      "score": 90,
       "history": [
         {
           "previous_hash": null,
@@ -545,6 +564,22 @@
             "Third Party"
           ],
           "trustScore": 60
+        },
+        {
+          "previous_hash": "957423a7c78c0f8e5ec0fe89849a7abfabcca6324798e6db6008a8a261a39a88",
+          "current_hash": "4f78656b62847c877c7278a7c6429473d15e443553dd6b3cd66434d987af7259",
+          "timestamp": "2026-03-10T01:27:04.768637+00:00",
+          "verdict": "Neutral",
+          "diffSummary": {
+            "Privacy": "Expanded details on cookie usage and user consent preferences.",
+            "DataOwnership": "No significant changes detected",
+            "UserRights": "No significant changes detected"
+          },
+          "changeIsSubstantial": true,
+          "changeReason": "change detected in hot section: liability",
+          "changeMagnitude": 6.9,
+          "watchlist_hits": [],
+          "trustScore": 90
         }
       ]
     },
@@ -552,8 +587,9 @@
       "name": "GitHub",
       "category": "Productivity",
       "tosUrl": "https://docs.github.com/en/site-policy/github-terms/github-terms-of-service",
-      "lastChecked": "2026-03-09T02:30:50.768717+00:00",
+      "lastChecked": "2026-03-10T01:27:10.558431+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Users own their content but grant GitHub rights to provide services. [AI Usage]: No specific AI usage terms stated. [Liability]: GitHub limits liability for service-related damages.",
+      "score": 80,
       "history": [
         {
           "previous_hash": null,
@@ -582,8 +618,9 @@
       "name": "Amazon",
       "category": "Retail",
       "tosUrl": "https://www.amazon.com/gp/help/customer/display.html?nodeId=508088",
-      "lastChecked": "2026-03-09T02:30:53.066215+00:00",
+      "lastChecked": "2026-03-10T01:27:13.248990+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: User data may be collected and used for service improvement and AI training. [AI Usage]: AI tools may analyze user data. [Liability]: Company limits liability for data misuse.",
+      "score": 100,
       "history": [
         {
           "previous_hash": null,
@@ -607,8 +644,9 @@
       "name": "Walmart",
       "category": "Retail",
       "tosUrl": "https://www.walmart.com/help/article/walmart-com-terms-of-use/3b75080af40340d6bbd596f116fae5a2",
-      "lastChecked": "2026-03-09T02:30:55.767006+00:00",
+      "lastChecked": "2026-03-10T01:27:16.003578+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Personal information can be requested and is not sold. [AI Usage]: Not specified. [Liability]: Not detailed. [Critical User Constraint]: None stated.",
+      "score": 95,
       "history": [
         {
           "previous_hash": null,
@@ -634,8 +672,9 @@
       "name": "Shopify",
       "category": "Retail",
       "tosUrl": "https://www.shopify.com/legal/terms",
-      "lastChecked": "2026-03-09T02:30:57.758557+00:00",
+      "lastChecked": "2026-03-10T01:27:19.432465+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Users retain ownership of their materials; Shopify may use data for service improvement. [AI Usage]: AI tools may be integrated into services. [Liability]: Shopify not liable for account security breaches.",
+      "score": 75,
       "history": [
         {
           "previous_hash": null,
@@ -665,8 +704,9 @@
       "name": "Netflix",
       "category": "Streaming",
       "tosUrl": "https://help.netflix.com/legal/termsofuse",
-      "lastChecked": "2026-03-09T02:31:01.567844+00:00",
+      "lastChecked": "2026-03-10T01:27:22.112440+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Users retain ownership of personal data; company may use data for AI improvements. [Liability]: Limited liability for data breaches; no responsibility for third-party actions.",
+      "score": 95,
       "history": [
         {
           "previous_hash": null,
@@ -692,8 +732,9 @@
       "name": "Disney+",
       "category": "Streaming",
       "tosUrl": "https://www.disneyplus.com/en-gb/legal/subscriber-agreement",
-      "lastChecked": "2026-03-09T02:31:05.460240+00:00",
+      "lastChecked": "2026-03-10T01:27:25.890616+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Users grant Disney+ a license to use content for service improvement. [AI Usage]: AI may analyze user data for personalization. [Liability]: Disney+ limits liability for service interruptions.",
+      "score": 100,
       "history": [
         {
           "previous_hash": null,
@@ -717,8 +758,9 @@
       "name": "Spotify",
       "category": "Streaming",
       "tosUrl": "https://www.spotify.com/us/legal/end-user-agreement/",
-      "lastChecked": "2026-03-09T02:31:10.506345+00:00",
+      "lastChecked": "2026-03-10T01:27:30.844829+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Spotify retains ownership of all content and user data. [AI Usage]: No explicit AI usage terms provided. [Liability]: Spotify is not liable for service interruptions caused by external factors.",
+      "score": 65,
       "history": [
         {
           "previous_hash": null,
@@ -750,8 +792,9 @@
       "name": "Twitch",
       "category": "Streaming",
       "tosUrl": "https://www.twitch.tv/p/en/legal/terms-of-service/",
-      "lastChecked": "2026-03-09T02:31:14.261820+00:00",
+      "lastChecked": "2026-03-10T01:27:33.697380+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Personal information collection and usage governed by Privacy Notice. [AI Usage]: No specific AI usage terms stated. [Liability]: Users responsible for account security and actions taken under their account.",
+      "score": 80,
       "history": [
         {
           "previous_hash": null,
@@ -780,8 +823,9 @@
       "name": "YouTube",
       "category": "Streaming",
       "tosUrl": "https://www.youtube.com/t/terms",
-      "lastChecked": "2026-03-09T02:31:17.752771+00:00",
+      "lastChecked": "2026-03-10T01:27:36.705650+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Users grant YouTube rights to process uploaded content under the YouTube Data Processing Terms. [AI Usage]: No explicit AI usage terms stated. [Liability]: YouTube not liable for user-generated content compliance.",
+      "score": 80,
       "history": [
         {
           "previous_hash": null,
@@ -810,8 +854,9 @@
       "name": "Hulu",
       "category": "Streaming",
       "tosUrl": "https://www.hulu.com/subscriber_agreement",
-      "lastChecked": "2026-03-09T02:31:19.856467+00:00",
+      "lastChecked": "2026-03-10T01:27:38.815980+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: User information may be used and shared; users must maintain account security. [AI Usage]: Not specified. [Liability]: Disputes resolved via binding arbitration; class action waiver applies.",
+      "score": 80,
       "history": [
         {
           "previous_hash": null,
@@ -840,8 +885,9 @@
       "name": "Max",
       "category": "Streaming",
       "tosUrl": "https://www.max.com/terms-of-use",
-      "lastChecked": "2026-03-09T02:31:23.590940+00:00",
+      "lastChecked": "2026-03-10T01:27:42.777214+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: User data may be collected and used for service improvement and personalization. [AI Usage]: AI technologies may be employed for content recommendations. [Liability]: Company limits liability for service interruptions.",
+      "score": 100,
       "history": [
         {
           "previous_hash": null,
@@ -865,8 +911,9 @@
       "name": "Uber",
       "category": "Services",
       "tosUrl": "https://www.uber.com/legal/en/document/?name=general-terms-of-use&country=united-states&lang=en",
-      "lastChecked": "2026-03-09T02:31:25.726955+00:00",
+      "lastChecked": "2026-03-10T01:27:46.227204+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: User recordings are owned by Uber; not considered User Content.  \n[AI Usage]: No commercial use or AI training without Uber's permission.  \n[Liability]: Uber assumes no liability for account access loss or service interruptions.",
+      "score": 65,
       "history": [
         {
           "previous_hash": null,
@@ -898,8 +945,9 @@
       "name": "Airbnb",
       "category": "Services",
       "tosUrl": "https://www.airbnb.com/help/article/2908",
-      "lastChecked": "2026-03-09T02:31:29.518608+00:00",
+      "lastChecked": "2026-03-10T01:27:50.099359+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Personal data usage governed by Privacy Policy. [AI Usage]: AI utilized for pricing and search optimization. [Liability]: Airbnb not liable for contracts between Hosts and Guests.",
+      "score": 65,
       "history": [
         {
           "previous_hash": null,
@@ -931,8 +979,9 @@
       "name": "DoorDash",
       "category": "Services",
       "tosUrl": "https://help.doordash.com/consumers/s/terms-and-conditions",
-      "lastChecked": "2026-03-09T02:31:32.162934+00:00",
-      "latestSummary": "[Privacy]: [Data Rights]: User data may be collected and used for AI training. [AI Usage]: AI-generated content is not guaranteed to be accurate. [Liability]: Company is not liable for inaccuracies or damages.",
+      "lastChecked": "2026-03-10T01:27:52.981053+00:00",
+      "latestSummary": "[Privacy]: No significant changes detected | [DataOwnership]: No significant changes detected | [UserRights]: No significant changes detected",
+      "score": 90,
       "history": [
         {
           "previous_hash": null,
@@ -949,6 +998,38 @@
           "changeMagnitude": 100.0,
           "watchlist_hits": [],
           "trustScore": 80
+        },
+        {
+          "previous_hash": "9189d1cd2824716ff002f329094230baf743dde903de1203d34115d2ef65e723",
+          "current_hash": "04b81a89f32c36b880835d154c8a6c924e0ce050a80d5d35d064be7183b110af",
+          "timestamp": "2026-03-09T22:27:21.464065+00:00",
+          "verdict": "Neutral",
+          "diffSummary": {
+            "Privacy": "No significant changes detected",
+            "DataOwnership": "No significant changes detected",
+            "UserRights": "No significant changes detected"
+          },
+          "changeIsSubstantial": true,
+          "changeReason": "document changed by 66.0%",
+          "changeMagnitude": 65.5,
+          "watchlist_hits": [],
+          "trustScore": 90
+        },
+        {
+          "previous_hash": "04b81a89f32c36b880835d154c8a6c924e0ce050a80d5d35d064be7183b110af",
+          "current_hash": "9189d1cd2824716ff002f329094230baf743dde903de1203d34115d2ef65e723",
+          "timestamp": "2026-03-10T01:27:52.981053+00:00",
+          "verdict": "Neutral",
+          "diffSummary": {
+            "Privacy": "No significant changes detected",
+            "DataOwnership": "No significant changes detected",
+            "UserRights": "No significant changes detected"
+          },
+          "changeIsSubstantial": true,
+          "changeReason": "document changed by 194.4%",
+          "changeMagnitude": 66.9,
+          "watchlist_hits": [],
+          "trustScore": 90
         }
       ]
     },
@@ -956,8 +1037,9 @@
       "name": "Lyft",
       "category": "Services",
       "tosUrl": "https://www.lyft.com/terms",
-      "lastChecked": "2026-03-09T02:31:34.795036+00:00",
+      "lastChecked": "2026-03-10T01:27:58.674077+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Lyft collects personal, location, usage, and device information from users. [AI Usage]: No specific AI usage terms provided. [Liability]: Lyft's liability may vary based on jurisdiction-specific laws.",
+      "score": 85,
       "history": [
         {
           "previous_hash": null,
@@ -985,8 +1067,9 @@
       "name": "Grubhub",
       "category": "Services",
       "tosUrl": "https://www.grubhub.com/legal/terms-of-use",
-      "lastChecked": "2026-03-09T02:31:37.893705+00:00",
+      "lastChecked": "2026-03-10T01:28:01.191824+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Users must provide accurate personal information; Grubhub may create accounts based on transaction data. [AI Usage]: Not specified. [Liability]: Grubhub not liable for Merchant or Delivery Partner actions.",
+      "score": 70,
       "history": [
         {
           "previous_hash": null,
@@ -1017,8 +1100,9 @@
       "name": "TaskRabbit",
       "category": "Services",
       "tosUrl": "https://www.taskrabbit.com/terms",
-      "lastChecked": "2026-03-09T02:31:40.805842+00:00",
+      "lastChecked": "2026-03-10T01:28:05.058050+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: User data governed by Global Privacy Policy. [AI Usage]: No specific AI usage terms mentioned. [Liability]: Taskrabbit not liable for Tasker actions or classifications; Users assume full responsibility.",
+      "score": 60,
       "history": [
         {
           "previous_hash": null,
@@ -1051,8 +1135,9 @@
       "name": "JPMorgan Chase",
       "category": "Finance",
       "tosUrl": "https://www.chase.com/digital/resources/terms-of-use",
-      "lastChecked": "2026-03-09T02:31:44.435310+00:00",
+      "lastChecked": "2026-03-10T01:28:08.777884+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: User information may be disclosed to affiliates and third parties; consent required for data transfers. [AI Usage]: Monitoring of user interactions permitted. [Liability]: Users indemnify JPMorgan Chase for unauthorized access and data breaches.",
+      "score": 85,
       "history": [
         {
           "previous_hash": null,
@@ -1080,8 +1165,9 @@
       "name": "PayPal",
       "category": "Finance",
       "tosUrl": "https://www.paypal.com/us/legalhub/useragreement-full",
-      "lastChecked": "2026-03-09T02:31:47.885027+00:00",
+      "lastChecked": "2026-03-10T01:28:12.298321+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Users consent to PayPal accessing personal/business credit reports. [AI Usage]: Not specified. [Liability]: Users remain liable for obligations post-account closure.",
+      "score": 65,
       "history": [
         {
           "previous_hash": null,
@@ -1113,8 +1199,9 @@
       "name": "Stripe",
       "category": "Finance",
       "tosUrl": "https://stripe.com/legal/ssa",
-      "lastChecked": "2026-03-09T02:31:52.191647+00:00",
+      "lastChecked": "2026-03-10T01:28:17.416539+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: User must use Services solely for business purposes; personal use is prohibited. [AI Usage]: No specific AI usage terms provided. [Liability]: Stripe limits liability for Preview Services to USD$1,000.",
+      "score": 65,
       "history": [
         {
           "previous_hash": null,
@@ -1146,8 +1233,9 @@
       "name": "Venmo",
       "category": "Finance",
       "tosUrl": "https://venmo.com/legal/us-user-agreement/",
-      "lastChecked": "2026-03-09T02:31:55.062799+00:00",
+      "lastChecked": "2026-03-10T01:28:20.105294+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Users grant Venmo a license to use transaction data. [AI Usage]: Venmo may use AI for transaction analysis. [Liability]: Venmo limits liability for service interruptions.",
+      "score": 100,
       "history": [
         {
           "previous_hash": null,
@@ -1171,8 +1259,9 @@
       "name": "Robinhood",
       "category": "Finance",
       "tosUrl": "https://robinhood.com/us/en/support/articles/customer-agreement/",
-      "lastChecked": "2026-03-09T02:31:58.264459+00:00",
+      "lastChecked": "2026-03-10T01:28:24.141231+00:00",
       "latestSummary": "[Privacy]: [Category]: No relevant data rights or AI usage terms found. [Critical User Constraint]: None identified.",
+      "score": 100,
       "history": [
         {
           "previous_hash": null,
@@ -1196,8 +1285,9 @@
       "name": "Coinbase",
       "category": "Finance",
       "tosUrl": "https://www.coinbase.com/legal/user_agreement/united_states",
-      "lastChecked": "2026-03-09T02:32:01.566388+00:00",
+      "lastChecked": "2026-03-10T01:28:27.845027+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Users consent to Coinbase accessing, processing, and retaining personal data for identity verification and service provision. [AI Usage]: No explicit mention of AI usage. [Liability]: Coinbase disclaims liability for investment decisions based on provided information.",
+      "score": 65,
       "history": [
         {
           "previous_hash": null,
@@ -1229,8 +1319,9 @@
       "name": "Tesla",
       "category": "Auto",
       "tosUrl": "https://www.tesla.com/legal/additional-resources/tesla-legal",
-      "lastChecked": "2026-03-09T02:32:06.256911+00:00",
+      "lastChecked": "2026-03-10T01:28:30.680870+00:00",
       "latestSummary": "[Privacy]: No significant changes detected | [DataOwnership]: No significant changes detected | [UserRights]: No significant changes detected",
+      "score": 90,
       "history": [
         {
           "previous_hash": null,
@@ -1279,6 +1370,38 @@
           "changeMagnitude": 22.5,
           "watchlist_hits": [],
           "trustScore": 90
+        },
+        {
+          "previous_hash": "01a9b8b65053f3b1f46868b582e7effe61dd461f3756295d4d01e13dcf3a12d7",
+          "current_hash": "84c0bcc79b4f85ae15f7c37c5fc37bcb313007de03b481c1110c8a883f7db413",
+          "timestamp": "2026-03-09T22:28:07.882060+00:00",
+          "verdict": "Neutral",
+          "diffSummary": {
+            "Privacy": "No significant changes detected",
+            "DataOwnership": "No significant changes detected",
+            "UserRights": "No significant changes detected"
+          },
+          "changeIsSubstantial": true,
+          "changeReason": "semantic meaning changed",
+          "changeMagnitude": 35.5,
+          "watchlist_hits": [],
+          "trustScore": 90
+        },
+        {
+          "previous_hash": "84c0bcc79b4f85ae15f7c37c5fc37bcb313007de03b481c1110c8a883f7db413",
+          "current_hash": "34b9c330ac2a2d8bb99ce30f616334ba56675ccf310897e5b9d44ad5b9b838b2",
+          "timestamp": "2026-03-10T01:28:30.680870+00:00",
+          "verdict": "Neutral",
+          "diffSummary": {
+            "Privacy": "No significant changes detected",
+            "DataOwnership": "No significant changes detected",
+            "UserRights": "No significant changes detected"
+          },
+          "changeIsSubstantial": true,
+          "changeReason": "semantic meaning changed",
+          "changeMagnitude": 35.5,
+          "watchlist_hits": [],
+          "trustScore": 90
         }
       ]
     },
@@ -1286,24 +1409,27 @@
       "name": "Ford",
       "category": "Auto",
       "tosUrl": "https://www.ford.com/help/terms/",
-      "lastChecked": "2026-03-09T02:32:11.550707+00:00",
+      "lastChecked": "2026-03-10T01:28:35.539589+00:00",
       "latestSummary": "Connection Error: Playwright failed to fetch https://www.ford.com/help/terms/: Page.goto: Timeout 90000ms exceeded.\nCall log:\n  - navigating to \"https://www.ford.com/help/terms/\", waiting until \"domcontentloaded\"\n",
+      "score": 100,
       "history": []
     },
     {
       "name": "United Airlines",
       "category": "Travel",
       "tosUrl": "https://www.united.com/en/us/fly/legal.html",
-      "lastChecked": "2026-03-09T02:37:05.660637+00:00",
+      "lastChecked": "2026-03-10T01:33:28.228908+00:00",
       "latestSummary": "Connection Error: Playwright failed to fetch https://www.united.com/en/us/fly/legal.html: Page.goto: Timeout 90000ms exceeded.\nCall log:\n  - navigating to \"https://www.united.com/en/us/fly/legal.html\", waiting until \"domcontentloaded\"\n",
+      "score": 100,
       "history": []
     },
     {
       "name": "Marriott",
       "category": "Travel",
       "tosUrl": "https://www.marriott.com/about/terms-of-use.mi",
-      "lastChecked": "2026-03-09T02:41:57.248267+00:00",
+      "lastChecked": "2026-03-10T01:38:21.313929+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: User feedback becomes Marriott's property; no confidentiality obligations. [AI Usage]: No automated scraping or monitoring without consent. [Liability]: Users are liable for their actions on the site.",
+      "score": 70,
       "history": [
         {
           "previous_hash": null,
@@ -1334,8 +1460,9 @@
       "name": "Delta Airlines",
       "category": "Travel",
       "tosUrl": "https://www.delta.com/us/en/legal/conditions-of-carriage",
-      "lastChecked": "2026-03-09T02:42:01.305884+00:00",
+      "lastChecked": "2026-03-10T01:38:25.603693+00:00",
       "latestSummary": "[Privacy]: No significant changes detected | [DataOwnership]: No significant changes detected | [UserRights]: No significant changes detected",
+      "score": 90,
       "history": [
         {
           "previous_hash": null,
@@ -1384,6 +1511,38 @@
           "changeMagnitude": 10.7,
           "watchlist_hits": [],
           "trustScore": 90
+        },
+        {
+          "previous_hash": "f799b21a7345d3be323ca3187e2415d412c08c4e5e3595536c6c78e58b94239f",
+          "current_hash": "d41fdd11092cb205ef6702a89b6b65562301762f5a3f70549c8e67d938719441",
+          "timestamp": "2026-03-09T22:37:59.841691+00:00",
+          "verdict": "Neutral",
+          "diffSummary": {
+            "Privacy": "No significant changes detected",
+            "DataOwnership": "No significant changes detected",
+            "UserRights": "No significant changes detected"
+          },
+          "changeIsSubstantial": true,
+          "changeReason": "semantic meaning changed",
+          "changeMagnitude": 12.4,
+          "watchlist_hits": [],
+          "trustScore": 90
+        },
+        {
+          "previous_hash": "d41fdd11092cb205ef6702a89b6b65562301762f5a3f70549c8e67d938719441",
+          "current_hash": "e78a7940868286717ffa934694849f177118f820858fc1af7b8834f20eb6141b",
+          "timestamp": "2026-03-10T01:38:25.603693+00:00",
+          "verdict": "Neutral",
+          "diffSummary": {
+            "Privacy": "No significant changes detected",
+            "DataOwnership": "No significant changes detected",
+            "UserRights": "No significant changes detected"
+          },
+          "changeIsSubstantial": true,
+          "changeReason": "semantic meaning changed",
+          "changeMagnitude": 12.0,
+          "watchlist_hits": [],
+          "trustScore": 90
         }
       ]
     },
@@ -1391,8 +1550,9 @@
       "name": "Hilton",
       "category": "Travel",
       "tosUrl": "https://www.hilton.com/en/hilton-honors/terms/",
-      "lastChecked": "2026-03-09T02:42:04.855552+00:00",
+      "lastChecked": "2026-03-10T01:38:30.376491+00:00",
       "latestSummary": "[Privacy]: Changes include clearer data usage descriptions and consent for personal information processing. | [DataOwnership]: No significant changes detected | [UserRights]: Members can now request the transfer of Points from a deceased Member's account.",
+      "score": 65,
       "history": [
         {
           "previous_hash": null,
@@ -1454,8 +1614,9 @@
       "name": "Apple",
       "category": "Tech",
       "tosUrl": "https://www.apple.com/legal/internet-services/itunes/us/terms.html",
-      "lastChecked": "2026-03-09T02:42:14.465141+00:00",
+      "lastChecked": "2026-03-10T01:43:23.820754+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Users grant Apple rights to monitor usage and manage transactions. [AI Usage]: No specific AI usage terms provided. [Liability]: Apple limits liability to content replacement or refund for technical issues.",
+      "score": 80,
       "history": [
         {
           "previous_hash": null,
@@ -1484,8 +1645,9 @@
       "name": "Samsung",
       "category": "Tech",
       "tosUrl": "https://www.samsung.com/us/account/privacy-policy/",
-      "lastChecked": "2026-03-09T02:42:16.926537+00:00",
+      "lastChecked": "2026-03-10T01:43:27.914159+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Users' personal information is collected, processed, and shared with third parties. [AI Usage]: Voice recordings and predictive text data are utilized. [Liability]: Samsung limits liability for data breaches and third-party actions.",
+      "score": 80,
       "history": [
         {
           "previous_hash": null,
@@ -1514,8 +1676,9 @@
       "name": "Steam",
       "category": "Gaming",
       "tosUrl": "https://store.steampowered.com/subscriber_agreement/",
-      "lastChecked": "2026-03-09T02:42:20.158712+00:00",
+      "lastChecked": "2026-03-10T01:43:32.599187+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Users retain ownership of their content but grant Valve a broad license to use it. [AI Usage]: No specific AI usage terms outlined. [Liability]: Valve limits liability for account misuse and service disruptions.",
+      "score": 80,
       "history": [
         {
           "previous_hash": null,
@@ -1544,8 +1707,9 @@
       "name": "Epic Games",
       "category": "Gaming",
       "tosUrl": "https://legal.epicgames.com/en-US/epicgames/tos",
-      "lastChecked": "2026-03-09T02:42:22.653446+00:00",
+      "lastChecked": "2026-03-10T01:43:36.329730+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Users do not own Licensed Products; they are granted a limited, personal, non-transferable, revocable license.  \n[AI Usage]: No specific provisions for AI usage mentioned.  \n[Liability]: Epic limits liability; arbitration required for disputes.",
+      "score": 65,
       "history": [
         {
           "previous_hash": null,
@@ -1577,8 +1741,9 @@
       "name": "Roblox",
       "category": "Gaming",
       "tosUrl": "https://en.help.roblox.com/hc/en-us/articles/115004647846-Roblox-Terms-of-Use",
-      "lastChecked": "2026-03-09T02:42:26.055420+00:00",
+      "lastChecked": "2026-03-10T01:43:40.326388+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Users have no enforceable legal rights to Virtual Content.  \n[AI Usage]: Not explicitly defined in terms.  \n[Liability]: Limitation of liability applies; users must resolve disputes via arbitration.",
+      "score": 60,
       "history": [
         {
           "previous_hash": null,
@@ -1611,8 +1776,9 @@
       "name": "Zillow",
       "category": "Real Estate",
       "tosUrl": "https://www.zillow.com/corp/Terms.htm",
-      "lastChecked": "2026-03-09T02:42:30.160460+00:00",
+      "lastChecked": "2026-03-10T01:43:44.079944+00:00",
       "latestSummary": "[Privacy]: [Category]: Access Denied. [Key Data/Legal Policy]: No data rights or AI usage terms available. [Critical User Constraint]: Unable to review or accept terms.",
+      "score": 100,
       "history": [
         {
           "previous_hash": null,
@@ -1636,8 +1802,9 @@
       "name": "Redfin",
       "category": "Real Estate",
       "tosUrl": "https://www.redfin.com/about/terms-of-use",
-      "lastChecked": "2026-03-09T02:42:32.973091+00:00",
+      "lastChecked": "2026-03-10T01:43:47.167213+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: User content is governed by the Privacy Notice; personal data collection is restricted. [AI Usage]: No automated data scraping or reverse-engineering allowed. [Liability]: Claims resolved through binding arbitration; class action waiver applies.",
+      "score": 70,
       "history": [
         {
           "previous_hash": null,
@@ -1668,8 +1835,9 @@
       "name": "Coursera",
       "category": "Education",
       "tosUrl": "https://www.coursera.org/about/terms",
-      "lastChecked": "2026-03-09T02:42:37.597711+00:00",
+      "lastChecked": "2026-03-10T01:43:51.480315+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Users retain rights to User Content but grant Coursera a perpetual, worldwide license to use it. [AI Usage]: User modifications using AI are not considered User Content. [Liability]: Coursera disclaims liability for Content Offerings and does not grant academic credit.",
+      "score": 65,
       "history": [
         {
           "previous_hash": null,
@@ -1701,8 +1869,9 @@
       "name": "Duolingo",
       "category": "Education",
       "tosUrl": "https://www.duolingo.com/terms",
-      "lastChecked": "2026-03-09T02:42:40.548237+00:00",
+      "lastChecked": "2026-03-10T01:43:53.972698+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Users grant Duolingo a license to use submitted content. [AI Usage]: AI may analyze user data for personalized learning. [Liability]: Duolingo limits liability for service interruptions.",
+      "score": 100,
       "history": [
         {
           "previous_hash": null,
@@ -1726,8 +1895,9 @@
       "name": "Uber Eats",
       "category": "Services",
       "tosUrl": "https://www.uber.com/legal/en/document/?name=uber-eats-manager-terms-and-conditions",
-      "lastChecked": "2026-03-09T02:42:43.254363+00:00",
+      "lastChecked": "2026-03-10T01:43:56.267808+00:00",
       "latestSummary": "[Privacy]: [Category]: No terms available. [Key Data/Legal Policy]: N/A. [Critical User Constraint]: No data rights, AI usage, or liability information provided.",
+      "score": 100,
       "history": [
         {
           "previous_hash": null,
@@ -1751,8 +1921,9 @@
       "name": "FanDuel",
       "category": "Finance",
       "tosUrl": "https://www.fanduel.com/termsofuse",
-      "lastChecked": "2026-03-09T02:42:48.039298+00:00",
+      "lastChecked": "2026-03-10T01:44:01.124922+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: User data may be collected and used for AI training. [Liability]: Company not liable for data misuse. [Critical User Constraint]: Access denied for non-compliance.",
+      "score": 100,
       "history": [
         {
           "previous_hash": null,
@@ -1776,8 +1947,9 @@
       "name": "Fitbit",
       "category": "Health",
       "tosUrl": "https://www.fitbit.com/global/us/legal/terms-of-service",
-      "lastChecked": "2026-03-09T02:42:51.632486+00:00",
+      "lastChecked": "2026-03-10T01:44:03.600878+00:00",
       "latestSummary": "[Privacy]: [Data Rights]: Users retain rights to their content but grant Fitbit a license to use it. [AI Usage]: No specific AI usage terms mentioned. [Liability]: Fitbit not liable for account-related losses; users responsible for content compliance.",
+      "score": 60,
       "history": [
         {
           "previous_hash": null,
