@@ -10,9 +10,9 @@ interface Props {
 }
 
 function scoreColor(score: number): { fg: string; bg: string; label: string } {
-  if (score >= 70) return { fg: "text-green-700", bg: "bg-green-500", label: "Good" };
-  if (score >= 40) return { fg: "text-yellow-700", bg: "bg-yellow-400", label: "Fair" };
-  return { fg: "text-red-700", bg: "bg-red-500", label: "Poor" };
+  if (score >= 85) return { fg: "text-green-700", bg: "bg-green-500", label: "OK" };
+  if (score >= 70) return { fg: "text-yellow-700", bg: "bg-yellow-400", label: "Caution" };
+  return { fg: "text-red-700", bg: "bg-red-500", label: "Alert" };
 }
 
 const SIZE_MAP = {

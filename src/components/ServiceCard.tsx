@@ -13,6 +13,19 @@ function getLatestVerdict(company: CompanyResult): "Good" | "Neutral" | "Caution
   return company.history[company.history.length - 1].verdict;
 }
 
+function getCompanyScore(company: CompanyResult): number {
+  if (typeof company.score === "number") return company.score;
+  const history = company.history ?? [];
+  const latest = history[history.length - 1];
+  return latest?.trustScore ?? 100;
+}
+
+function getScoreCardStyle(score: number): { bg: string; border: string; label: string } {
+  if (score >= 85) return { bg: "bg-green-50", border: "border-green-200", label: "OK" };
+  if (score >= 70) return { bg: "bg-yellow-50", border: "border-yellow-300", label: "Caution" };
+  return { bg: "bg-red-50", border: "border-red-400", label: "Alert" };
+}
+
 function CompanyLogo({ tosUrl, name }: { tosUrl: string; name: string }) {
   const [imgError, setImgError] = useState(false);
   const [useLocal, setUseLocal] = useState(true);
@@ -49,20 +62,18 @@ function CompanyLogo({ tosUrl, name }: { tosUrl: string; name: string }) {
   );
 }
 
-const CARD_STYLES: Record<string, { bg: string; border: string }> = {
-  Caution: { bg: "bg-red-50", border: "border-red-400" },
-  Neutral: { bg: "bg-blue-50", border: "border-blue-300" },
-  Good:    { bg: "bg-green-50", border: "border-green-200" },
-};
-
 export default function ServiceCard({ company, onSelectCompany }: Props) {
   const verdict = getLatestVerdict(company);
   const latestEntry = company.history?.[company.history.length - 1];
+  // trustScore: entry-level score used to render the ScoreGauge (undefined = no gauge shown)
   const trustScore = latestEntry?.trustScore;
+  // score: best available company-level score used for card background color
+  const score = getCompanyScore(company);
+  const { bg, border } = getScoreCardStyle(score);
 
   return (
     <li
-      className={`relative rounded-lg border shadow-sm cursor-pointer hover:shadow-md transition-shadow ${CARD_STYLES[verdict]?.bg ?? CARD_STYLES.Good.bg} ${CARD_STYLES[verdict]?.border ?? CARD_STYLES.Good.border}`}
+      className={`group relative rounded-lg border shadow-sm cursor-pointer transition-all duration-150 hover:shadow-lg hover:-translate-y-1 ${bg} ${border}`}
       onClick={() => onSelectCompany(company)}
     >
       <div className="p-4">
@@ -139,6 +150,14 @@ export default function ServiceCard({ company, onSelectCompany }: Props) {
           </svg>
         </a>
       )}
+
+      {/* View History button – fades in on hover */}
+      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none group-hover:pointer-events-auto">
+        <span className="inline-flex items-center gap-1 rounded-full bg-indigo-600 px-3 py-1 text-xs font-semibold text-white shadow-sm">
+          View History
+        </span>
+      </div>
     </li>
   );
 }
+

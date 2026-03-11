@@ -21,11 +21,6 @@ function getCompanyScore(company: CompanyResult): number {
   return latest?.trustScore ?? 100;
 }
 
-function getLatestVerdict(company: CompanyResult): string | undefined {
-  const history = company.history ?? [];
-  return history[history.length - 1]?.verdict;
-}
-
 function getLatestTimestamp(company: CompanyResult): number {
   const history = company.history ?? [];
   const ts = history[history.length - 1]?.timestamp;
@@ -87,9 +82,9 @@ export default function Leaderboard({ companies, onSelectCompany }: Props) {
     .slice(0, 5);
 
   const recentlyFlagged = [...companies]
-    .filter((c) => getLatestVerdict(c) === "Caution")
+    .filter((c) => getCompanyScore(c) < 70)
     .sort((a, b) => getLatestTimestamp(b) - getLatestTimestamp(a))
-    .slice(0, 5);
+    .slice(0, 3);
 
   return (
     <aside className="space-y-4">
@@ -123,7 +118,7 @@ export default function Leaderboard({ companies, onSelectCompany }: Props) {
           <h3 className="text-sm font-semibold text-red-800 flex items-center gap-1.5">
             <span aria-hidden="true">⚠️</span> Recently Flagged
           </h3>
-          <p className="text-xs text-red-600 mt-0.5">Latest Caution verdicts</p>
+          <p className="text-xs text-red-600 mt-0.5">Score below 70</p>
         </div>
         {recentlyFlagged.length === 0 ? (
           <p className="px-4 py-3 text-xs text-gray-400 italic">No flagged companies.</p>
