@@ -9,7 +9,9 @@ import About from "./components/About";
 import Leaderboard from "./components/Leaderboard";
 
 const RESULTS_URL =
-  "https://raw.githubusercontent.com/bradyudovich/Diffy/main/data/results.json";
+  import.meta.env.DEV
+    ? "/Diffy/data/results.json"
+    : "https://raw.githubusercontent.com/bradyudovich/Diffy/main/data/results.json";
 
 const CATEGORY_ICONS: Record<string, string> = {
   AI: "🤖",
@@ -140,7 +142,7 @@ export default function App() {
   }
 
   const pageTitle = selectedCompany
-    ? `Track ${selectedCompany.name} Terms of Service Changes | Diffy`
+    ? `See what changed in ${selectedCompany.name}'s Terms of Service - Diffy`
     : "Diffy – Terms of Service Change Tracker";
 
   const pageDescription = selectedCompany
@@ -215,20 +217,20 @@ export default function App() {
             <div className="mb-4">
               <input
                 type="text"
-                placeholder="Search companies…"
+                placeholder="Search 500+ company legal updates..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 font-[Inter,system-ui,sans-serif]"
               />
             </div>
 
-            {/* Category filter bar */}
+            {/* Category filter bar – horizontally scrollable on mobile */}
             {categories.length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-6">
+              <div className="flex overflow-x-auto gap-2 mb-6 pb-1 md:flex-wrap md:overflow-x-visible md:pb-0 scrollbar-none">
                 {activeCategory && (
                   <button
                     onClick={() => setActiveCategory(null)}
-                    className="rounded-full px-4 py-1.5 text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors"
+                    className="flex-shrink-0 rounded-full px-4 py-1.5 text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors"
                   >
                     ← All
                   </button>
@@ -237,7 +239,7 @@ export default function App() {
                   <button
                     key={cat}
                     onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
-                    className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+                    className={`flex-shrink-0 rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
                       activeCategory === cat
                         ? "bg-indigo-600 text-white"
                         : "bg-white border border-gray-300 text-gray-700 hover:bg-indigo-50"

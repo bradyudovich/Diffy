@@ -197,6 +197,28 @@ export default function DiffViewer({ entry, companyName, previousRawText = "", c
         <div className="px-4 py-3">
           {entry.diffSummary && (
             <>
+              {/* Key Changes – 3 plain-English bullet points */}
+              {(() => {
+                const bullets = (["Privacy", "DataOwnership", "UserRights"] as const)
+                  .map((k) => entry.diffSummary[k])
+                  .filter((v) => v && v !== NO_CHANGE && v !== "No significant change");
+                return bullets.length > 0 ? (
+                  <div className="mb-4 rounded-lg border border-indigo-200 bg-indigo-50 px-4 py-3">
+                    <p className="text-xs font-semibold text-indigo-700 uppercase tracking-wide mb-2">
+                      📋 Key Changes
+                    </p>
+                    <ul className="space-y-1">
+                      {bullets.map((bullet, i) => (
+                        <li key={i} className="flex items-start gap-2 text-xs text-indigo-900">
+                          <span className="mt-0.5 flex-shrink-0 text-indigo-400">•</span>
+                          <span>{bullet}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null;
+              })()}
+
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
                 AI-Labeled Breakdown
               </p>

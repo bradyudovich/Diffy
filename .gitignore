@@ -27,3 +27,4 @@ data/snapshots/*.txt
 *.njsproj
 *.sln
 *.sw?
+nohup.out
