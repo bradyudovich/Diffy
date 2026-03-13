@@ -1,1 +1,1 @@
-[Privacy]: Changes include expanded data collection and sharing practices, emphasizing consent for personal information processing. | [DataOwnership]: No significant changes detected | [UserRights]: Updated terms on point forfeiture and inactivity, clarifying member responsibilities for account management.
+[Privacy]: Expanded details on personal information collection and sharing practices. | [DataOwnership]: No significant changes detected | [UserRights]: Updated terms for Points forfeiture and inactivity policies.
