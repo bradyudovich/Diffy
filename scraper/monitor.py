@@ -149,6 +149,17 @@ AI_DIFF_SUMMARY_PROMPT = (
     "Output must be valid JSON and nothing else."
 )
 
+AI_POINTS_PROMPT = (
+    "You are a strict legal analysis engine. "
+    "Analyze the provided Terms of Service text and return ONLY a valid JSON array — no prose, no markdown, no explanation. "
+    "Each element must be an object with exactly two keys: "
+    "\"text\" (a plain string, max 20 words) and "
+    "\"impact\" (one of: \"positive\", \"negative\", \"neutral\"). "
+    "Return between 3 and 7 points covering the most important aspects. "
+    "Focus on data rights, AI usage, user ownership, liability, and arbitration. "
+    "Output must be a valid JSON array and nothing else."
+)
+
 # ---------------------------------------------------------------------------
 # Hashing
 # ---------------------------------------------------------------------------
@@ -251,6 +262,27 @@ def calculate_trust_score(history_entry: dict) -> int:
     unique_hits = set(watchlist_hits)
     score -= 5 * len(unique_hits)
     return max(score, 0)
+
+
+def get_letter_grade(score: int) -> str:
+    """Map a numeric trust score (0–100) to a letter grade.
+
+    Grade mapping:
+      90+  → A
+      80+  → B
+      70+  → C
+      50+  → D
+      <50  → F
+    """
+    if score >= 90:
+        return "A"
+    if score >= 80:
+        return "B"
+    if score >= 70:
+        return "C"
+    if score >= 50:
+        return "D"
+    return "F"
 
 
 def calculate_score(entry: dict) -> int:
@@ -611,6 +643,50 @@ def call_openai_first_summary(tos_text: str) -> dict:
     }
 
 
+def call_openai_points_summary(text: str) -> list[dict]:
+    """Generate an array of summary points from ToS text or a diff.
+
+    Each point has:
+      - "text":   plain string (max 20 words) describing the point
+      - "impact": one of "positive", "negative", or "neutral"
+
+    Returns an empty list if the API is unavailable or parsing fails.
+    """
+    if not OPENAI_API_KEY:
+        return []
+    truncated = text[:8000]
+    try:
+        raw = _openai_post([
+            {"role": "system", "content": AI_POINTS_PROMPT},
+            {"role": "user", "content": f"Here is the Terms of Service text:\n\n{truncated}"},
+        ], max_tokens=512)
+    except Exception as exc:
+        print(f"  [OpenAI points summary error] {exc}")
+        return []
+
+    # Strip markdown fences if the model wrapped the output
+    cleaned = re.sub(r"^```(?:json)?\s*", "", raw.strip(), flags=re.IGNORECASE)
+    cleaned = re.sub(r"\s*```$", "", cleaned.strip())
+
+    try:
+        parsed = json.loads(cleaned)
+        if isinstance(parsed, list):
+            valid_impacts = {"positive", "negative", "neutral"}
+            return [
+                {
+                    "text": str(p.get("text", "")).strip(),
+                    "impact": str(p.get("impact", "neutral")).lower()
+                    if str(p.get("impact", "neutral")).lower() in valid_impacts
+                    else "neutral",
+                }
+                for p in parsed
+                if isinstance(p, dict) and p.get("text")
+            ]
+    except json.JSONDecodeError:
+        pass
+    return []
+
+
 # ---------------------------------------------------------------------------
 # History management
 # ---------------------------------------------------------------------------
@@ -744,6 +820,15 @@ def monitor() -> dict:
         scan_target = diff_text if diff_text else new_text
         watchlist_hits = scan_watchlist(scan_target, watchlist)
 
+        trust_score = calculate_trust_score({
+            "verdict": verdict,
+            "watchlist_hits": watchlist_hits,
+        })
+        letter_grade = get_letter_grade(trust_score)
+
+        # Generate point-based summary for the card UI
+        summary_points = call_openai_points_summary(scan_target)
+
         # Append new history entry (chronological; oldest first)
         new_entry: dict = {
             "previous_hash": previous_hash,
@@ -755,10 +840,9 @@ def monitor() -> dict:
             "changeReason": change_reason,
             "changeMagnitude": change_magnitude,
             "watchlist_hits": watchlist_hits,
-            "trustScore": calculate_trust_score({
-                "verdict": verdict,
-                "watchlist_hits": watchlist_hits,
-            }),
+            "trustScore": trust_score,
+            "letterGrade": letter_grade,
+            "summaryPoints": summary_points,
         }
         history.append(new_entry)
 
@@ -769,6 +853,7 @@ def monitor() -> dict:
             "tosUrl": tos_url,
             "lastChecked": last_checked,
             "latestSummary": latest_summary,
+            "summaryPoints": summary_points,
             "score": company_score,
             "history": history,
         })
@@ -842,6 +927,7 @@ def write_summary_index(results: dict) -> None:
             "tosUrl": tos_url,
             "lastChecked": company.get("lastChecked"),
             "latestSummary": company.get("latestSummary"),
+            "summaryPoints": company.get("summaryPoints"),
             "score": score,
             "latest_verdict": latest_verdict,
             "favicon_url": favicon_url,
