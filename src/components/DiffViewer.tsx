@@ -200,6 +200,9 @@ export default function DiffViewer({ entry, companyName, previousRawText = "", c
   const summaryPoints = entry.summaryPoints ?? [];
   const hasSummaryPoints = summaryPoints.length > 0;
 
+  // Build the ordered tab list; "points" is only shown when AI summary points are available
+  const visibleTabs: TabId[] = ["summary", ...(hasSummaryPoints ? (["points"] as TabId[]) : []), "raw"];
+
   return (
     <div className={`rounded-xl border shadow-sm ${colors.bg} ${colors.border}`}>
       {/* Header */}
@@ -239,7 +242,7 @@ export default function DiffViewer({ entry, companyName, previousRawText = "", c
 
       {/* Tab bar */}
       <div className="flex border-b border-current border-opacity-10 px-4 pt-2 gap-1">
-        {(["summary", ...(hasSummaryPoints ? ["points" as TabId] : []), "raw"] as TabId[]).map((tab) => (
+        {visibleTabs.map((tab) => (
           <button
             key={tab}
             type="button"

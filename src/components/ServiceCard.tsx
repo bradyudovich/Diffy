@@ -16,8 +16,10 @@ function getCompanyScore(company: CompanyResult): number {
 }
 
 function getScoreCardStyle(score: number): { bg: string; border: string } {
+  // Thresholds match the A–E grade scale: A≥90, B≥70, C≥50, D≥30, E<30
   if (score >= 70) return { bg: "bg-gray-50", border: "border-gray-200" };
   if (score >= 50) return { bg: "bg-amber-50/50", border: "border-amber-200" };
+  if (score >= 30) return { bg: "bg-orange-50/50", border: "border-orange-200" };
   return { bg: "bg-rose-50/50", border: "border-rose-200" };
 }
 

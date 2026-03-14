@@ -775,7 +775,7 @@ def call_openai_points_summary(text: str) -> list[dict]:
         raw = _openai_post([
             {"role": "system", "content": AI_POINTS_PROMPT},
             {"role": "user", "content": f"Here is the Terms of Service text:\n\n{truncated}"},
-        ], max_tokens=768)
+        ], max_tokens=768)  # Increased from 512: each point now includes case_id + quote fields
     except Exception as exc:
         print(f"  [OpenAI points summary error] {exc}")
         return []

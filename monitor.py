@@ -24,6 +24,8 @@ from playwright_stealth import Stealth  # Updated import
 # ---------------------------------------------------------------------------
 BASE_DIR = Path(__file__).parent
 CONFIG_PATH = BASE_DIR / "config.json"
+# cases.json lives in the scraper/ subdirectory; both monitor.py and scraper/monitor.py
+# resolve this to the same canonical file (scraper/cases.json from the repo root).
 CASES_PATH = BASE_DIR / "scraper" / "cases.json"
 SNAPSHOTS_DIR = BASE_DIR / "data" / "snapshots"
 DATA_RESULTS_PATH = BASE_DIR / "data" / "results.json"
