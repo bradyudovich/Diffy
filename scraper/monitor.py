@@ -150,13 +150,18 @@ AI_DIFF_SUMMARY_PROMPT = (
 )
 
 AI_POINTS_PROMPT = (
-    "You are a strict legal analysis engine. "
+    "You are a strict legal analysis engine specializing in consumer rights. "
     "Analyze the provided Terms of Service text and return ONLY a valid JSON array — no prose, no markdown, no explanation. "
     "Each element must be an object with exactly two keys: "
     "\"text\" (a plain string, max 20 words) and "
     "\"impact\" (one of: \"positive\", \"negative\", \"neutral\"). "
-    "Return between 3 and 7 points covering the most important aspects. "
-    "Focus on data rights, AI usage, user ownership, liability, and arbitration. "
+    "Return between 5 and 8 points. Be critical and realistic: most ToS documents contain several negative clauses. "
+    "Mark as \"negative\" any clause that: restricts user rights, allows data selling or sharing with third parties, "
+    "enables AI training on user content without explicit opt-in, includes mandatory arbitration, waives class-action rights, "
+    "retains vague rights to user data, lacks clarity, or uses excessive legal jargon that obscures user rights. "
+    "Mark as \"positive\" only clear, explicit user-friendly guarantees (e.g. users retain content ownership, "
+    "data is never sold, explicit right to delete account and data). "
+    "Focus on: data rights, AI training usage, user content ownership, liability caps, arbitration clauses, and data sharing. "
     "Output must be a valid JSON array and nothing else."
 )
 
@@ -243,6 +248,13 @@ def scan_watchlist(text: str, watchlist: list[str] | None = None) -> list[str]:
     return [term for term in watchlist if term.lower() in text_lower]
 
 
+_NEGATIVE_PRACTICE_TERMS: tuple[str, ...] = (
+    "sell", "sold", "share", "collect", "retain", "waive", "vague",
+    "unclear", "third party", "third-party", "advertising", "profil",
+    "training", "ai train",
+)
+
+
 def calculate_trust_score(history_entry: dict) -> int:
     """Compute a trust score (0–100) for a single history entry.
 
@@ -250,17 +262,48 @@ def calculate_trust_score(history_entry: dict) -> int:
     - Start at 100.
     - Deduct 20 for a 'Caution' verdict, 10 for 'Neutral'.
     - Deduct 5 for each *unique* watchlist_hit present in the entry.
+    - Deduct 5 for each negative-impact AI summary point (summaryPoints);
+      add 2 for each positive-impact point (bonus capped at +10).
+    - Deduct 5 for each diffSummary field (DataOwnership, Privacy) that
+      contains language indicating negative data practices.
     - Clamp the result to a minimum of 0.
     """
     score = 100
+
+    # Verdict-based deduction
     verdict = history_entry.get("verdict", "Good")
     if verdict == "Caution":
         score -= 20
     elif verdict == "Neutral":
         score -= 10
+
+    # Watchlist hit deduction
     watchlist_hits = history_entry.get("watchlist_hits") or []
     unique_hits = set(watchlist_hits)
     score -= 5 * len(unique_hits)
+
+    # AI summary points: penalise negative points, reward positive ones
+    summary_points = history_entry.get("summaryPoints") or []
+    if summary_points:
+        negative_count = sum(
+            1 for p in summary_points
+            if isinstance(p, dict) and p.get("impact") == "negative"
+        )
+        positive_count = sum(
+            1 for p in summary_points
+            if isinstance(p, dict) and p.get("impact") == "positive"
+        )
+        score -= 5 * negative_count
+        positive_bonus = min(2 * positive_count, 10)
+        score += positive_bonus
+
+    # Penalise negative data-ownership and privacy practices in the AI diff summary
+    diff_summary = history_entry.get("diffSummary") or {}
+    for key in ("DataOwnership", "Privacy"):
+        val = diff_summary.get(key, "").lower()
+        if any(term in val for term in _NEGATIVE_PRACTICE_TERMS):
+            score -= 5
+
     return max(score, 0)
 
 
@@ -300,14 +343,19 @@ def calculate_score(entry: dict) -> int:
       - −5 points per *unique* high-risk term found in the change
         (e.g. 'Arbitration', 'Tracking', 'Sell', …)
 
+    AI summary point adjustments (summaryPoints field):
+      - −5 points per negative-impact point identified by AI analysis
+      - +2 points per positive-impact point (bonus capped at +10)
+
+    Negative data-practice penalty (diffSummary field):
+      - −5 points if Privacy summary indicates negative data practices
+      - −5 points if DataOwnership summary indicates negative data practices
+
     The score is clamped to [0, 100].
 
-    Example: a company whose latest change is 'Caution' with 4 unique
-    watchlist hits would score 100 − 20 − (4 × 5) = 60.
-
     Args:
-        entry: A history entry dict (must contain 'verdict' and optionally
-               'watchlist_hits').
+        entry: A history entry dict (may contain 'verdict', 'watchlist_hits',
+               'summaryPoints', and 'diffSummary').
 
     Returns:
         Integer score in the range [0, 100].
@@ -866,6 +914,44 @@ def monitor() -> dict:
     return results
 
 
+def re_rate_existing_results() -> dict:
+    """Reload results.json and recalculate all trust scores using the current logic.
+
+    This function applies the latest ``calculate_trust_score`` logic to every
+    history entry in the stored results, updates each company's top-level
+    ``score`` field, and writes the results back to disk.  It is safe to call
+    repeatedly (idempotent) and should be run whenever the scoring logic is
+    updated so that previously-stored entries reflect the new rating system.
+
+    Returns:
+        The updated results dict (same structure as ``monitor()`` output).
+        Returns an empty dict if no existing results are found.
+    """
+    existing = load_existing_results()
+    if not existing:
+        print("No existing results found to re-rate.")
+        return {}
+
+    updated_count = 0
+    for company in existing.get("companies", []):
+        history = company.get("history", [])
+        for entry in history:
+            entry["trustScore"] = calculate_trust_score(entry)
+            entry["letterGrade"] = get_letter_grade(entry["trustScore"])
+            updated_count += 1
+        if history:
+            company["score"] = calculate_score(history[-1])
+
+    existing["updatedAt"] = datetime.now(timezone.utc).isoformat()
+    write_results(existing)
+    write_summary_index(existing)
+    print(
+        f"Re-rated {len(existing.get('companies', []))} companies "
+        f"({updated_count} history entries updated)."
+    )
+    return existing
+
+
 def write_results(results: dict) -> None:
     payload = json.dumps(results, indent=2, ensure_ascii=False)
     try:
@@ -1005,6 +1091,9 @@ def validate_results(results: dict) -> None:
 
 
 if __name__ == "__main__":
+    if "--re-rate" in sys.argv:
+        re_rate_existing_results()
+        sys.exit(0)
     final_results = monitor()
     write_results(final_results)
     write_summary_index(final_results)
