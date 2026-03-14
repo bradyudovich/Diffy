@@ -1,6 +1,15 @@
 /** Verdict for a ToS change entry. */
 export type Verdict = "Good" | "Neutral" | "Caution";
 
+/** Impact level for a summary point. */
+export type PointImpact = "positive" | "negative" | "neutral";
+
+/** A single actionable point from the AI analysis. */
+export interface SummaryPoint {
+  text: string;
+  impact: PointImpact;
+}
+
 /** Structured AI breakdown of a change, keyed by legal category. */
 export interface DiffSummary {
   Privacy: string;
@@ -23,6 +32,10 @@ export interface HistoryEntry {
   watchlist_hits?: string[];
   /** Trust score (0–100) computed from verdict and watchlist hits. */
   trustScore?: number;
+  /** Letter grade derived from trustScore (A/B/C/D/F). */
+  letterGrade?: string;
+  /** Array of AI-generated summary points with impact labels. */
+  summaryPoints?: SummaryPoint[];
 }
 
 /** Per-company result from the scanner, v2 schema. */
@@ -33,6 +46,8 @@ export interface CompanyResult {
   lastChecked?: string;
   /** Plain-text summary of the most recent change (backward compat). */
   latestSummary?: string;
+  /** Array of AI-generated summary points for the most recent change. */
+  summaryPoints?: SummaryPoint[];
   /** Chronological history of all substantive changes. */
   history: HistoryEntry[];
   /**

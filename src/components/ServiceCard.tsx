@@ -1,16 +1,11 @@
 import { useState } from "react";
-import type { CompanyResult } from "../types";
-import VerdictBadge from "./VerdictBadge";
-import ScoreGauge from "./ScoreGauge";
+import { CheckCircle, XCircle, Info } from "lucide-react";
+import type { CompanyResult, SummaryPoint } from "../types";
+import ScoreBadge, { scoreToGrade } from "./ScoreBadge";
 
 interface Props {
   company: CompanyResult;
   onSelectCompany: (company: CompanyResult) => void;
-}
-
-function getLatestVerdict(company: CompanyResult): "Good" | "Neutral" | "Caution" {
-  if (!company.history || company.history.length === 0) return "Good";
-  return company.history[company.history.length - 1].verdict;
 }
 
 function getCompanyScore(company: CompanyResult): number {
@@ -20,10 +15,26 @@ function getCompanyScore(company: CompanyResult): number {
   return latest?.trustScore ?? 100;
 }
 
-function getScoreCardStyle(score: number): { bg: string; border: string; label: string } {
-  if (score >= 85) return { bg: "bg-green-50", border: "border-green-200", label: "OK" };
-  if (score >= 70) return { bg: "bg-yellow-50", border: "border-yellow-300", label: "Caution" };
-  return { bg: "bg-red-50", border: "border-red-400", label: "Alert" };
+function getScoreCardStyle(score: number): { bg: string; border: string } {
+  if (score >= 85) return { bg: "bg-green-50", border: "border-green-200" };
+  if (score >= 70) return { bg: "bg-yellow-50", border: "border-yellow-300" };
+  return { bg: "bg-red-50", border: "border-red-400" };
+}
+
+/** Pick the top 3 most impactful points: negatives first, then positives, then neutrals. */
+function topPoints(points: SummaryPoint[]): SummaryPoint[] {
+  const neg = points.filter((p) => p.impact === "negative");
+  const pos = points.filter((p) => p.impact === "positive");
+  const neu = points.filter((p) => p.impact === "neutral");
+  return [...neg, ...pos, ...neu].slice(0, 3);
+}
+
+function PointIcon({ impact }: { impact: SummaryPoint["impact"] }) {
+  if (impact === "positive")
+    return <CheckCircle className="h-3.5 w-3.5 text-green-500 flex-shrink-0" aria-hidden="true" />;
+  if (impact === "negative")
+    return <XCircle className="h-3.5 w-3.5 text-red-500 flex-shrink-0" aria-hidden="true" />;
+  return <Info className="h-3.5 w-3.5 text-blue-500 flex-shrink-0" aria-hidden="true" />;
 }
 
 function CompanyLogo({ tosUrl, name }: { tosUrl: string; name: string }) {
@@ -63,13 +74,19 @@ function CompanyLogo({ tosUrl, name }: { tosUrl: string; name: string }) {
 }
 
 export default function ServiceCard({ company, onSelectCompany }: Props) {
-  const verdict = getLatestVerdict(company);
   const latestEntry = company.history?.[company.history.length - 1];
-  // trustScore: entry-level score used to render the ScoreGauge (undefined = no gauge shown)
-  const trustScore = latestEntry?.trustScore;
-  // score: best available company-level score used for card background color
+  const trustScore = latestEntry?.trustScore ?? company.score ?? 100;
   const score = getCompanyScore(company);
   const { bg, border } = getScoreCardStyle(score);
+  const grade =
+    latestEntry?.letterGrade ?? scoreToGrade(trustScore);
+
+  // Prefer summaryPoints from the company root, then from the latest history entry
+  const rawPoints =
+    company.summaryPoints ??
+    latestEntry?.summaryPoints ??
+    [];
+  const displayPoints = topPoints(rawPoints);
 
   return (
     <li
@@ -78,32 +95,41 @@ export default function ServiceCard({ company, onSelectCompany }: Props) {
     >
       <div className="p-4">
         {/* Header row */}
-        <div className="flex items-center gap-2 mb-2 pr-20">
+        <div className="flex items-center gap-2 mb-2 pr-14">
           <CompanyLogo tosUrl={company.tosUrl} name={company.name} />
           <h2 className="text-sm font-semibold truncate font-[Inter,system-ui,sans-serif]">
             {company.name}
           </h2>
         </div>
 
-        {/* Verdict badge + Trust Score gauge */}
-        <span className="absolute top-3 right-3 flex flex-col items-center gap-1">
-          <VerdictBadge verdict={verdict} />
-          {trustScore !== undefined && (
-            <ScoreGauge score={trustScore} size="sm" />
-          )}
+        {/* Score badge (letter grade) – top-right */}
+        <span className="absolute top-3 right-3">
+          <ScoreBadge grade={grade} size="sm" />
         </span>
 
         {/* Category */}
         {company.category && (
-          <p className="text-xs text-gray-500 mb-1">{company.category}</p>
+          <p className="text-xs text-gray-500 mb-2">{company.category}</p>
         )}
 
-        {/* Latest summary – truncated to 2 lines */}
-        {company.latestSummary && (
+        {/* Summary points – top 3, with impact icons */}
+        {displayPoints.length > 0 ? (
+          <ul className="space-y-1 mt-1">
+            {displayPoints.map((point, i) => (
+              <li key={i} className="flex items-start gap-1.5">
+                <PointIcon impact={point.impact} />
+                <span className="text-xs text-gray-700 leading-tight font-[Inter,system-ui,sans-serif]">
+                  {point.text}
+                </span>
+              </li>
+            ))}
+          </ul>
+        ) : company.latestSummary ? (
+          /* Fallback for data without summaryPoints yet */
           <p className="text-xs text-gray-600 line-clamp-2 mt-1 font-[Inter,system-ui,sans-serif]">
             {company.latestSummary}
           </p>
-        )}
+        ) : null}
 
         {/* Last Changed timestamp */}
         {latestEntry && (
