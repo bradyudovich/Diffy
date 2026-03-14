@@ -1,9 +1,11 @@
 import { useState } from "react";
-import type { HistoryEntry } from "../types";
+import type { HistoryEntry, SummaryPoint } from "../types";
 import VerdictBadge from "./VerdictBadge";
 import RawDiffView from "./RawDiffView";
 import ScoreGauge from "./ScoreGauge";
+import ServiceClassBadge, { scoreToClassGrade } from "./ServiceClassBadge";
 import { getGlossaryDefinition } from "../LegalGlossary";
+import { CheckCircle, XCircle, Info, ChevronDown, ChevronUp } from "lucide-react";
 
 interface Props {
   entry: HistoryEntry;
@@ -28,7 +30,13 @@ const CATEGORY_ICONS: Record<string, string> = {
 
 const NO_CHANGE = "No significant changes detected";
 
-type TabId = "summary" | "raw";
+type TabId = "summary" | "points" | "raw";
+
+const TAB_LABELS: Record<TabId, string> = {
+  summary: "AI Summary",
+  points: "Key Points",
+  raw: "Raw Changes",
+};
 
 /** Lightweight tooltip that shows on hover without external dependencies. */
 function Tooltip({ content, children }: { content: string; children: React.ReactNode }) {
@@ -136,10 +144,64 @@ function AccordionRow({
   );
 }
 
+/** Impact icon for a summary point row. */
+function PointIcon({ impact }: { impact: SummaryPoint["impact"] }) {
+  if (impact === "positive")
+    return <CheckCircle className="h-3.5 w-3.5 text-emerald-500 flex-shrink-0 mt-0.5" aria-hidden="true" />;
+  if (impact === "negative")
+    return <XCircle className="h-3.5 w-3.5 text-rose-500 flex-shrink-0 mt-0.5" aria-hidden="true" />;
+  return <Info className="h-3.5 w-3.5 text-sky-500 flex-shrink-0 mt-0.5" aria-hidden="true" />;
+}
+
+/** Expandable point row with optional quote reveal. */
+function PointRow({ point }: { point: SummaryPoint }) {
+  const [quoteOpen, setQuoteOpen] = useState(false);
+  const hasQuote = !!point.quote;
+
+  return (
+    <li className="rounded-lg border border-gray-100 bg-white/70 px-3 py-2">
+      <button
+        type="button"
+        className={`flex items-start gap-2 text-left w-full ${hasQuote ? "cursor-pointer" : "cursor-default"}`}
+        onClick={() => hasQuote && setQuoteOpen((v) => !v)}
+        aria-expanded={hasQuote ? quoteOpen : undefined}
+        disabled={!hasQuote}
+      >
+        <PointIcon impact={point.impact} />
+        <span className="text-xs text-gray-800 leading-snug flex-1">{point.text}</span>
+        {hasQuote && (
+          <span className="flex-shrink-0 mt-0.5 text-gray-400 hover:text-gray-600 transition-colors">
+            {quoteOpen
+              ? <ChevronUp className="h-3.5 w-3.5" aria-hidden="true" />
+              : <ChevronDown className="h-3.5 w-3.5" aria-hidden="true" />}
+          </span>
+        )}
+      </button>
+      {hasQuote && quoteOpen && (
+        <blockquote className="mt-2 rounded-md border-l-2 border-amber-300 bg-amber-50 px-3 py-2 text-xs text-amber-900 italic leading-snug">
+          "{point.quote}"
+        </blockquote>
+      )}
+      {point.case_id && point.case_id !== "other" && (
+        <span className="mt-1 inline-block rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-500 font-mono">
+          {point.case_id}
+        </span>
+      )}
+    </li>
+  );
+}
+
 export default function DiffViewer({ entry, companyName, previousRawText = "", currentRawText = "" }: Props) {
   const [activeTab, setActiveTab] = useState<TabId>("summary");
   const colors = WRAPPER_COLORS[entry.verdict] ?? WRAPPER_COLORS.Good;
   const date = new Date(entry.timestamp).toLocaleString();
+  const grade = entry.letterGrade ?? (entry.trustScore !== undefined ? scoreToClassGrade(entry.trustScore) : undefined);
+
+  const summaryPoints = entry.summaryPoints ?? [];
+  const hasSummaryPoints = summaryPoints.length > 0;
+
+  // Build the ordered tab list; "points" is only shown when AI summary points are available
+  const visibleTabs: TabId[] = ["summary", ...(hasSummaryPoints ? (["points"] as TabId[]) : []), "raw"];
 
   return (
     <div className={`rounded-xl border shadow-sm ${colors.bg} ${colors.border}`}>
@@ -147,7 +209,11 @@ export default function DiffViewer({ entry, companyName, previousRawText = "", c
       <div className="px-4 py-3 border-b border-current border-opacity-20">
         <div className="flex items-center justify-between flex-wrap gap-2">
           <div className="flex items-center gap-3">
-            {entry.trustScore !== undefined && (
+            {/* Prominent letter grade */}
+            {grade && (
+              <ServiceClassBadge grade={grade} size="md" />
+            )}
+            {!grade && entry.trustScore !== undefined && (
               <ScoreGauge score={entry.trustScore} size="sm" />
             )}
             <div>
@@ -176,7 +242,7 @@ export default function DiffViewer({ entry, companyName, previousRawText = "", c
 
       {/* Tab bar */}
       <div className="flex border-b border-current border-opacity-10 px-4 pt-2 gap-1">
-        {(["summary", "raw"] as TabId[]).map((tab) => (
+        {visibleTabs.map((tab) => (
           <button
             key={tab}
             type="button"
@@ -187,7 +253,7 @@ export default function DiffViewer({ entry, companyName, previousRawText = "", c
                 : "text-gray-500 hover:text-gray-700"
             }`}
           >
-            {tab === "summary" ? "AI Summary" : "Raw Changes"}
+            {TAB_LABELS[tab]}
           </button>
         ))}
       </div>
@@ -261,6 +327,24 @@ export default function DiffViewer({ entry, companyName, previousRawText = "", c
                 })}
               </div>
             </div>
+          )}
+        </div>
+      )}
+
+      {/* Tab: Key Points (standardized case-based) */}
+      {activeTab === "points" && (
+        <div className="px-4 py-3">
+          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+            Standardized Points
+          </p>
+          {summaryPoints.length > 0 ? (
+            <ul className="space-y-2">
+              {summaryPoints.map((point, i) => (
+                <PointRow key={i} point={point} />
+              ))}
+            </ul>
+          ) : (
+            <p className="text-xs text-gray-400 italic">No AI-generated points available.</p>
           )}
         </div>
       )}
