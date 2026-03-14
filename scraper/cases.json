@@ -1,0 +1,84 @@
+{
+  "cases": [
+    {
+      "id": "data-training",
+      "title": "User data used to train AI",
+      "description": "The service uses user-generated content or personal data to train its AI/ML models without explicit opt-in.",
+      "rating": "Bad",
+      "weight": -20,
+      "topic": "Privacy"
+    },
+    {
+      "id": "arbitration-clause",
+      "title": "Mandatory arbitration clause",
+      "description": "Users are required to resolve disputes through binding arbitration and waive their right to a jury trial.",
+      "rating": "Blocker",
+      "weight": -50,
+      "topic": "UserRights"
+    },
+    {
+      "id": "data-sold-third-parties",
+      "title": "Personal data sold to third parties",
+      "description": "The service explicitly sells or transfers personal data to third-party companies for profit.",
+      "rating": "Blocker",
+      "weight": -50,
+      "topic": "Privacy"
+    },
+    {
+      "id": "no-class-action",
+      "title": "Class-action lawsuit waiver",
+      "description": "Users must waive their right to participate in class-action lawsuits against the service.",
+      "rating": "Bad",
+      "weight": -20,
+      "topic": "UserRights"
+    },
+    {
+      "id": "data-shared-advertising",
+      "title": "Data shared with advertisers",
+      "description": "The service shares user data with advertising networks or partners for targeted marketing.",
+      "rating": "Bad",
+      "weight": -20,
+      "topic": "Privacy"
+    },
+    {
+      "id": "account-deletion-right",
+      "title": "User can delete account and data",
+      "description": "The service explicitly guarantees users the right to delete their account and all associated personal data.",
+      "rating": "Good",
+      "weight": 10,
+      "topic": "UserRights"
+    },
+    {
+      "id": "content-ownership-retained",
+      "title": "Users retain content ownership",
+      "description": "Users retain full ownership of the content they create and upload to the service.",
+      "rating": "Good",
+      "weight": 10,
+      "topic": "DataOwnership"
+    },
+    {
+      "id": "broad-license-grant",
+      "title": "Service claims broad license to user content",
+      "description": "The service takes a very broad, royalty-free, sublicensable license to user-generated content beyond what is needed to operate.",
+      "rating": "Bad",
+      "weight": -20,
+      "topic": "DataOwnership"
+    },
+    {
+      "id": "liability-cap",
+      "title": "Liability severely limited",
+      "description": "The service caps its liability to users at a very low amount (e.g., $100 or the amount paid in the last month).",
+      "rating": "Neutral",
+      "weight": -10,
+      "topic": "UserRights"
+    },
+    {
+      "id": "transparent-data-practices",
+      "title": "Transparent and minimal data collection",
+      "description": "The service clearly states it collects only the minimum data necessary and never sells it to third parties.",
+      "rating": "Good",
+      "weight": 10,
+      "topic": "Privacy"
+    }
+  ]
+}

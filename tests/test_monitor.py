@@ -990,3 +990,141 @@ class TestCalculateTrustScore:
         assert score == 70
         assert isinstance(score, int)
         assert 0 <= score <= 100
+
+
+# ---------------------------------------------------------------------------
+# get_letter_grade tests (A–E scale)
+# ---------------------------------------------------------------------------
+
+class TestGetLetterGrade:
+    def test_score_90_returns_A(self):
+        assert monitor.get_letter_grade(90) == "A"
+
+    def test_score_100_returns_A(self):
+        assert monitor.get_letter_grade(100) == "A"
+
+    def test_score_70_returns_B(self):
+        assert monitor.get_letter_grade(70) == "B"
+
+    def test_score_89_returns_B(self):
+        assert monitor.get_letter_grade(89) == "B"
+
+    def test_score_50_returns_C(self):
+        assert monitor.get_letter_grade(50) == "C"
+
+    def test_score_69_returns_C(self):
+        assert monitor.get_letter_grade(69) == "C"
+
+    def test_score_30_returns_D(self):
+        assert monitor.get_letter_grade(30) == "D"
+
+    def test_score_49_returns_D(self):
+        assert monitor.get_letter_grade(49) == "D"
+
+    def test_score_0_returns_E(self):
+        assert monitor.get_letter_grade(0) == "E"
+
+    def test_score_29_returns_E(self):
+        assert monitor.get_letter_grade(29) == "E"
+
+    def test_no_F_grade(self):
+        """The old 'F' grade no longer exists; lowest is 'E'."""
+        for score in range(0, 30):
+            assert monitor.get_letter_grade(score) == "E"
+
+
+# ---------------------------------------------------------------------------
+# calculate_score_from_cases tests
+# ---------------------------------------------------------------------------
+
+class TestCalculateScoreFromCases:
+    def test_empty_case_ids_returns_100(self, tmp_env, monkeypatch, tmp_path):
+        cases_data = {"cases": [
+            {"id": "arbitration-clause", "title": "Arbitration", "rating": "Blocker", "weight": -50, "topic": "UserRights"},
+        ]}
+        cases_file = tmp_path / "cases.json"
+        cases_file.write_text(__import__("json").dumps(cases_data))
+        monkeypatch.setattr(monitor, "CASES_PATH", cases_file)
+        assert monitor.calculate_score_from_cases([]) == 100
+
+    def test_blocker_deducts_50(self, tmp_env, monkeypatch, tmp_path):
+        cases_data = {"cases": [
+            {"id": "arbitration-clause", "title": "Arbitration", "rating": "Blocker", "weight": -50, "topic": "UserRights"},
+        ]}
+        cases_file = tmp_path / "cases.json"
+        cases_file.write_text(__import__("json").dumps(cases_data))
+        monkeypatch.setattr(monitor, "CASES_PATH", cases_file)
+        assert monitor.calculate_score_from_cases(["arbitration-clause"]) == 50
+
+    def test_good_case_adds_10(self, tmp_env, monkeypatch, tmp_path):
+        cases_data = {"cases": [
+            {"id": "account-deletion-right", "title": "Delete account", "rating": "Good", "weight": 10, "topic": "UserRights"},
+        ]}
+        cases_file = tmp_path / "cases.json"
+        cases_file.write_text(__import__("json").dumps(cases_data))
+        monkeypatch.setattr(monitor, "CASES_PATH", cases_file)
+        assert monitor.calculate_score_from_cases(["account-deletion-right"]) == 100  # capped at 100
+
+    def test_duplicate_case_ids_counted_once(self, tmp_env, monkeypatch, tmp_path):
+        cases_data = {"cases": [
+            {"id": "arbitration-clause", "title": "Arbitration", "rating": "Blocker", "weight": -50, "topic": "UserRights"},
+        ]}
+        cases_file = tmp_path / "cases.json"
+        cases_file.write_text(__import__("json").dumps(cases_data))
+        monkeypatch.setattr(monitor, "CASES_PATH", cases_file)
+        assert monitor.calculate_score_from_cases(["arbitration-clause", "arbitration-clause"]) == 50
+
+    def test_unknown_case_id_ignored(self, tmp_env, monkeypatch, tmp_path):
+        cases_data = {"cases": []}
+        cases_file = tmp_path / "cases.json"
+        cases_file.write_text(__import__("json").dumps(cases_data))
+        monkeypatch.setattr(monitor, "CASES_PATH", cases_file)
+        assert monitor.calculate_score_from_cases(["nonexistent-case"]) == 100
+
+    def test_score_clamped_to_zero(self, tmp_env, monkeypatch, tmp_path):
+        cases_data = {"cases": [
+            {"id": "c1", "title": "Bad1", "rating": "Blocker", "weight": -50, "topic": "Privacy"},
+            {"id": "c2", "title": "Bad2", "rating": "Blocker", "weight": -50, "topic": "Privacy"},
+            {"id": "c3", "title": "Bad3", "rating": "Blocker", "weight": -50, "topic": "Privacy"},
+        ]}
+        cases_file = tmp_path / "cases.json"
+        cases_file.write_text(__import__("json").dumps(cases_data))
+        monkeypatch.setattr(monitor, "CASES_PATH", cases_file)
+        assert monitor.calculate_score_from_cases(["c1", "c2", "c3"]) == 0
+
+
+# ---------------------------------------------------------------------------
+# load_cases tests
+# ---------------------------------------------------------------------------
+
+class TestLoadCases:
+    def test_loads_cases_from_json(self, tmp_path, monkeypatch):
+        cases_data = {"cases": [
+            {"id": "data-training", "title": "AI Training", "rating": "Bad", "weight": -20, "topic": "Privacy"},
+        ]}
+        cases_file = tmp_path / "cases.json"
+        cases_file.write_text(__import__("json").dumps(cases_data))
+        monkeypatch.setattr(monitor, "CASES_PATH", cases_file)
+        result = monitor.load_cases()
+        assert len(result) == 1
+        assert result[0]["id"] == "data-training"
+        assert result[0]["weight"] == -20
+
+    def test_missing_file_returns_empty_list(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(monitor, "CASES_PATH", tmp_path / "nonexistent.json")
+        assert monitor.load_cases() == []
+
+    def test_real_cases_json_has_10_cases(self):
+        """Validate that the shipped cases.json has exactly 10 starter cases."""
+        cases = monitor.load_cases()
+        assert len(cases) == 10
+
+    def test_each_case_has_required_fields(self):
+        """Every case in cases.json must have id, title, rating, weight, and topic."""
+        for case in monitor.load_cases():
+            assert "id" in case
+            assert "title" in case
+            assert "rating" in case
+            assert "weight" in case
+            assert case["rating"] in ("Good", "Neutral", "Bad", "Blocker")
+            assert isinstance(case["weight"], int)

@@ -24,6 +24,7 @@ from playwright_stealth import Stealth  # Updated import
 # ---------------------------------------------------------------------------
 BASE_DIR = Path(__file__).parent
 CONFIG_PATH = BASE_DIR / "config.json"
+CASES_PATH = BASE_DIR / "scraper" / "cases.json"
 SNAPSHOTS_DIR = BASE_DIR / "data" / "snapshots"
 DATA_RESULTS_PATH = BASE_DIR / "data" / "results.json"
 PUBLIC_RESULTS_PATH = BASE_DIR / "public" / "data" / "results.json"
@@ -204,6 +205,45 @@ def load_config() -> list[dict]:
     with open(CONFIG_PATH, encoding="utf-8") as f:
         data = json.load(f)
     return data.get("companies", [])
+
+
+def load_cases() -> list[dict]:
+    """Load the standardized case definitions from cases.json."""
+    if CASES_PATH.exists():
+        try:
+            with open(CASES_PATH, encoding="utf-8") as f:
+                data = json.load(f)
+            return data.get("cases", [])
+        except (json.JSONDecodeError, OSError):
+            pass
+    return []
+
+
+def _build_cases_index() -> dict[str, dict]:
+    """Return a dict mapping case id → case definition."""
+    return {c["id"]: c for c in load_cases()}
+
+
+def calculate_score_from_cases(case_ids: list[str]) -> int:
+    """Compute an aggregate score (0–100) from a list of matched case ids.
+
+    Scoring rules:
+    - Start at 100.
+    - For each matched case, apply its weight (Blocker = −50, Bad = −20,
+      Neutral = −10, Good = +10).
+    - Clamp the result to [0, 100].
+    """
+    cases_index = _build_cases_index()
+    score = 100
+    seen: set[str] = set()
+    for cid in case_ids:
+        if cid in seen:
+            continue
+        seen.add(cid)
+        case = cases_index.get(cid)
+        if case:
+            score += case.get("weight", 0)
+    return max(0, min(100, score))
 
 def snapshot_path(company_name: str) -> Path:
     safe = re.sub(r"[^\w\-]", "_", company_name)
@@ -580,6 +620,34 @@ def call_openai_overview(tos_text: str) -> str:
 # Trust score
 # ---------------------------------------------------------------------------
 
+_NEGATIVE_PRACTICE_TERMS: tuple[str, ...] = (
+    "sell", "sold", "share", "collect", "retain", "waive", "vague",
+    "unclear", "third party", "third-party", "advertising", "profil",
+    "training", "ai train",
+)
+
+
+def get_letter_grade(score: int) -> str:
+    """Map a numeric trust score (0–100) to a letter grade (A–E).
+
+    Grade mapping:
+      A (Very Good):  score ≥ 90
+      B (Good):       score ≥ 70
+      C (Fair):       score ≥ 50
+      D (Bad):        score ≥ 30
+      E (Very Bad):   score < 30
+    """
+    if score >= 90:
+        return "A"
+    if score >= 70:
+        return "B"
+    if score >= 50:
+        return "C"
+    if score >= 30:
+        return "D"
+    return "E"
+
+
 def calculate_trust_score(history_entry: dict) -> int:
     """Compute a trust score (0–100) for a single history entry.
 
@@ -587,6 +655,10 @@ def calculate_trust_score(history_entry: dict) -> int:
     - Start at 100.
     - Deduct 20 for a 'Caution' verdict, 10 for 'Neutral'.
     - Deduct 5 for each *unique* watchlist_hit present in the entry.
+    - Apply case weights from summaryPoints case_ids when available; fall back
+      to legacy impact-count deductions otherwise.
+    - Deduct 5 for each diffSummary field (DataOwnership, Privacy) that
+      contains language indicating negative data practices.
     - Clamp the result to a minimum of 0.
     """
     score = 100
@@ -598,6 +670,38 @@ def calculate_trust_score(history_entry: dict) -> int:
     watchlist_hits = history_entry.get("watchlist_hits") or []
     unique_hits = set(watchlist_hits)
     score -= 5 * len(unique_hits)
+
+    # AI summary points: use case weights when available, fall back to impact counts
+    summary_points = history_entry.get("summaryPoints") or []
+    if summary_points:
+        case_ids = [
+            p.get("case_id", "")
+            for p in summary_points
+            if isinstance(p, dict) and p.get("case_id") and p.get("case_id") != "other"
+        ]
+        if case_ids:
+            case_score = calculate_score_from_cases(case_ids)
+            score += (case_score - 100)
+        else:
+            negative_count = sum(
+                1 for p in summary_points
+                if isinstance(p, dict) and p.get("impact") == "negative"
+            )
+            positive_count = sum(
+                1 for p in summary_points
+                if isinstance(p, dict) and p.get("impact") == "positive"
+            )
+            score -= 5 * negative_count
+            positive_bonus = min(2 * positive_count, 10)
+            score += positive_bonus
+
+    # Penalise negative data-ownership and privacy practices in the AI diff summary
+    diff_summary = history_entry.get("diffSummary") or {}
+    for key in ("DataOwnership", "Privacy"):
+        val = diff_summary.get(key, "").lower()
+        if any(term in val for term in _NEGATIVE_PRACTICE_TERMS):
+            score -= 5
+
     return max(score, 0)
 
 

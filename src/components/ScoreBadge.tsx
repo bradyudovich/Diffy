@@ -1,16 +1,16 @@
 /**
- * ScoreBadge.tsx – Displays a letter grade (A/B/C/D/F) inside a coloured circle.
+ * ScoreBadge.tsx – Displays a letter grade (A/B/C/D/E) inside a coloured circle.
  *
- * Grade colour mapping:
- *   A → green   (score ≥ 90)
- *   B → teal    (score ≥ 80)
- *   C → yellow  (score ≥ 70)
- *   D → orange  (score ≥ 50)
- *   F → red     (score < 50)
+ * Grade colour mapping (soft, neutral palette):
+ *   A → emerald  (score ≥ 90)
+ *   B → teal     (score ≥ 70)
+ *   C → amber    (score ≥ 50)
+ *   D → orange   (score ≥ 30)
+ *   E → rose     (score < 30)
  */
 
 interface Props {
-  /** Letter grade string: "A", "B", "C", "D", or "F". */
+  /** Letter grade string: "A", "B", "C", "D", or "E". */
   grade: string;
   /** Optional size variant. Defaults to "md". */
   size?: "sm" | "md" | "lg";
@@ -18,11 +18,11 @@ interface Props {
 
 function gradeStyles(grade: string): { bg: string; text: string; ring: string } {
   switch (grade) {
-    case "A": return { bg: "bg-green-500",  text: "text-white", ring: "ring-green-600" };
-    case "B": return { bg: "bg-teal-500",   text: "text-white", ring: "ring-teal-600" };
-    case "C": return { bg: "bg-yellow-400", text: "text-gray-900", ring: "ring-yellow-500" };
-    case "D": return { bg: "bg-orange-500", text: "text-white", ring: "ring-orange-600" };
-    default:  return { bg: "bg-red-600",    text: "text-white", ring: "ring-red-700" };
+    case "A": return { bg: "bg-emerald-100", text: "text-emerald-800", ring: "ring-emerald-300" };
+    case "B": return { bg: "bg-teal-100",    text: "text-teal-800",    ring: "ring-teal-300" };
+    case "C": return { bg: "bg-amber-100",   text: "text-amber-800",   ring: "ring-amber-300" };
+    case "D": return { bg: "bg-orange-100",  text: "text-orange-800",  ring: "ring-orange-300" };
+    default:  return { bg: "bg-rose-100",    text: "text-rose-800",    ring: "ring-rose-300" };
   }
 }
 
@@ -52,8 +52,9 @@ export default function ScoreBadge({ grade, size = "md" }: Props) {
  */
 export function scoreToGrade(score: number): string {
   if (score >= 90) return "A";
-  if (score >= 80) return "B";
-  if (score >= 70) return "C";
-  if (score >= 50) return "D";
-  return "F";
+  if (score >= 70) return "B";
+  if (score >= 50) return "C";
+  if (score >= 30) return "D";
+  return "E";
 }
+

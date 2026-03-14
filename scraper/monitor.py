@@ -27,13 +27,14 @@ from playwright_stealth import Stealth
 BASE_DIR = Path(__file__).parent
 CONFIG_PATH = BASE_DIR / "config.json"
 WATCHLIST_PATH = BASE_DIR / "watchlist.json"
+CASES_PATH = BASE_DIR / "cases.json"
 SNAPSHOTS_DIR = BASE_DIR / "data" / "snapshots"
 DATA_RESULTS_PATH = BASE_DIR / "data" / "results.json"
 # Also write to public/data so the Vite frontend picks it up during dev/build
 PUBLIC_RESULTS_PATH = BASE_DIR.parent / "public" / "data" / "results.json"
 TOS_DIR = BASE_DIR / "terms_of_service"
 
-SCHEMA_VERSION = "2.1"
+SCHEMA_VERSION = "2.2"
 
 # ---------------------------------------------------------------------------
 # Hybrid substantive diff configuration
@@ -152,9 +153,15 @@ AI_DIFF_SUMMARY_PROMPT = (
 AI_POINTS_PROMPT = (
     "You are a strict legal analysis engine specializing in consumer rights. "
     "Analyze the provided Terms of Service text and return ONLY a valid JSON array — no prose, no markdown, no explanation. "
-    "Each element must be an object with exactly two keys: "
-    "\"text\" (a plain string, max 20 words) and "
-    "\"impact\" (one of: \"positive\", \"negative\", \"neutral\"). "
+    "Each element must be an object with exactly four keys: "
+    "\"text\" (a plain string, max 20 words summarising the point), "
+    "\"impact\" (one of: \"positive\", \"negative\", \"neutral\"), "
+    "\"case_id\" (a short kebab-case identifier matching one of the known case types such as: "
+    "\"data-training\", \"arbitration-clause\", \"data-sold-third-parties\", \"no-class-action\", "
+    "\"data-shared-advertising\", \"account-deletion-right\", \"content-ownership-retained\", "
+    "\"broad-license-grant\", \"liability-cap\", \"transparent-data-practices\", or \"other\" if none match), "
+    "\"quote\" (a verbatim excerpt, max 40 words, from the Terms of Service text that supports this point — "
+    "copy exact wording from the source). "
     "Return between 5 and 8 points. Be critical and realistic: most ToS documents contain several negative clauses. "
     "Mark as \"negative\" any clause that: restricts user rights, allows data selling or sharing with third parties, "
     "enables AI training on user content without explicit opt-in, includes mandatory arbitration, waives class-action rights, "
@@ -240,6 +247,23 @@ def load_watchlist() -> list[str]:
     return []
 
 
+def load_cases() -> list[dict]:
+    """Load the standardized case definitions from cases.json."""
+    if CASES_PATH.exists():
+        try:
+            with open(CASES_PATH, encoding="utf-8") as f:
+                data = json.load(f)
+            return data.get("cases", [])
+        except (json.JSONDecodeError, OSError):
+            pass
+    return []
+
+
+def _build_cases_index() -> dict[str, dict]:
+    """Return a dict mapping case id → case definition."""
+    return {c["id"]: c for c in load_cases()}
+
+
 def scan_watchlist(text: str, watchlist: list[str] | None = None) -> list[str]:
     """Return watchlist terms found (case-insensitive) in the given text."""
     if watchlist is None:
@@ -255,6 +279,35 @@ _NEGATIVE_PRACTICE_TERMS: tuple[str, ...] = (
 )
 
 
+def calculate_score_from_cases(case_ids: list[str]) -> int:
+    """Compute an aggregate score (0–100) from a list of matched case ids.
+
+    Scoring rules:
+    - Start at 100.
+    - For each matched case, apply its weight (Blocker = −50, Bad = −20,
+      Neutral = −10, Good = +10).
+    - Clamp the result to [0, 100].
+
+    Args:
+        case_ids: List of case id strings found for this entry (may contain
+                  duplicates; each is only counted once).
+
+    Returns:
+        Integer score in the range [0, 100].
+    """
+    cases_index = _build_cases_index()
+    score = 100
+    seen: set[str] = set()
+    for cid in case_ids:
+        if cid in seen:
+            continue
+        seen.add(cid)
+        case = cases_index.get(cid)
+        if case:
+            score += case.get("weight", 0)
+    return max(0, min(100, score))
+
+
 def calculate_trust_score(history_entry: dict) -> int:
     """Compute a trust score (0–100) for a single history entry.
 
@@ -262,8 +315,9 @@ def calculate_trust_score(history_entry: dict) -> int:
     - Start at 100.
     - Deduct 20 for a 'Caution' verdict, 10 for 'Neutral'.
     - Deduct 5 for each *unique* watchlist_hit present in the entry.
-    - Deduct 5 for each negative-impact AI summary point (summaryPoints);
-      add 2 for each positive-impact point (bonus capped at +10).
+    - Apply case weights from summaryPoints case_ids (via calculate_score_from_cases).
+      If no case_ids are present, fall back to: deduct 5 per negative point,
+      add 2 per positive point (bonus capped at +10).
     - Deduct 5 for each diffSummary field (DataOwnership, Privacy) that
       contains language indicating negative data practices.
     - Clamp the result to a minimum of 0.
@@ -282,20 +336,32 @@ def calculate_trust_score(history_entry: dict) -> int:
     unique_hits = set(watchlist_hits)
     score -= 5 * len(unique_hits)
 
-    # AI summary points: penalise negative points, reward positive ones
+    # AI summary points: use case weights when available, fall back to impact counts
     summary_points = history_entry.get("summaryPoints") or []
     if summary_points:
-        negative_count = sum(
-            1 for p in summary_points
-            if isinstance(p, dict) and p.get("impact") == "negative"
-        )
-        positive_count = sum(
-            1 for p in summary_points
-            if isinstance(p, dict) and p.get("impact") == "positive"
-        )
-        score -= 5 * negative_count
-        positive_bonus = min(2 * positive_count, 10)
-        score += positive_bonus
+        case_ids = [
+            p.get("case_id", "")
+            for p in summary_points
+            if isinstance(p, dict) and p.get("case_id") and p.get("case_id") != "other"
+        ]
+        if case_ids:
+            # Replace the flat 100-base with a weighted case score delta
+            case_score = calculate_score_from_cases(case_ids)
+            # Apply the case score as a signed delta relative to 100
+            score += (case_score - 100)
+        else:
+            # Legacy fallback: count positive/negative impacts
+            negative_count = sum(
+                1 for p in summary_points
+                if isinstance(p, dict) and p.get("impact") == "negative"
+            )
+            positive_count = sum(
+                1 for p in summary_points
+                if isinstance(p, dict) and p.get("impact") == "positive"
+            )
+            score -= 5 * negative_count
+            positive_bonus = min(2 * positive_count, 10)
+            score += positive_bonus
 
     # Penalise negative data-ownership and privacy practices in the AI diff summary
     diff_summary = history_entry.get("diffSummary") or {}
@@ -308,24 +374,24 @@ def calculate_trust_score(history_entry: dict) -> int:
 
 
 def get_letter_grade(score: int) -> str:
-    """Map a numeric trust score (0–100) to a letter grade.
+    """Map a numeric trust score (0–100) to a letter grade (A–E).
 
-    Grade mapping:
-      90+  → A
-      80+  → B
-      70+  → C
-      50+  → D
-      <50  → F
+    Grade mapping (mirrors ServiceClassBadge.tsx):
+      A (Very Good):  score ≥ 90
+      B (Good):       score ≥ 70
+      C (Fair):       score ≥ 50
+      D (Bad):        score ≥ 30
+      E (Very Bad):   score < 30
     """
     if score >= 90:
         return "A"
-    if score >= 80:
-        return "B"
     if score >= 70:
-        return "C"
+        return "B"
     if score >= 50:
+        return "C"
+    if score >= 30:
         return "D"
-    return "F"
+    return "E"
 
 
 def calculate_score(entry: dict) -> int:
@@ -695,8 +761,10 @@ def call_openai_points_summary(text: str) -> list[dict]:
     """Generate an array of summary points from ToS text or a diff.
 
     Each point has:
-      - "text":   plain string (max 20 words) describing the point
-      - "impact": one of "positive", "negative", or "neutral"
+      - "text":    plain string (max 20 words) describing the point
+      - "impact":  one of "positive", "negative", or "neutral"
+      - "case_id": kebab-case identifier matching a case in cases.json (or "other")
+      - "quote":   verbatim excerpt from the ToS text supporting this point
 
     Returns an empty list if the API is unavailable or parsing fails.
     """
@@ -707,7 +775,7 @@ def call_openai_points_summary(text: str) -> list[dict]:
         raw = _openai_post([
             {"role": "system", "content": AI_POINTS_PROMPT},
             {"role": "user", "content": f"Here is the Terms of Service text:\n\n{truncated}"},
-        ], max_tokens=512)
+        ], max_tokens=768)
     except Exception as exc:
         print(f"  [OpenAI points summary error] {exc}")
         return []
@@ -726,6 +794,8 @@ def call_openai_points_summary(text: str) -> list[dict]:
                     "impact": str(p.get("impact", "neutral")).lower()
                     if str(p.get("impact", "neutral")).lower() in valid_impacts
                     else "neutral",
+                    "case_id": str(p.get("case_id", "other")).strip() or "other",
+                    "quote": str(p.get("quote", "")).strip(),
                 }
                 for p in parsed
                 if isinstance(p, dict) and p.get("text")

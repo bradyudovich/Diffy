@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CheckCircle, XCircle, Info } from "lucide-react";
+import { CheckCircle, XCircle, Info, ChevronDown, ChevronUp } from "lucide-react";
 import type { CompanyResult, SummaryPoint } from "../types";
 import ScoreBadge, { scoreToGrade } from "./ScoreBadge";
 
@@ -16,9 +16,9 @@ function getCompanyScore(company: CompanyResult): number {
 }
 
 function getScoreCardStyle(score: number): { bg: string; border: string } {
-  if (score >= 85) return { bg: "bg-green-50", border: "border-green-200" };
-  if (score >= 70) return { bg: "bg-yellow-50", border: "border-yellow-300" };
-  return { bg: "bg-red-50", border: "border-red-400" };
+  if (score >= 70) return { bg: "bg-gray-50", border: "border-gray-200" };
+  if (score >= 50) return { bg: "bg-amber-50/50", border: "border-amber-200" };
+  return { bg: "bg-rose-50/50", border: "border-rose-200" };
 }
 
 /** Pick the top 3 most impactful points: negatives first, then positives, then neutrals. */
@@ -31,10 +31,45 @@ function topPoints(points: SummaryPoint[]): SummaryPoint[] {
 
 function PointIcon({ impact }: { impact: SummaryPoint["impact"] }) {
   if (impact === "positive")
-    return <CheckCircle className="h-3.5 w-3.5 text-green-500 flex-shrink-0" aria-hidden="true" />;
+    return <CheckCircle className="h-3.5 w-3.5 text-emerald-500 flex-shrink-0" aria-hidden="true" />;
   if (impact === "negative")
-    return <XCircle className="h-3.5 w-3.5 text-red-500 flex-shrink-0" aria-hidden="true" />;
-  return <Info className="h-3.5 w-3.5 text-blue-500 flex-shrink-0" aria-hidden="true" />;
+    return <XCircle className="h-3.5 w-3.5 text-rose-500 flex-shrink-0" aria-hidden="true" />;
+  return <Info className="h-3.5 w-3.5 text-sky-500 flex-shrink-0" aria-hidden="true" />;
+}
+
+/** A single summary point with an expandable quote box. */
+function PointRow({ point }: { point: SummaryPoint }) {
+  const [quoteOpen, setQuoteOpen] = useState(false);
+  const hasQuote = !!point.quote;
+
+  return (
+    <li className="flex flex-col gap-0.5">
+      <button
+        type="button"
+        className={`flex items-start gap-1.5 text-left w-full group/point ${hasQuote ? "cursor-pointer" : "cursor-default"}`}
+        onClick={() => hasQuote && setQuoteOpen((v) => !v)}
+        aria-expanded={hasQuote ? quoteOpen : undefined}
+        disabled={!hasQuote}
+      >
+        <PointIcon impact={point.impact} />
+        <span className="text-xs text-gray-700 leading-tight font-[Inter,system-ui,sans-serif] flex-1">
+          {point.text}
+        </span>
+        {hasQuote && (
+          <span className="flex-shrink-0 mt-0.5 text-gray-400 group-hover/point:text-gray-600 transition-colors">
+            {quoteOpen
+              ? <ChevronUp className="h-3 w-3" aria-hidden="true" />
+              : <ChevronDown className="h-3 w-3" aria-hidden="true" />}
+          </span>
+        )}
+      </button>
+      {hasQuote && quoteOpen && (
+        <blockquote className="ml-5 mt-1 rounded-md border-l-2 border-amber-300 bg-amber-50 px-2.5 py-1.5 text-xs text-amber-900 italic leading-snug">
+          "{point.quote}"
+        </blockquote>
+      )}
+    </li>
+  );
 }
 
 function CompanyLogo({ tosUrl, name }: { tosUrl: string; name: string }) {
@@ -112,16 +147,11 @@ export default function ServiceCard({ company, onSelectCompany }: Props) {
           <p className="text-xs text-gray-500 mb-2">{company.category}</p>
         )}
 
-        {/* Summary points – top 3, with impact icons */}
+        {/* Summary points – top 3, with impact icons and expandable quotes */}
         {displayPoints.length > 0 ? (
-          <ul className="space-y-1 mt-1">
+          <ul className="space-y-1.5 mt-1">
             {displayPoints.map((point, i) => (
-              <li key={i} className="flex items-start gap-1.5">
-                <PointIcon impact={point.impact} />
-                <span className="text-xs text-gray-700 leading-tight font-[Inter,system-ui,sans-serif]">
-                  {point.text}
-                </span>
-              </li>
+              <PointRow key={i} point={point} />
             ))}
           </ul>
         ) : company.latestSummary ? (

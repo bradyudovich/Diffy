@@ -8,6 +8,10 @@ export type PointImpact = "positive" | "negative" | "neutral";
 export interface SummaryPoint {
   text: string;
   impact: PointImpact;
+  /** Standardized case identifier from cases.json (e.g. "data-training"). */
+  case_id?: string;
+  /** Verbatim quote from the ToS text that supports this point. */
+  quote?: string;
 }
 
 /** Structured AI breakdown of a change, keyed by legal category. */
