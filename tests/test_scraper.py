@@ -692,3 +692,255 @@ class TestWriteSummaryIndex:
         company = data["companies"][0]
         assert company["score"] == 100
         assert company["latest_verdict"] is None
+
+
+# ---------------------------------------------------------------------------
+# calculate_trust_score – enhanced scoring with summaryPoints and diffSummary
+# ---------------------------------------------------------------------------
+
+class TestCalculateTrustScoreEnhanced:
+    """Verify the enhanced calculate_trust_score() logic that considers
+    AI summary points and diffSummary content."""
+
+    def test_negative_summary_points_deduct_from_score(self):
+        entry = {
+            "verdict": "Good",
+            "watchlist_hits": [],
+            "summaryPoints": [
+                {"text": "Data sold to third parties", "impact": "negative"},
+                {"text": "Mandatory arbitration applies", "impact": "negative"},
+            ],
+        }
+        # 100 - 0 (Good) - 0 (no hits) - 2*5 (2 negative points) = 90
+        assert scraper_monitor.calculate_trust_score(entry) == 90
+
+    def test_positive_summary_points_add_to_score(self):
+        entry = {
+            "verdict": "Neutral",
+            "watchlist_hits": [],
+            "summaryPoints": [
+                {"text": "Users retain full content ownership", "impact": "positive"},
+                {"text": "Data is never sold", "impact": "positive"},
+            ],
+        }
+        # 100 - 10 (Neutral) + 2*2 (2 positive points) = 94
+        assert scraper_monitor.calculate_trust_score(entry) == 94
+
+    def test_positive_bonus_capped_at_10(self):
+        entry = {
+            "verdict": "Good",
+            "watchlist_hits": [],
+            "summaryPoints": [
+                {"text": "p1", "impact": "positive"},
+                {"text": "p2", "impact": "positive"},
+                {"text": "p3", "impact": "positive"},
+                {"text": "p4", "impact": "positive"},
+                {"text": "p5", "impact": "positive"},
+                {"text": "p6", "impact": "positive"},
+                {"text": "p7", "impact": "positive"},
+                {"text": "p8", "impact": "positive"},
+            ],
+        }
+        # 100 - 0 + min(8*2, 10) = 100 + 10 = 110 → clamped to... no, not clamped from above
+        # But bonus is capped at 10, so 100 + 10 = 110.
+        # There is no upper clamp, only lower clamp at 0.
+        assert scraper_monitor.calculate_trust_score(entry) == 110
+
+    def test_diff_summary_negative_data_ownership_deducts_score(self):
+        entry = {
+            "verdict": "Neutral",
+            "watchlist_hits": [],
+            "summaryPoints": [],
+            "diffSummary": {
+                "Privacy": "No significant changes detected",
+                "DataOwnership": "Company may sell user data to third parties",
+                "UserRights": "No significant changes detected",
+            },
+        }
+        # 100 - 10 (Neutral) - 0 (no hits) - 0 (no summary points) - 5 (DataOwnership sell) = 85
+        assert scraper_monitor.calculate_trust_score(entry) == 85
+
+    def test_diff_summary_negative_privacy_deducts_score(self):
+        entry = {
+            "verdict": "Good",
+            "watchlist_hits": [],
+            "summaryPoints": [],
+            "diffSummary": {
+                "Privacy": "Data collected and shared with advertising partners",
+                "DataOwnership": "No significant changes detected",
+                "UserRights": "No significant changes detected",
+            },
+        }
+        # 100 - 0 (Good) - 0 (no hits) - 0 (no points) - 5 (Privacy collect/advertising/share) = 95
+        assert scraper_monitor.calculate_trust_score(entry) == 95
+
+    def test_combined_all_deductions(self):
+        entry = {
+            "verdict": "Caution",
+            "watchlist_hits": ["Arbitration", "Tracking"],
+            "summaryPoints": [
+                {"text": "Mandatory arbitration clause", "impact": "negative"},
+                {"text": "User data sold to advertisers", "impact": "negative"},
+                {"text": "Users retain ownership", "impact": "positive"},
+            ],
+            "diffSummary": {
+                "Privacy": "Data collected and retained for advertising",
+                "DataOwnership": "Company may share data with third parties",
+                "UserRights": "No significant changes detected",
+            },
+        }
+        # 100 - 20 (Caution) - 2*5 (2 watchlist hits) - 2*5 (2 neg points) + 2 (1 pos point)
+        # - 5 (Privacy collect/retained/advertising) - 5 (DataOwnership share/third party)
+        # = 100 - 20 - 10 - 10 + 2 - 5 - 5 = 52
+        assert scraper_monitor.calculate_trust_score(entry) == 52
+
+    def test_neutral_points_have_no_score_impact(self):
+        entry = {
+            "verdict": "Good",
+            "watchlist_hits": [],
+            "summaryPoints": [
+                {"text": "Service governed by California law", "impact": "neutral"},
+                {"text": "Updates notified by email", "impact": "neutral"},
+            ],
+        }
+        # 100 - 0 - 0 - 0 (no neg/pos points) = 100
+        assert scraper_monitor.calculate_trust_score(entry) == 100
+
+    def test_empty_summary_points_list_no_change(self):
+        entry = {
+            "verdict": "Good",
+            "watchlist_hits": [],
+            "summaryPoints": [],
+        }
+        assert scraper_monitor.calculate_trust_score(entry) == 100
+
+    def test_missing_summary_points_key_no_change(self):
+        entry = {"verdict": "Good", "watchlist_hits": []}
+        assert scraper_monitor.calculate_trust_score(entry) == 100
+
+    def test_score_never_drops_below_zero(self):
+        entry = {
+            "verdict": "Caution",
+            "watchlist_hits": ["A", "B", "C", "D", "E"],
+            "summaryPoints": [
+                {"text": f"negative point {i}", "impact": "negative"}
+                for i in range(10)
+            ],
+            "diffSummary": {
+                "Privacy": "Data sold and shared with advertising third-party",
+                "DataOwnership": "Company retains and sells all user data",
+                "UserRights": "No significant changes detected",
+            },
+        }
+        assert scraper_monitor.calculate_trust_score(entry) >= 0
+
+
+# ---------------------------------------------------------------------------
+# re_rate_existing_results
+# ---------------------------------------------------------------------------
+
+class TestReRateExistingResults:
+    """Verify re_rate_existing_results() recalculates scores across all companies."""
+
+    def _make_results_json(self, tmp_env):
+        import json
+        results = {
+            "schemaVersion": "2.1",
+            "updatedAt": "2026-01-01T00:00:00Z",
+            "companies": [
+                {
+                    "name": "AlphaCo",
+                    "category": "Tech",
+                    "tosUrl": "https://alphaco.com/tos",
+                    "lastChecked": "2026-01-01T00:00:00Z",
+                    "latestSummary": "Overview",
+                    "score": 100,
+                    "history": [
+                        {
+                            "previous_hash": None,
+                            "current_hash": "hash1",
+                            "timestamp": "2026-01-01T00:00:00Z",
+                            "verdict": "Neutral",
+                            "diffSummary": {
+                                "Privacy": "Data collected and sold",
+                                "DataOwnership": "No significant changes detected",
+                                "UserRights": "No significant changes detected",
+                            },
+                            "changeIsSubstantial": True,
+                            "changeReason": "first version archived",
+                            "watchlist_hits": ["Arbitration"],
+                            "summaryPoints": [
+                                {"text": "Data sold to advertisers", "impact": "negative"},
+                            ],
+                        }
+                    ],
+                }
+            ],
+        }
+        payload = json.dumps(results, indent=2)
+        (tmp_env / "data").mkdir(parents=True, exist_ok=True)
+        (tmp_env / "data" / "results.json").write_text(payload)
+        return results
+
+    def test_re_rate_updates_trust_score_in_history(self, tmp_env, monkeypatch):
+        import json
+        self._make_results_json(tmp_env)
+        monkeypatch.setattr(scraper_monitor, "DATA_RESULTS_PATH",
+                            tmp_env / "data" / "results.json")
+        monkeypatch.setattr(scraper_monitor, "PUBLIC_RESULTS_PATH",
+                            tmp_env / "public" / "data" / "results.json")
+        monkeypatch.setattr(scraper_monitor, "SUMMARY_INDEX_PATH",
+                            tmp_env / "summary_index.json")
+        monkeypatch.setattr(scraper_monitor, "PUBLIC_SUMMARY_INDEX_PATH",
+                            tmp_env / "public_summary_index.json")
+
+        updated = scraper_monitor.re_rate_existing_results()
+        entry = updated["companies"][0]["history"][0]
+        assert "trustScore" in entry
+        assert "letterGrade" in entry
+        # Neutral(-10) + Arbitration hit(-5) + 1 neg summaryPoint(-5) + Privacy sell/collected(-5) = 75
+        assert entry["trustScore"] == 75
+        assert entry["letterGrade"] == "C"
+
+    def test_re_rate_updates_company_score(self, tmp_env, monkeypatch):
+        self._make_results_json(tmp_env)
+        monkeypatch.setattr(scraper_monitor, "DATA_RESULTS_PATH",
+                            tmp_env / "data" / "results.json")
+        monkeypatch.setattr(scraper_monitor, "PUBLIC_RESULTS_PATH",
+                            tmp_env / "public" / "data" / "results.json")
+        monkeypatch.setattr(scraper_monitor, "SUMMARY_INDEX_PATH",
+                            tmp_env / "summary_index.json")
+        monkeypatch.setattr(scraper_monitor, "PUBLIC_SUMMARY_INDEX_PATH",
+                            tmp_env / "public_summary_index.json")
+
+        updated = scraper_monitor.re_rate_existing_results()
+        company = updated["companies"][0]
+        # company score reflects latest history entry's score
+        assert company["score"] == 75
+
+    def test_re_rate_returns_empty_when_no_results(self, tmp_env, monkeypatch):
+        monkeypatch.setattr(scraper_monitor, "DATA_RESULTS_PATH",
+                            tmp_env / "nonexistent.json")
+        monkeypatch.setattr(scraper_monitor, "PUBLIC_RESULTS_PATH",
+                            tmp_env / "nonexistent2.json")
+        result = scraper_monitor.re_rate_existing_results()
+        assert result == {}
+
+    def test_re_rate_writes_results_to_disk(self, tmp_env, monkeypatch):
+        import json
+        self._make_results_json(tmp_env)
+        monkeypatch.setattr(scraper_monitor, "DATA_RESULTS_PATH",
+                            tmp_env / "data" / "results.json")
+        monkeypatch.setattr(scraper_monitor, "PUBLIC_RESULTS_PATH",
+                            tmp_env / "public" / "data" / "results.json")
+        monkeypatch.setattr(scraper_monitor, "SUMMARY_INDEX_PATH",
+                            tmp_env / "summary_index.json")
+        monkeypatch.setattr(scraper_monitor, "PUBLIC_SUMMARY_INDEX_PATH",
+                            tmp_env / "public_summary_index.json")
+
+        scraper_monitor.re_rate_existing_results()
+
+        saved = json.loads((tmp_env / "data" / "results.json").read_text())
+        entry = saved["companies"][0]["history"][0]
+        assert entry["trustScore"] == 75
+        assert entry["letterGrade"] == "C"
