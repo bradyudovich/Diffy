@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { HelmetProvider, Helmet } from "react-helmet-async";
 import type { CompanyResult, HistoryEntry, Results } from "./types";
 import ServiceCardGrid from "./components/ServiceCardGrid";
@@ -7,6 +7,16 @@ import DiffViewer from "./components/DiffViewer";
 import DiffViewerErrorBoundary from "./components/DiffViewerErrorBoundary";
 import About from "./components/About";
 import Leaderboard from "./components/Leaderboard";
+import ScoreBreakdownPanel from "./components/ScoreBreakdownPanel";
+import TrendChart from "./components/TrendChart";
+import {
+  parseSummary,
+  deriveDataScore,
+  deriveUserRightsScore,
+  deriveReadabilityScore,
+  deriveOverallScore,
+  mean,
+} from "./utils/scoreUtils";
 
 const RESULTS_URL =
   import.meta.env.DEV
@@ -125,6 +135,24 @@ export default function App() {
       })
     : [];
 
+  /** Aggregate stats derived from current results for the header banner. */
+  const globalStats = useMemo(() => {
+    if (!results) return null;
+    const companies = results.companies;
+    const scores = companies.map((c) => {
+      if (typeof c.score === "number") return c.score;
+      const summary = c.latestSummary ?? c.summary ?? "";
+      return summary ? deriveOverallScore(summary) : 75;
+    });
+    const industryAvg = Math.round(mean(scores));
+    const flagged = companies.filter((c) => {
+      const s = typeof c.score === "number" ? c.score : deriveOverallScore(c.latestSummary ?? c.summary ?? "");
+      return s < 50;
+    }).length;
+    const totalChanges = companies.reduce((n, c) => n + (c.history?.length ?? 0), 0);
+    return { industryAvg, flagged, totalChanges, total: companies.length };
+  }, [results]);
+
   function handleSelectCompany(company: CompanyResult) {
     setSelectedCompany(company);
     // Pre-select the most recent history entry if available
@@ -157,20 +185,58 @@ export default function App() {
       </Helmet>
       <div className="min-h-screen bg-gray-50 text-gray-900">
       {/* Header */}
-      <header className="bg-indigo-700 text-white py-6 shadow">
-        <div className="max-w-6xl mx-auto px-4 flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold">Diffy</h1>
-            <p className="mt-1 text-indigo-200 text-sm">
-              Terms of Service change tracker
-            </p>
+      <header className="bg-gradient-to-r from-indigo-700 to-indigo-900 text-white shadow-lg">
+        <div className="max-w-6xl mx-auto px-4 py-5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div
+                className="h-10 w-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-xl font-black cursor-pointer select-none"
+                onClick={() => { setSelectedCompany(null); setSelectedEntry(null); setShowAbout(false); }}
+                title="Home"
+              >
+                D
+              </div>
+              <div>
+                <h1
+                  className="text-2xl font-bold leading-none cursor-pointer hover:text-indigo-200 transition-colors"
+                  onClick={() => { setSelectedCompany(null); setSelectedEntry(null); setShowAbout(false); }}
+                >
+                  Diffy
+                </h1>
+                <p className="text-indigo-300 text-xs mt-0.5 leading-none">
+                  Terms of Service intelligence platform
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={handleShowAbout}
+              className="text-sm text-indigo-200 hover:text-white transition-colors underline-offset-2 hover:underline"
+            >
+              About / FAQ
+            </button>
           </div>
-          <button
-            onClick={handleShowAbout}
-            className="text-sm text-indigo-200 hover:text-white transition-colors underline-offset-2 hover:underline"
-          >
-            About / FAQ
-          </button>
+
+          {/* Stats bar – shown when data is loaded and on the main list view */}
+          {globalStats && !selectedCompany && !showAbout && (
+            <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="rounded-lg bg-white/10 border border-white/15 px-3 py-2 text-center">
+                <p className="text-2xl font-black text-white leading-none">{globalStats.total}</p>
+                <p className="text-indigo-300 text-xs mt-0.5">Companies tracked</p>
+              </div>
+              <div className="rounded-lg bg-white/10 border border-white/15 px-3 py-2 text-center">
+                <p className="text-2xl font-black text-white leading-none">{globalStats.industryAvg}</p>
+                <p className="text-indigo-300 text-xs mt-0.5">Industry avg score</p>
+              </div>
+              <div className="rounded-lg bg-white/10 border border-white/15 px-3 py-2 text-center">
+                <p className="text-2xl font-black leading-none text-rose-300">{globalStats.flagged}</p>
+                <p className="text-indigo-300 text-xs mt-0.5">Companies flagged</p>
+              </div>
+              <div className="rounded-lg bg-white/10 border border-white/15 px-3 py-2 text-center">
+                <p className="text-2xl font-black text-white leading-none">{globalStats.totalChanges}</p>
+                <p className="text-indigo-300 text-xs mt-0.5">TOS changes logged</p>
+              </div>
+            </div>
+          )}
         </div>
       </header>
 
@@ -278,34 +344,102 @@ export default function App() {
               ← Back to all companies
             </button>
 
-            <div className="mb-4 flex items-center gap-2">
-              <h2 className="text-xl font-bold">{selectedCompany.name}</h2>
-              {selectedCompany.category && (
-                <span className="text-sm text-gray-500">
-                  {CATEGORY_ICONS[selectedCompany.category] ?? "🏢"} {selectedCompany.category}
-                </span>
+            {/* Company header banner */}
+            <div className="mb-6 rounded-xl bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-100 p-4">
+              <div className="flex items-start justify-between gap-4 flex-wrap">
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900">{selectedCompany.name}</h2>
+                  {selectedCompany.category && (
+                    <span className="text-sm text-gray-500 mt-0.5 block">
+                      {CATEGORY_ICONS[selectedCompany.category] ?? "🏢"} {selectedCompany.category}
+                    </span>
+                  )}
+                  {selectedCompany.tosUrl && (
+                    <a
+                      href={selectedCompany.tosUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-2 inline-flex items-center gap-1 text-xs text-indigo-600 hover:text-indigo-800 transition-colors"
+                      title="View Terms of Service"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="w-3.5 h-3.5"
+                      >
+                        <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" />
+                      </svg>
+                      View Terms of Service
+                    </a>
+                  )}
+                </div>
+
+                {/* Score breakdown panel for selected company */}
+                {(() => {
+                  const summaryText = selectedCompany.latestSummary ?? selectedCompany.summary ?? "";
+                  const derivedScores = !selectedCompany.scores && summaryText
+                    ? {
+                        dataPractices: deriveDataScore(summaryText),
+                        userRights: deriveUserRightsScore(summaryText),
+                        readability: deriveReadabilityScore(summaryText),
+                        overall: deriveOverallScore(summaryText),
+                      }
+                    : undefined;
+                  if (!selectedCompany.scores && !derivedScores) return null;
+                  return (
+                    <div className="w-full sm:w-64">
+                      <ScoreBreakdownPanel
+                        scores={selectedCompany.scores}
+                        derived={derivedScores}
+                      />
+                    </div>
+                  );
+                })()}
+              </div>
+
+              {/* Score trend chart (if history available) */}
+              {selectedCompany.history && selectedCompany.history.length > 1 && (
+                <div className="mt-4">
+                  <p className="text-xs font-semibold text-indigo-700 mb-1">Score Trend</p>
+                  <TrendChart
+                    history={selectedCompany.history}
+                    width={400}
+                    height={72}
+                    showLabels
+                  />
+                </div>
               )}
-              {selectedCompany.tosUrl && (
-                <a
-                  href={selectedCompany.tosUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="ml-auto text-gray-400 hover:text-gray-700 transition-colors"
-                  title="View Terms of Service"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="w-5 h-5"
-                  >
-                    <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" />
-                  </svg>
-                </a>
+
+              {/* Current TOS summary when no history */}
+              {(!selectedCompany.history || selectedCompany.history.length === 0) && (selectedCompany.latestSummary || selectedCompany.summary) && (
+                <div className="mt-4 rounded-lg border border-indigo-200 bg-white/70 px-4 py-3">
+                  <p className="text-xs font-semibold text-indigo-700 uppercase tracking-wide mb-2">
+                    📋 Current TOS Summary
+                  </p>
+                  {(() => {
+                    const summaryText = selectedCompany.latestSummary ?? selectedCompany.summary ?? "";
+                    const sections = parseSummary(summaryText);
+                    const keys = Object.keys(sections);
+                    if (keys.length > 0) {
+                      return (
+                        <dl className="space-y-2">
+                          {keys.map((key) => (
+                            <div key={key}>
+                              <dt className="text-xs font-semibold text-gray-700">{key}</dt>
+                              <dd className="text-xs text-gray-600 mt-0.5 leading-relaxed">{sections[key]}</dd>
+                            </div>
+                          ))}
+                        </dl>
+                      );
+                    }
+                    return <p className="text-xs text-gray-600 leading-relaxed">{summaryText}</p>;
+                  })()}
+                </div>
               )}
             </div>
 
@@ -330,8 +464,11 @@ export default function App() {
                     />
                   </DiffViewerErrorBoundary>
                 ) : (
-                  <div className="flex items-center justify-center h-40 text-gray-400 text-sm rounded-xl border border-dashed border-gray-300">
-                    Select a change from the timeline to view details.
+                  <div className="flex flex-col items-center justify-center h-40 text-gray-400 text-sm rounded-xl border border-dashed border-gray-300 gap-2">
+                    <span className="text-2xl">📋</span>
+                    {(selectedCompany.history?.length ?? 0) === 0
+                      ? "No TOS changes have been tracked yet for this company."
+                      : "Select a change from the timeline to view details."}
                   </div>
                 )}
               </div>
