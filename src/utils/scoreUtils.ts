@@ -238,5 +238,5 @@ export function getRatingMethodology() {
       "Scores are not legal advice. They are automated estimates for informational purposes only.",
       "Source data comes from Diffy's automated scraper which monitors each company's ToS URL daily.",
     ],
-  } as const;
+  };
 }

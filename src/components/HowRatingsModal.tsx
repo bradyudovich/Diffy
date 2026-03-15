@@ -100,12 +100,12 @@ export default function HowRatingsModal({ onClose }: Props) {
                   <p className="text-xs text-gray-600 leading-relaxed">{dim.description}</p>
                   <div className="mt-2 flex flex-wrap gap-2 text-xs text-gray-500">
                     <span>Base score: <strong>{dim.baseScore}</strong></span>
-                  {(dim.negativeAdjustment as number) !== 0 && (
+                  {dim.negativeAdjustment !== 0 && (
                       <span className="text-rose-600">
                         Negative signal: <strong>{dim.negativeAdjustment}</strong> pts each
                       </span>
                     )}
-                    {(dim.positiveAdjustment as number) !== 0 && (
+                    {dim.positiveAdjustment !== 0 && (
                       <span className="text-emerald-600">
                         Positive signal: <strong>+{dim.positiveAdjustment}</strong> pts each
                       </span>

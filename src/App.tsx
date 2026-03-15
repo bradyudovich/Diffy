@@ -171,7 +171,7 @@ export default function App() {
   /** Aggregate stats derived from current results for the header banner. */
   const globalStats = useMemo(() => {
     if (!results) return null;
-    // Only include companies with data for the industry average calculation
+    // Only include companies with data; exclude those with missing TOS to avoid skewing metrics
     const companies = results.companies.filter((c) => !hasMissingTosData(c));
     const scores = companies.map((c) => {
       if (typeof c.score === "number") return c.score;
