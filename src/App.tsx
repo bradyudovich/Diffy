@@ -10,6 +10,8 @@ import Leaderboard from "./components/Leaderboard";
 import ScoreBreakdownPanel from "./components/ScoreBreakdownPanel";
 import TrendChart from "./components/TrendChart";
 import CurrentTosReportCard from "./components/CurrentTosReportCard";
+import DashboardStats from "./components/DashboardStats";
+import TopMovers from "./components/TopMovers";
 import { hasCurrentTosData } from "./utils/scoreUtils";
 import {
   parseSummary,
@@ -188,72 +190,97 @@ export default function App() {
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
       </Helmet>
+
+      {/* Skip-to-content link – visually hidden until focused (WCAG 2.4.1) */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50
+                   focus:rounded-lg focus:bg-indigo-700 focus:px-4 focus:py-2 focus:text-sm
+                   focus:font-semibold focus:text-white focus:shadow-lg
+                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+      >
+        Skip to main content
+      </a>
+
       <div className="min-h-screen bg-gray-50 text-gray-900">
-      {/* Header */}
+      {/* ── Site header ──────────────────────────────────────────────────── */}
       <header className="bg-gradient-to-r from-indigo-700 to-indigo-900 text-white shadow-lg">
         <div className="max-w-6xl mx-auto px-4 py-5">
           <div className="flex items-center justify-between">
+            {/* Logo / home link */}
             <div className="flex items-center gap-3">
-              <div
-                className="h-10 w-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-xl font-black cursor-pointer select-none"
+              <button
+                type="button"
+                aria-label="Go to Diffy home"
+                className="h-10 w-10 rounded-xl bg-white/10 border border-white/20 flex items-center
+                           justify-center text-xl font-black
+                           hover:bg-white/20 transition-colors duration-150
+                           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white
+                           focus-visible:ring-offset-2 focus-visible:ring-offset-indigo-800"
                 onClick={() => { setSelectedCompany(null); setSelectedEntry(null); setShowAbout(false); }}
-                title="Home"
               >
                 D
-              </div>
+              </button>
               <div>
-                <h1
-                  className="text-2xl font-bold leading-none cursor-pointer hover:text-indigo-200 transition-colors"
+                <button
+                  type="button"
+                  aria-label="Diffy – go to home page"
+                  className="text-2xl font-bold leading-none hover:text-indigo-200 transition-colors
+                             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white
+                             focus-visible:ring-offset-1 focus-visible:ring-offset-indigo-800 rounded"
                   onClick={() => { setSelectedCompany(null); setSelectedEntry(null); setShowAbout(false); }}
                 >
                   Diffy
-                </h1>
+                </button>
                 <p className="text-indigo-300 text-xs mt-0.5 leading-none">
                   Terms of Service intelligence platform
                 </p>
               </div>
             </div>
-            <button
-              onClick={handleShowAbout}
-              className="text-sm text-indigo-200 hover:text-white transition-colors underline-offset-2 hover:underline"
-            >
-              About / FAQ
-            </button>
+
+            {/* Site-level navigation */}
+            <nav aria-label="Site navigation">
+              <button
+                onClick={handleShowAbout}
+                aria-current={showAbout ? "page" : undefined}
+                className="text-sm text-indigo-200 hover:text-white transition-colors
+                           underline-offset-2 hover:underline
+                           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white
+                           focus-visible:ring-offset-1 focus-visible:ring-offset-indigo-800 rounded px-1"
+              >
+                About / FAQ
+              </button>
+            </nav>
           </div>
 
-          {/* Stats bar – shown when data is loaded and on the main list view */}
+          {/* Stats bar – shown on the main dashboard view only */}
           {globalStats && !selectedCompany && !showAbout && (
-            <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <div className="rounded-lg bg-white/10 border border-white/15 px-3 py-2 text-center">
-                <p className="text-2xl font-black text-white leading-none">{globalStats.total}</p>
-                <p className="text-indigo-300 text-xs mt-0.5">Companies tracked</p>
-              </div>
-              <div className="rounded-lg bg-white/10 border border-white/15 px-3 py-2 text-center">
-                <p className="text-2xl font-black text-white leading-none">{globalStats.industryAvg}</p>
-                <p className="text-indigo-300 text-xs mt-0.5">Industry avg score</p>
-              </div>
-              <div className="rounded-lg bg-white/10 border border-white/15 px-3 py-2 text-center">
-                <p className="text-2xl font-black leading-none text-rose-300">{globalStats.flagged}</p>
-                <p className="text-indigo-300 text-xs mt-0.5">Companies flagged</p>
-              </div>
-              <div className="rounded-lg bg-white/10 border border-white/15 px-3 py-2 text-center">
-                <p className="text-2xl font-black text-white leading-none">{globalStats.totalChanges}</p>
-                <p className="text-indigo-300 text-xs mt-0.5">TOS changes logged</p>
-              </div>
-            </div>
+            <DashboardStats stats={globalStats} />
           )}
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 py-8">
+      {/* ── Main content ─────────────────────────────────────────────────── */}
+      <main id="main-content" className="max-w-6xl mx-auto px-4 py-8">
         {/* About / FAQ page */}
         {showAbout && (
           <About onBack={() => setShowAbout(false)} />
         )}
+
         {/* Loading */}
         {!showAbout && loading && (
-          <div className="flex items-center justify-center py-16 text-indigo-600">
-            <svg className="animate-spin h-8 w-8 mr-3" viewBox="0 0 24 24" fill="none">
+          <div
+            className="flex items-center justify-center py-16 text-indigo-600"
+            role="status"
+            aria-live="polite"
+            aria-label="Loading results"
+          >
+            <svg
+              className="animate-spin h-8 w-8 mr-3"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
             </svg>
@@ -263,7 +290,10 @@ export default function App() {
 
         {/* Error */}
         {!showAbout && error && (
-          <div className="rounded-lg bg-red-50 border border-red-200 p-6 text-red-700">
+          <div
+            className="rounded-lg bg-red-50 border border-red-200 p-6 text-red-700"
+            role="alert"
+          >
             <h2 className="text-lg font-semibold mb-1">Error loading data</h2>
             <p className="text-sm">{error}</p>
             <p className="text-xs mt-2 text-red-500">
@@ -272,9 +302,9 @@ export default function App() {
           </div>
         )}
 
-        {/* Main content: card grid */}
+        {/* ── Dashboard (main list view) ──────────────────────────────────── */}
         {!showAbout && results && !selectedCompany && (
-          <>
+          <div className="animate-fade-in">
             {results.updatedAt && (
               <p className="text-xs text-gray-500 mb-4">
                 Last updated: {new Date(results.updatedAt).toLocaleString()}
@@ -284,67 +314,104 @@ export default function App() {
               </p>
             )}
 
+            {/* Top / bottom performers + movers */}
+            {results.companies.length > 0 && (
+              <TopMovers
+                companies={results.companies}
+                onSelectCompany={handleSelectCompany}
+              />
+            )}
+
             {/* Search */}
             <div className="mb-4">
+              <label htmlFor="company-search" className="sr-only">
+                Search companies
+              </label>
               <input
-                type="text"
+                id="company-search"
+                type="search"
                 placeholder="Search 500+ company legal updates..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 font-[Inter,system-ui,sans-serif]"
+                className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm shadow-sm
+                           focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500
+                           font-[Inter,system-ui,sans-serif] transition-shadow"
               />
             </div>
 
             {/* Category filter bar – horizontally scrollable on mobile */}
             {categories.length > 0 && (
-              <div className="flex overflow-x-auto gap-2 mb-6 pb-1 md:flex-wrap md:overflow-x-visible md:pb-0 scrollbar-none">
-                {activeCategory && (
-                  <button
-                    onClick={() => setActiveCategory(null)}
-                    className="flex-shrink-0 rounded-full px-4 py-1.5 text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors"
-                  >
-                    ← All
-                  </button>
-                )}
-                {categories.map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
-                    className={`flex-shrink-0 rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
-                      activeCategory === cat
-                        ? "bg-indigo-600 text-white"
-                        : "bg-white border border-gray-300 text-gray-700 hover:bg-indigo-50"
-                    }`}
-                  >
-                    {CATEGORY_ICONS[cat] ?? "🏢"} {cat}
-                  </button>
-                ))}
-              </div>
+              <nav
+                aria-label="Filter companies by category"
+                className="mb-6"
+              >
+                <div className="flex overflow-x-auto gap-2 pb-1 md:flex-wrap md:overflow-x-visible md:pb-0 scrollbar-none">
+                  {activeCategory && (
+                    <button
+                      type="button"
+                      onClick={() => setActiveCategory(null)}
+                      aria-label="Clear category filter, show all companies"
+                      className="flex-shrink-0 rounded-full px-4 py-1.5 text-sm font-medium
+                                 bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors
+                                 focus-visible:outline-none focus-visible:ring-2
+                                 focus-visible:ring-indigo-500 focus-visible:ring-offset-1"
+                    >
+                      ← All
+                    </button>
+                  )}
+                  {categories.map((cat) => {
+                    const isActive = activeCategory === cat;
+                    return (
+                      <button
+                        key={cat}
+                        type="button"
+                        onClick={() => setActiveCategory(isActive ? null : cat)}
+                        aria-pressed={isActive}
+                        aria-label={`${isActive ? "Remove" : "Filter by"} ${cat} category`}
+                        className={`flex-shrink-0 rounded-full px-4 py-1.5 text-sm font-medium
+                                    transition-colors
+                                    focus-visible:outline-none focus-visible:ring-2
+                                    focus-visible:ring-indigo-500 focus-visible:ring-offset-1
+                                    ${isActive
+                                      ? "bg-indigo-600 text-white"
+                                      : "bg-white border border-gray-300 text-gray-700 hover:bg-indigo-50"
+                                    }`}
+                      >
+                        {CATEGORY_ICONS[cat] ?? "🏢"} {cat}
+                      </button>
+                    );
+                  })}
+                </div>
+              </nav>
             )}
 
             {/* Two-column layout: card grid + leaderboard sidebar */}
             <div className="grid gap-6 lg:grid-cols-[1fr_220px]">
-              <div>
+              <section aria-label="Company cards">
                 <ServiceCardGrid
                   companies={visibleCompanies}
                   onSelectCompany={handleSelectCompany}
                 />
-              </div>
+              </section>
               <Leaderboard
                 companies={results.companies}
                 onSelectCompany={handleSelectCompany}
               />
             </div>
-          </>
+          </div>
         )}
 
-        {/* Company detail view */}
+        {/* ── Company detail view ─────────────────────────────────────────── */}
         {!showAbout && results && selectedCompany && (
-          <div>
+          <div className="animate-fade-in">
             {/* Back button */}
             <button
+              type="button"
               onClick={() => { setSelectedCompany(null); setSelectedEntry(null); }}
-              className="mb-4 text-sm text-indigo-600 hover:text-indigo-800 flex items-center gap-1"
+              aria-label="Back to all companies"
+              className="mb-4 text-sm text-indigo-600 hover:text-indigo-800 flex items-center gap-1
+                         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500
+                         focus-visible:ring-offset-1 rounded transition-colors"
             >
               ← Back to all companies
             </button>

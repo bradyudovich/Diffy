@@ -75,7 +75,11 @@ function LeaderboardRow({ company, rank, onSelect, subLabel }: LeaderboardRowPro
       <button
         type="button"
         onClick={() => onSelect(company)}
-        className="w-full flex items-center justify-between gap-2 px-3 py-2 text-left rounded-lg hover:bg-indigo-50 transition-colors group"
+        aria-label={`${company.name}, score ${Math.round(score)}${subLabel ? `, ${subLabel}` : ""}`}
+        className="w-full flex items-center justify-between gap-2 px-3 py-2 text-left rounded-lg
+                   hover:bg-indigo-50 transition-colors group
+                   focus-visible:outline-none focus-visible:ring-2
+                   focus-visible:ring-indigo-500 focus-visible:ring-offset-1"
       >
         <span className="flex items-center gap-2 min-w-0">
           {rank !== undefined && (
@@ -124,7 +128,7 @@ export default function Leaderboard({ companies, onSelectCompany }: Props) {
     .slice(0, 4);
 
   return (
-    <aside className="space-y-4">
+    <aside className="space-y-4" aria-label="Leaderboard and highlights">
       {/* Top Rated */}
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
         <div className="px-4 py-3 border-b border-gray-100 bg-green-50">
