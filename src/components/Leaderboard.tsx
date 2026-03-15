@@ -6,6 +6,8 @@
  * "Recently Changed" – companies with the most recent history entries, showing
  *                      their current score so users can spot freshly changed TOS.
  * "Needs Review"     – companies with a score below 70, sorted by lowest score.
+ * "Most Improved"    – companies whose score has risen most from first to latest
+ *                      history entry (at least 2 entries required).
  */
 
 import type { CompanyResult } from "../types";
@@ -26,6 +28,18 @@ function getLatestTimestamp(company: CompanyResult): number {
   const history = company.history ?? [];
   const ts = history[history.length - 1]?.timestamp;
   return ts ? new Date(ts).getTime() : 0;
+}
+
+/** Returns score delta (latest − earliest) for companies with ≥ 2 history entries. */
+function getScoreDelta(company: CompanyResult): number | null {
+  const history = company.history ?? [];
+  if (history.length < 2) return null;
+  const sorted = [...history].sort(
+    (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+  );
+  const earliest = sorted[0].trustScore ?? 65;
+  const latest   = sorted[sorted.length - 1].trustScore ?? 65;
+  return latest - earliest;
 }
 
 function ScorePill({ score }: { score: number }) {
@@ -102,6 +116,13 @@ export default function Leaderboard({ companies, onSelectCompany }: Props) {
     .sort((a, b) => getCompanyScore(a) - getCompanyScore(b))
     .slice(0, 4);
 
+  // Companies that improved their score over time (positive delta, ≥ 2 history entries)
+  const mostImproved = [...companies]
+    .map((c) => ({ company: c, delta: getScoreDelta(c) }))
+    .filter(({ delta }) => delta !== null && delta > 0)
+    .sort((a, b) => (b.delta as number) - (a.delta as number))
+    .slice(0, 4);
+
   return (
     <aside className="space-y-4">
       {/* Top Rated */}
@@ -152,6 +173,28 @@ export default function Leaderboard({ companies, onSelectCompany }: Props) {
                 />
               );
             })}
+          </ul>
+        </div>
+      )}
+
+      {/* Most Improved */}
+      {mostImproved.length > 0 && (
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+          <div className="px-4 py-3 border-b border-gray-100 bg-teal-50">
+            <h3 className="text-sm font-semibold text-teal-800 flex items-center gap-1.5">
+              <span aria-hidden="true">📈</span> Most Improved
+            </h3>
+            <p className="text-xs text-teal-600 mt-0.5">Largest score gains over time</p>
+          </div>
+          <ul className="divide-y divide-gray-50 py-1">
+            {mostImproved.map(({ company, delta }) => (
+              <LeaderboardRow
+                key={company.name}
+                company={company}
+                onSelect={onSelectCompany}
+                subLabel={`+${Math.round(delta as number)} pts`}
+              />
+            ))}
           </ul>
         </div>
       )}

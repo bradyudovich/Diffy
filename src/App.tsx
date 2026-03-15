@@ -80,6 +80,9 @@ export default function App() {
   // About / FAQ page
   const [showAbout, setShowAbout] = useState(false);
 
+  // Toggle sub-score lines in the TrendChart
+  const [showSubScores, setShowSubScores] = useState(false);
+
   useEffect(() => {
     const url = `${RESULTS_URL}?t=${Date.now()}`;
     console.debug("[DEBUG] Fetching results from:", url);
@@ -407,12 +410,26 @@ export default function App() {
               {/* Score trend chart (if history available) */}
               {selectedCompany.history && selectedCompany.history.length > 1 && (
                 <div className="mt-4">
-                  <p className="text-xs font-semibold text-indigo-700 mb-1">Score Trend</p>
+                  <div className="flex items-center justify-between mb-1">
+                    <p className="text-xs font-semibold text-indigo-700">Score over Time</p>
+                    <button
+                      type="button"
+                      onClick={() => setShowSubScores((v) => !v)}
+                      className={`text-xs px-2 py-0.5 rounded-full border transition-colors ${
+                        showSubScores
+                          ? "bg-indigo-600 text-white border-indigo-600"
+                          : "bg-white text-indigo-600 border-indigo-300 hover:bg-indigo-50"
+                      }`}
+                    >
+                      {showSubScores ? "Overall only" : "Show sub-scores"}
+                    </button>
+                  </div>
                   <TrendChart
                     history={selectedCompany.history}
                     width={400}
                     height={72}
                     showLabels
+                    showSubScores={showSubScores}
                   />
                 </div>
               )}
