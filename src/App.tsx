@@ -13,7 +13,11 @@ import CurrentTosReportCard from "./components/CurrentTosReportCard";
 import DashboardStats from "./components/DashboardStats";
 import TopMovers from "./components/TopMovers";
 import CompareView from "./components/CompareView";
-import { hasCurrentTosData } from "./utils/scoreUtils";
+import HowRatingsModal from "./components/HowRatingsModal";
+import MissingTosSection from "./components/MissingTosSection";
+import FeedbackForm from "./components/FeedbackForm";
+import PrivacyPolicy from "./components/PrivacyPolicy";
+import { hasCurrentTosData, hasMissingTosData } from "./utils/scoreUtils";
 import {
   parseSummary,
   deriveDataScore,
@@ -83,8 +87,18 @@ export default function App() {
   // About / FAQ page
   const [showAbout, setShowAbout] = useState(false);
 
+  // Privacy Policy page
+  const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
+
   // Compare tab
   const [showCompare, setShowCompare] = useState(false);
+
+  // "How Ratings Work" modal
+  const [showRatingsModal, setShowRatingsModal] = useState(false);
+
+  // Feedback form modal
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [feedbackCompany, setFeedbackCompany] = useState<string | undefined>(undefined);
 
   // Toggle sub-score lines in the TrendChart
   const [showSubScores, setShowSubScores] = useState(false);
@@ -135,21 +149,30 @@ export default function App() {
     ? [...new Set(results.companies.map((c) => c.category).filter(Boolean) as string[])]
     : [];
 
-  const visibleCompanies = results
-    ? results.companies.filter((c) => {
-        const matchesCategory = !activeCategory || c.category === activeCategory;
-        const matchesSearch =
-          !searchQuery ||
-          c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          (c.category ?? "").toLowerCase().includes(searchQuery.toLowerCase());
-        return matchesCategory && matchesSearch;
-      })
+  /** Companies that have at least some TOS tracking data (shown in the main grid). */
+  const companiesWithData = results
+    ? results.companies.filter((c) => !hasMissingTosData(c))
     : [];
+
+  /** Companies that have no TOS tracking data (shown in the Missing TOS section). */
+  const companiesMissingTos = results
+    ? results.companies.filter((c) => hasMissingTosData(c))
+    : [];
+
+  const visibleCompanies = companiesWithData.filter((c) => {
+    const matchesCategory = !activeCategory || c.category === activeCategory;
+    const matchesSearch =
+      !searchQuery ||
+      c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (c.category ?? "").toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
   /** Aggregate stats derived from current results for the header banner. */
   const globalStats = useMemo(() => {
     if (!results) return null;
-    const companies = results.companies;
+    // Only include companies with data; exclude those with missing TOS to avoid skewing metrics
+    const companies = results.companies.filter((c) => !hasMissingTosData(c));
     const scores = companies.map((c) => {
       if (typeof c.score === "number") return c.score;
       const summary = c.latestSummary ?? c.summary ?? "";
@@ -177,6 +200,7 @@ export default function App() {
   function handleShowAbout() {
     setShowAbout(true);
     setShowCompare(false);
+    setShowPrivacyPolicy(false);
     setSelectedCompany(null);
     setSelectedEntry(null);
   }
@@ -184,6 +208,15 @@ export default function App() {
   function handleShowCompare() {
     setShowCompare(true);
     setShowAbout(false);
+    setShowPrivacyPolicy(false);
+    setSelectedCompany(null);
+    setSelectedEntry(null);
+  }
+
+  function handleShowPrivacyPolicy() {
+    setShowPrivacyPolicy(true);
+    setShowAbout(false);
+    setShowCompare(false);
     setSelectedCompany(null);
     setSelectedEntry(null);
   }
@@ -193,6 +226,12 @@ export default function App() {
     setSelectedEntry(null);
     setShowAbout(false);
     setShowCompare(false);
+    setShowPrivacyPolicy(false);
+  }
+
+  function handleOpenFeedback(companyName?: string) {
+    setFeedbackCompany(companyName);
+    setShowFeedback(true);
   }
 
   const pageTitle = selectedCompany
@@ -201,12 +240,16 @@ export default function App() {
     ? "Compare Companies – Diffy"
     : showAbout
     ? "About Diffy – TOS Change Tracker"
+    : showPrivacyPolicy
+    ? "Privacy Policy – Diffy"
     : "Diffy – Terms of Service Change Tracker";
 
   const pageDescription = selectedCompany
     ? `Stay informed about ${selectedCompany.name} Terms of Service updates. Diffy monitors ToS changes and alerts you to high-risk legal terms.`
     : showCompare
     ? "Compare two companies' Terms of Service side-by-side with Diffy's AI-powered analysis."
+    : showPrivacyPolicy
+    ? "Diffy Privacy Policy – Diffy collects no personal data. Learn how Diffy handles your information."
     : "Diffy monitors Terms of Service changes across 500+ popular platforms and alerts you when important policies are updated.";
 
   return (
@@ -273,11 +316,11 @@ export default function App() {
               <button
                 type="button"
                 onClick={handleGoHome}
-                aria-current={!showAbout && !showCompare && !selectedCompany ? "page" : undefined}
+                aria-current={!showAbout && !showCompare && !showPrivacyPolicy && !selectedCompany ? "page" : undefined}
                 className={`text-sm px-3 py-1.5 rounded-lg transition-colors
                            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white
                            focus-visible:ring-offset-1 focus-visible:ring-offset-indigo-800
-                           ${!showAbout && !showCompare && !selectedCompany
+                           ${!showAbout && !showCompare && !showPrivacyPolicy && !selectedCompany
                              ? "bg-white/20 text-white font-semibold"
                              : "text-indigo-200 hover:text-white hover:bg-white/10"
                            }`}
@@ -312,6 +355,16 @@ export default function App() {
               >
                 About
               </button>
+              <button
+                type="button"
+                onClick={() => handleOpenFeedback()}
+                aria-label="Send feedback"
+                className="text-sm px-3 py-1.5 rounded-lg transition-colors text-indigo-200 hover:text-white hover:bg-white/10
+                           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white
+                           focus-visible:ring-offset-1 focus-visible:ring-offset-indigo-800"
+              >
+                Feedback
+              </button>
             </nav>
           </div>
 
@@ -329,6 +382,11 @@ export default function App() {
           <About onBack={handleGoHome} />
         )}
 
+        {/* Privacy Policy page */}
+        {showPrivacyPolicy && (
+          <PrivacyPolicy onBack={handleGoHome} />
+        )}
+
         {/* Compare page */}
         {showCompare && results && (
           <CompareView
@@ -344,7 +402,7 @@ export default function App() {
         )}
 
         {/* Loading */}
-        {!showAbout && !showCompare && loading && (
+        {!showAbout && !showCompare && !showPrivacyPolicy && loading && (
           <div
             className="flex items-center justify-center py-16 text-indigo-600"
             role="status"
@@ -365,7 +423,7 @@ export default function App() {
         )}
 
         {/* Error */}
-        {!showAbout && !showCompare && error && (
+        {!showAbout && !showCompare && !showPrivacyPolicy && error && (
           <div
             className="rounded-lg bg-red-50 border border-red-200 p-6 text-red-700"
             role="alert"
@@ -379,21 +437,34 @@ export default function App() {
         )}
 
         {/* ── Dashboard (main list view) ──────────────────────────────────── */}
-        {!showAbout && !showCompare && results && !selectedCompany && (
+        {!showAbout && !showCompare && !showPrivacyPolicy && results && !selectedCompany && (
           <div className="animate-fade-in">
             {results.updatedAt && (
-              <p className="text-xs text-gray-500 mb-4">
-                Last updated: {new Date(results.updatedAt).toLocaleString()}
-                {results.schemaVersion && (
-                  <span className="ml-2 text-indigo-400">v{results.schemaVersion}</span>
-                )}
-              </p>
+              <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+                <p className="text-xs text-gray-500">
+                  Last updated: {new Date(results.updatedAt).toLocaleString()}
+                  {results.schemaVersion && (
+                    <span className="ml-2 text-indigo-400">v{results.schemaVersion}</span>
+                  )}
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setShowRatingsModal(true)}
+                  className="inline-flex items-center gap-1.5 text-xs text-indigo-600 border border-indigo-200
+                             bg-indigo-50 hover:bg-indigo-100 rounded-full px-3 py-1 transition-colors
+                             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500
+                             focus-visible:ring-offset-1"
+                  aria-label="Learn how Diffy ratings are calculated"
+                >
+                  <span aria-hidden="true">ℹ️</span> How ratings work
+                </button>
+              </div>
             )}
 
             {/* Top / bottom performers + movers */}
-            {results.companies.length > 0 && (
+            {companiesWithData.length > 0 && (
               <TopMovers
-                companies={results.companies}
+                companies={companiesWithData}
                 onSelectCompany={handleSelectCompany}
               />
             )}
@@ -470,27 +541,56 @@ export default function App() {
                 />
               </section>
               <Leaderboard
-                companies={results.companies}
+                companies={companiesWithData}
                 onSelectCompany={handleSelectCompany}
               />
             </div>
+
+            {/* Missing TOS section – shown below main grid when there are gaps */}
+            <MissingTosSection companies={companiesMissingTos} />
           </div>
         )}
 
         {/* ── Company detail view ─────────────────────────────────────────── */}
-        {!showAbout && !showCompare && results && selectedCompany && (
+        {!showAbout && !showCompare && !showPrivacyPolicy && results && selectedCompany && (
           <div className="animate-fade-in">
             {/* Back button */}
-            <button
-              type="button"
-              onClick={() => { setSelectedCompany(null); setSelectedEntry(null); }}
-              aria-label="Back to all companies"
-              className="mb-4 text-sm text-indigo-600 hover:text-indigo-800 flex items-center gap-1
-                         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500
-                         focus-visible:ring-offset-1 rounded transition-colors no-print"
-            >
-              ← Back to all companies
-            </button>
+            <div className="mb-4 flex items-center justify-between gap-4 flex-wrap">
+              <button
+                type="button"
+                onClick={() => { setSelectedCompany(null); setSelectedEntry(null); }}
+                aria-label="Back to all companies"
+                className="text-sm text-indigo-600 hover:text-indigo-800 flex items-center gap-1
+                           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500
+                           focus-visible:ring-offset-1 rounded transition-colors no-print"
+              >
+                ← Back to all companies
+              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowRatingsModal(true)}
+                  className="text-xs text-indigo-600 border border-indigo-200 bg-indigo-50 hover:bg-indigo-100
+                             rounded-full px-3 py-1 transition-colors
+                             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500
+                             focus-visible:ring-offset-1"
+                  aria-label="Learn how ratings are calculated"
+                >
+                  ℹ️ How ratings work
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleOpenFeedback(selectedCompany.name)}
+                  className="text-xs text-gray-600 border border-gray-200 bg-white hover:bg-gray-50
+                             rounded-full px-3 py-1 transition-colors
+                             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500
+                             focus-visible:ring-offset-1"
+                  aria-label={`Flag inaccuracy for ${selectedCompany.name}`}
+                >
+                  🚩 Flag inaccuracy
+                </button>
+              </div>
+            </div>
 
             {/* Company header banner */}
             <div className="mb-6 rounded-xl bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-100 p-4">
@@ -524,6 +624,16 @@ export default function App() {
                       </svg>
                       View Terms of Service
                     </a>
+                  )}
+                  {selectedCompany.lastChecked && (
+                    <p className="mt-1 text-xs text-gray-400">
+                      Last checked:{" "}
+                      {new Date(selectedCompany.lastChecked).toLocaleDateString(undefined, {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </p>
                   )}
                 </div>
 
@@ -667,6 +777,22 @@ export default function App() {
             >
               About / FAQ
             </button>
+            <button
+              type="button"
+              onClick={handleShowPrivacyPolicy}
+              className="hover:text-indigo-600 transition-colors focus-visible:outline-none focus-visible:ring-2
+                         focus-visible:ring-indigo-500 focus-visible:ring-offset-1 rounded"
+            >
+              Privacy Policy
+            </button>
+            <button
+              type="button"
+              onClick={() => handleOpenFeedback()}
+              className="hover:text-indigo-600 transition-colors focus-visible:outline-none focus-visible:ring-2
+                         focus-visible:ring-indigo-500 focus-visible:ring-offset-1 rounded"
+            >
+              Feedback
+            </button>
             <a
               href="https://github.com/bradyudovich/Diffy"
               target="_blank"
@@ -680,6 +806,17 @@ export default function App() {
           </div>
         </div>
       </footer>
+
+      {/* ── Modals ───────────────────────────────────────────────────────── */}
+      {showRatingsModal && (
+        <HowRatingsModal onClose={() => setShowRatingsModal(false)} />
+      )}
+      {showFeedback && (
+        <FeedbackForm
+          companyName={feedbackCompany}
+          onClose={() => { setShowFeedback(false); setFeedbackCompany(undefined); }}
+        />
+      )}
     </div>
     </HelmetProvider>
   );
