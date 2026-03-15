@@ -393,7 +393,7 @@ class TestMonitorHistoryAccumulation:
                             lambda text: {"Privacy": "ok", "DataOwnership": "ok", "UserRights": "ok"})
 
         results = scraper_monitor.monitor()
-        assert results.get("schemaVersion") == "2.1"
+        assert results.get("schemaVersion") == "2.2"
 
     def test_results_have_latest_summary(self, tmp_env, monkeypatch):
         monkeypatch.setattr(scraper_monitor, "load_config", self._make_company_config)
@@ -900,7 +900,7 @@ class TestReRateExistingResults:
         assert "letterGrade" in entry
         # Neutral(-10) + Arbitration hit(-5) + 1 neg summaryPoint(-5) + Privacy sell/collected(-5) = 75
         assert entry["trustScore"] == 75
-        assert entry["letterGrade"] == "C"
+        assert entry["letterGrade"] == "B"  # 75 >= 70 → grade B
 
     def test_re_rate_updates_company_score(self, tmp_env, monkeypatch):
         self._make_results_json(tmp_env)
@@ -943,4 +943,423 @@ class TestReRateExistingResults:
         saved = json.loads((tmp_env / "data" / "results.json").read_text())
         entry = saved["companies"][0]["history"][0]
         assert entry["trustScore"] == 75
-        assert entry["letterGrade"] == "C"
+        assert entry["letterGrade"] == "B"  # 75 >= 70 → grade B
+
+
+# ---------------------------------------------------------------------------
+# calculate_diversified_scores
+# ---------------------------------------------------------------------------
+
+class TestCalculateDiversifiedScores:
+    """Verify calculate_diversified_scores() returns correct sub-scores."""
+
+    def test_empty_company_returns_defaults(self):
+        company = {"score": 100, "history": [], "summaryPoints": []}
+        scores = scraper_monitor.calculate_diversified_scores(company)
+        assert scores["overall"] == 100
+        assert scores["dataPractices"] == scraper_monitor._DEFAULT_SUBSCORE
+        assert scores["userRights"] == scraper_monitor._DEFAULT_SUBSCORE
+        assert scores["readability"] == scraper_monitor._DEFAULT_SUBSCORE
+
+    def test_overall_mirrors_company_score(self):
+        company = {"score": 65, "history": []}
+        scores = scraper_monitor.calculate_diversified_scores(company)
+        assert scores["overall"] == 65
+
+    def test_missing_score_defaults_to_100(self):
+        company = {"history": []}
+        scores = scraper_monitor.calculate_diversified_scores(company)
+        assert scores["overall"] == 100
+
+    def test_negative_data_case_lowers_data_practices(self):
+        company = {
+            "score": 80,
+            "history": [
+                {
+                    "summaryPoints": [
+                        {"text": "Data sold to third parties", "impact": "negative",
+                         "case_id": "data-sold-third-parties"},
+                    ]
+                }
+            ],
+        }
+        scores = scraper_monitor.calculate_diversified_scores(company)
+        # data-sold-third-parties is Blocker (-50) → 100 - 50 = 50
+        assert scores["dataPractices"] == 50
+        # userRights has no cases → default
+        assert scores["userRights"] == scraper_monitor._DEFAULT_SUBSCORE
+
+    def test_negative_user_rights_case_lowers_user_rights(self):
+        company = {
+            "score": 80,
+            "history": [
+                {
+                    "summaryPoints": [
+                        {"text": "Mandatory arbitration", "impact": "negative",
+                         "case_id": "arbitration-clause"},
+                    ]
+                }
+            ],
+        }
+        scores = scraper_monitor.calculate_diversified_scores(company)
+        # arbitration-clause is Blocker (-50) → 100 - 50 = 50
+        assert scores["userRights"] == 50
+        # dataPractices has no cases → default
+        assert scores["dataPractices"] == scraper_monitor._DEFAULT_SUBSCORE
+
+    def test_positive_case_raises_sub_score_above_default(self):
+        company = {
+            "score": 90,
+            "history": [
+                {
+                    "summaryPoints": [
+                        {"text": "Users retain content ownership", "impact": "positive",
+                         "case_id": "content-ownership-retained"},
+                    ]
+                }
+            ],
+        }
+        scores = scraper_monitor.calculate_diversified_scores(company)
+        # content-ownership-retained is Good (+10) → 100 + 10 = 110 → clamped to 100
+        assert scores["dataPractices"] == 100
+
+    def test_readability_all_positive_returns_100(self):
+        company = {
+            "score": 90,
+            "history": [
+                {
+                    "summaryPoints": [
+                        {"text": "p1", "impact": "positive", "case_id": "other"},
+                        {"text": "p2", "impact": "positive", "case_id": "other"},
+                        {"text": "p3", "impact": "positive", "case_id": "other"},
+                    ]
+                }
+            ],
+        }
+        scores = scraper_monitor.calculate_diversified_scores(company)
+        assert scores["readability"] == 100
+
+    def test_readability_all_negative_returns_0(self):
+        company = {
+            "score": 40,
+            "history": [
+                {
+                    "summaryPoints": [
+                        {"text": "n1", "impact": "negative", "case_id": "other"},
+                        {"text": "n2", "impact": "negative", "case_id": "other"},
+                    ]
+                }
+            ],
+        }
+        scores = scraper_monitor.calculate_diversified_scores(company)
+        assert scores["readability"] == 0
+
+    def test_readability_mixed_points_gives_midrange(self):
+        company = {
+            "score": 70,
+            "history": [
+                {
+                    "summaryPoints": [
+                        {"text": "p1", "impact": "positive", "case_id": "other"},
+                        {"text": "n1", "impact": "negative", "case_id": "other"},
+                    ]
+                }
+            ],
+        }
+        scores = scraper_monitor.calculate_diversified_scores(company)
+        # 1 positive, 1 negative: 50 + (1-1)/2 * 50 = 50
+        assert scores["readability"] == 50
+
+    def test_case_ids_deduplicated_across_history_entries(self):
+        company = {
+            "score": 50,
+            "history": [
+                {
+                    "summaryPoints": [
+                        {"text": "Sold", "impact": "negative",
+                         "case_id": "data-sold-third-parties"},
+                    ]
+                },
+                {
+                    "summaryPoints": [
+                        {"text": "Sold again", "impact": "negative",
+                         "case_id": "data-sold-third-parties"},  # duplicate
+                    ]
+                },
+            ],
+        }
+        scores = scraper_monitor.calculate_diversified_scores(company)
+        # Even with duplicate, weight applied once: 100 - 50 = 50
+        assert scores["dataPractices"] == 50
+
+    def test_top_level_summary_points_included(self):
+        company = {
+            "score": 80,
+            "history": [],
+            "summaryPoints": [
+                {"text": "No class action", "impact": "negative",
+                 "case_id": "no-class-action"},
+            ],
+        }
+        scores = scraper_monitor.calculate_diversified_scores(company)
+        # no-class-action is Bad (-20) → 100 - 20 = 80
+        assert scores["userRights"] == 80
+
+    def test_neutral_points_not_counted_as_positive_or_negative(self):
+        company = {
+            "score": 80,
+            "history": [
+                {
+                    "summaryPoints": [
+                        {"text": "Governed by California law", "impact": "neutral",
+                         "case_id": "other"},
+                    ]
+                }
+            ],
+        }
+        scores = scraper_monitor.calculate_diversified_scores(company)
+        # No positive or negative points → readability defaults to _DEFAULT_SUBSCORE
+        assert scores["readability"] == scraper_monitor._DEFAULT_SUBSCORE
+
+    def test_new_case_unilateral_changes_applies_to_user_rights(self):
+        company = {
+            "score": 70,
+            "history": [
+                {
+                    "summaryPoints": [
+                        {"text": "Terms can change without notice", "impact": "negative",
+                         "case_id": "unilateral-changes"},
+                    ]
+                }
+            ],
+        }
+        scores = scraper_monitor.calculate_diversified_scores(company)
+        # unilateral-changes is Bad (-20) → 100 - 20 = 80
+        assert scores["userRights"] == 80
+
+    def test_new_case_data_retention_limit_applies_to_data_practices(self):
+        company = {
+            "score": 90,
+            "history": [
+                {
+                    "summaryPoints": [
+                        {"text": "Data deleted after 12 months", "impact": "positive",
+                         "case_id": "data-retention-limit"},
+                    ]
+                }
+            ],
+        }
+        scores = scraper_monitor.calculate_diversified_scores(company)
+        # data-retention-limit is Good (+10) → 100 + 10 = 110 → clamped to 100
+        assert scores["dataPractices"] == 100
+
+    def test_returns_dict_with_required_keys(self):
+        company = {"score": 80, "history": []}
+        scores = scraper_monitor.calculate_diversified_scores(company)
+        for key in ("overall", "dataPractices", "userRights", "readability"):
+            assert key in scores, f"Missing key: {key}"
+
+
+# ---------------------------------------------------------------------------
+# add_benchmark_ranks
+# ---------------------------------------------------------------------------
+
+class TestAddBenchmarkRanks:
+    """Verify add_benchmark_ranks() correctly computes ranks and industry average."""
+
+    def _make_results(self, scores_list):
+        return {
+            "companies": [
+                {"name": f"Co{i}", "score": s}
+                for i, s in enumerate(scores_list)
+            ]
+        }
+
+    def test_top_tier_company(self):
+        results = self._make_results([100, 70, 70, 70, 70])
+        scraper_monitor.add_benchmark_ranks(results)
+        # avg ≈ 76; 100 - 76 = 24 ≥ 15 → Top Tier
+        assert results["companies"][0]["scores"]["benchmarkRank"] == "Top Tier"
+
+    def test_bottom_tier_company(self):
+        results = self._make_results([30, 60, 60, 60, 60])
+        scraper_monitor.add_benchmark_ranks(results)
+        # avg = 54; 30 - 54 = -24 ≤ -15 → Bottom Tier
+        assert results["companies"][0]["scores"]["benchmarkRank"] == "Bottom Tier"
+
+    def test_above_average_company(self):
+        results = self._make_results([80, 70, 70, 70, 70])
+        scraper_monitor.add_benchmark_ranks(results)
+        # avg = 72; 80 - 72 = 8, between 5 and 14 → Above Average
+        assert results["companies"][0]["scores"]["benchmarkRank"] == "Above Average"
+
+    def test_below_average_company(self):
+        results = self._make_results([60, 70, 70, 70, 70])
+        scraper_monitor.add_benchmark_ranks(results)
+        # avg = 68; 60 - 68 = -8, between -5 and -14 → Below Average
+        assert results["companies"][0]["scores"]["benchmarkRank"] == "Below Average"
+
+    def test_average_company(self):
+        results = self._make_results([70, 70, 70, 70, 70])
+        scraper_monitor.add_benchmark_ranks(results)
+        # avg = 70; 70 - 70 = 0, within ±5 → Average
+        assert results["companies"][0]["scores"]["benchmarkRank"] == "Average"
+
+    def test_industry_avg_set_on_all_companies(self):
+        results = self._make_results([80, 60])
+        scraper_monitor.add_benchmark_ranks(results)
+        # avg = 70
+        for company in results["companies"]:
+            assert company["scores"]["industryAvg"] == 70.0
+
+    def test_empty_companies_does_not_raise(self):
+        results = {"companies": []}
+        scraper_monitor.add_benchmark_ranks(results)  # should not raise
+
+    def test_existing_scores_dict_preserved(self):
+        results = {
+            "companies": [
+                {"name": "Co", "score": 80,
+                 "scores": {"overall": 80, "dataPractices": 75}},
+            ]
+        }
+        scraper_monitor.add_benchmark_ranks(results)
+        # Existing keys should still be present
+        assert results["companies"][0]["scores"]["dataPractices"] == 75
+        assert "benchmarkRank" in results["companies"][0]["scores"]
+
+    def test_company_without_scores_dict_gets_one_created(self):
+        results = {"companies": [{"name": "Co", "score": 70}]}
+        scraper_monitor.add_benchmark_ranks(results)
+        assert isinstance(results["companies"][0].get("scores"), dict)
+        assert "benchmarkRank" in results["companies"][0]["scores"]
+
+
+# ---------------------------------------------------------------------------
+# monitor() includes scores field
+# ---------------------------------------------------------------------------
+
+class TestMonitorIncludesScores:
+    """Verify monitor() includes the scores field in company output."""
+
+    def _make_company_config(self):
+        return [{"name": "ScoreCo", "category": "Tech", "tosUrl": "https://scoreco.com/tos"}]
+
+    def test_company_result_has_scores_field(self, tmp_env, monkeypatch):
+        monkeypatch.setattr(scraper_monitor, "load_config", self._make_company_config)
+        monkeypatch.setattr(scraper_monitor, "fetch_text", lambda url, **kw: "ToS content v1")
+        monkeypatch.setattr(scraper_monitor, "call_openai_first_summary",
+                            lambda text: {"Privacy": "ok", "DataOwnership": "ok", "UserRights": "ok"})
+
+        results = scraper_monitor.monitor()
+        company = next(c for c in results["companies"] if c["name"] == "ScoreCo")
+        assert "scores" in company
+        scores = company["scores"]
+        for key in ("overall", "dataPractices", "userRights", "readability"):
+            assert key in scores, f"scores missing key: {key}"
+
+    def test_scores_overall_matches_company_score(self, tmp_env, monkeypatch):
+        monkeypatch.setattr(scraper_monitor, "load_config", self._make_company_config)
+        monkeypatch.setattr(scraper_monitor, "fetch_text", lambda url, **kw: "ToS content v1")
+        monkeypatch.setattr(scraper_monitor, "call_openai_first_summary",
+                            lambda text: {"Privacy": "ok", "DataOwnership": "ok", "UserRights": "ok"})
+
+        results = scraper_monitor.monitor()
+        company = next(c for c in results["companies"] if c["name"] == "ScoreCo")
+        assert company["scores"]["overall"] == company["score"]
+
+    def test_benchmark_rank_present_after_monitor(self, tmp_env, monkeypatch):
+        monkeypatch.setattr(scraper_monitor, "load_config", self._make_company_config)
+        monkeypatch.setattr(scraper_monitor, "fetch_text", lambda url, **kw: "ToS content v1")
+        monkeypatch.setattr(scraper_monitor, "call_openai_first_summary",
+                            lambda text: {"Privacy": "ok", "DataOwnership": "ok", "UserRights": "ok"})
+
+        results = scraper_monitor.monitor()
+        company = next(c for c in results["companies"] if c["name"] == "ScoreCo")
+        assert "benchmarkRank" in company["scores"]
+        assert "industryAvg" in company["scores"]
+
+
+# ---------------------------------------------------------------------------
+# validate_results accepts schema 2.2
+# ---------------------------------------------------------------------------
+
+class TestValidateResultsSchema22:
+    """Verify validate_results() accepts schema version 2.2."""
+
+    def _make_valid_results(self, schema="2.2"):
+        return {
+            "schemaVersion": schema,
+            "updatedAt": "2026-03-08T00:00:00Z",
+            "companies": [
+                {
+                    "name": "TestCo",
+                    "category": "Tech",
+                    "tosUrl": "https://test.com/tos",
+                    "lastChecked": "2026-03-08T00:00:00Z",
+                    "latestSummary": "Some summary",
+                    "history": [
+                        {
+                            "previous_hash": None,
+                            "current_hash": "abc123",
+                            "timestamp": "2026-03-08T00:00:00Z",
+                            "verdict": "Neutral",
+                            "diffSummary": {
+                                "Privacy": "No change",
+                                "DataOwnership": "No change",
+                                "UserRights": "No change",
+                            },
+                            "changeIsSubstantial": True,
+                            "changeReason": "first version archived",
+                        }
+                    ],
+                }
+            ],
+        }
+
+    def test_schema_22_passes_validation(self):
+        scraper_monitor.validate_results(self._make_valid_results("2.2"))
+
+    def test_schema_21_still_passes(self):
+        scraper_monitor.validate_results(self._make_valid_results("2.1"))
+
+    def test_schema_20_still_passes(self):
+        scraper_monitor.validate_results(self._make_valid_results("2.0"))
+
+    def test_schema_23_raises(self):
+        with pytest.raises(AssertionError):
+            scraper_monitor.validate_results(self._make_valid_results("2.3"))
+
+
+# ---------------------------------------------------------------------------
+# load_cases – new cases present in cases.json
+# ---------------------------------------------------------------------------
+
+class TestNewCases:
+    """Verify the two new cases added to cases.json are loadable and correct."""
+
+    def test_unilateral_changes_case_present(self):
+        cases = scraper_monitor.load_cases()
+        ids = [c["id"] for c in cases]
+        assert "unilateral-changes" in ids
+
+    def test_unilateral_changes_weight(self):
+        cases = scraper_monitor.load_cases()
+        case = next(c for c in cases if c["id"] == "unilateral-changes")
+        assert case["weight"] == -20
+        assert case["topic"] == "UserRights"
+
+    def test_data_retention_limit_case_present(self):
+        cases = scraper_monitor.load_cases()
+        ids = [c["id"] for c in cases]
+        assert "data-retention-limit" in ids
+
+    def test_data_retention_limit_weight(self):
+        cases = scraper_monitor.load_cases()
+        case = next(c for c in cases if c["id"] == "data-retention-limit")
+        assert case["weight"] == 10
+        assert case["topic"] == "Privacy"
+
+    def test_total_case_count_is_12(self):
+        cases = scraper_monitor.load_cases()
+        assert len(cases) == 12

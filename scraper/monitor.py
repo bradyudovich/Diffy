@@ -278,6 +278,16 @@ _NEGATIVE_PRACTICE_TERMS: tuple[str, ...] = (
     "training", "ai train",
 )
 
+# Mapping from cases.json topic values to diversified-score dimension names
+_TOPIC_DIMENSION: dict[str, str] = {
+    "Privacy": "dataPractices",
+    "DataOwnership": "dataPractices",
+    "UserRights": "userRights",
+}
+
+# Default sub-score used when no relevant summary points are available
+_DEFAULT_SUBSCORE: int = 70
+
 
 def calculate_score_from_cases(case_ids: list[str]) -> int:
     """Compute an aggregate score (0–100) from a list of matched case ids.
@@ -392,6 +402,151 @@ def get_letter_grade(score: int) -> str:
     if score >= 30:
         return "D"
     return "E"
+
+
+def calculate_diversified_scores(company: dict) -> dict:
+    """Compute multiple scoring dimensions for a company.
+
+    Aggregates summaryPoints from all history entries (and the top-level
+    ``summaryPoints`` field) to produce four sub-scores:
+
+    - ``dataPractices`` (0–100): Quality of data handling, derived from
+      cases with topic "Privacy" or "DataOwnership".
+    - ``userRights`` (0–100): Strength of user rights protections, derived
+      from cases with topic "UserRights".
+    - ``readability`` (0–100): Clarity/user-friendliness ratio — computed
+      from the balance of positive vs negative summary points.
+    - ``overall`` (0–100): The company's existing top-level score.
+
+    All sub-scores default to ``_DEFAULT_SUBSCORE`` (70) when no relevant
+    summary points are available, providing a slightly cautious baseline
+    rather than a misleading perfect score.
+
+    Args:
+        company: A company result dict (may include ``score``, ``history``,
+                 and ``summaryPoints``).
+
+    Returns:
+        Dict with keys: ``overall``, ``dataPractices``, ``userRights``,
+        ``readability``.
+    """
+    cases_index = _build_cases_index()
+
+    data_case_ids: list[str] = []
+    user_rights_case_ids: list[str] = []
+    total_positive = 0
+    total_negative = 0
+    all_case_ids_seen: set[str] = set()
+
+    # Collect all summary points from every history entry plus top-level
+    all_points: list[dict] = []
+    for entry in company.get("history", []):
+        all_points.extend(entry.get("summaryPoints") or [])
+    all_points.extend(company.get("summaryPoints") or [])
+
+    for point in all_points:
+        if not isinstance(point, dict):
+            continue
+        impact = point.get("impact", "neutral")
+        if impact == "positive":
+            total_positive += 1
+        elif impact == "negative":
+            total_negative += 1
+
+        case_id = point.get("case_id", "")
+        if not case_id or case_id == "other" or case_id in all_case_ids_seen:
+            continue
+        all_case_ids_seen.add(case_id)
+
+        case = cases_index.get(case_id)
+        if not case:
+            continue
+        topic = case.get("topic", "")
+        if topic in ("Privacy", "DataOwnership"):
+            data_case_ids.append(case_id)
+        elif topic == "UserRights":
+            user_rights_case_ids.append(case_id)
+
+    data_practices = (
+        calculate_score_from_cases(data_case_ids)
+        if data_case_ids
+        else _DEFAULT_SUBSCORE
+    )
+    user_rights = (
+        calculate_score_from_cases(user_rights_case_ids)
+        if user_rights_case_ids
+        else _DEFAULT_SUBSCORE
+    )
+
+    # Readability: proportion of positive vs negative points mapped to 0–100.
+    # 50% positive  → 50, all positive → 100, all negative → 0.
+    total_points = total_positive + total_negative
+    if total_points > 0:
+        readability = max(
+            0,
+            min(100, round(50 + (total_positive - total_negative) / total_points * 50)),
+        )
+    else:
+        readability = _DEFAULT_SUBSCORE
+
+    return {
+        "overall": company.get("score", 100),
+        "dataPractices": data_practices,
+        "userRights": user_rights,
+        "readability": readability,
+    }
+
+
+def add_benchmark_ranks(results: dict) -> None:
+    """Add ``benchmarkRank`` and ``industryAvg`` to each company's ``scores`` dict.
+
+    Computes the mean overall score across all companies and assigns a
+    qualitative rank to each company based on how far its score deviates
+    from the mean:
+
+    - ``"Top Tier"``      – ≥ 15 points above average
+    - ``"Above Average"`` – 5–14 points above average
+    - ``"Average"``       – within 5 points of average
+    - ``"Below Average"`` – 5–14 points below average
+    - ``"Bottom Tier"``   – ≥ 15 points below average
+
+    This function mutates the companies in ``results`` in-place; it never
+    replaces an existing ``scores`` sub-dict but only appends new keys.
+
+    Args:
+        results: Top-level results dict as produced by ``monitor()`` or
+                 ``re_rate_existing_results()``.
+    """
+    companies = results.get("companies", [])
+    scores = [
+        c.get("score", 100)
+        for c in companies
+        if isinstance(c.get("score"), (int, float))
+    ]
+    if not scores:
+        return
+    avg_score = round(sum(scores) / len(scores), 1)
+
+    for company in companies:
+        company_score = company.get("score", 100)
+        diff = company_score - avg_score
+        if diff >= 15:
+            rank = "Top Tier"
+        elif diff >= 5:
+            rank = "Above Average"
+        elif diff >= -5:
+            rank = "Average"
+        elif diff >= -15:
+            rank = "Below Average"
+        else:
+            rank = "Bottom Tier"
+
+        existing_scores = company.get("scores")
+        if not isinstance(existing_scores, dict):
+            existing_scores = {"overall": company_score}
+        existing_scores["benchmarkRank"] = rank
+        existing_scores["industryAvg"] = avg_score
+        company["scores"] = existing_scores
 
 
 def calculate_score(entry: dict) -> int:
@@ -857,15 +1012,17 @@ def monitor() -> dict:
             print(f"Error fetching {name}: {exc}")
             latest_summary = read_tos_summary(name) or f"Connection Error: {exc}"
             company_score = calculate_score(history[-1]) if history else 100
-            company_results.append({
+            company_entry: dict = {
                 "name": name,
                 "category": category,
                 "tosUrl": tos_url,
                 "lastChecked": last_checked,
                 "latestSummary": latest_summary,
                 "score": company_score,
+                "scores": calculate_diversified_scores({"score": company_score, "history": history}),
                 "history": history,
-            })
+            }
+            company_results.append(company_entry)
             continue
 
         current_hash = sha256_hash(new_text)
@@ -879,15 +1036,17 @@ def monitor() -> dict:
             # Content unchanged – no new history entry needed
             latest_summary = read_tos_summary(name) or "Initial snapshot created. Monitoring active."
             company_score = calculate_score(history[-1]) if history else 100
-            company_results.append({
+            company_entry = {
                 "name": name,
                 "category": category,
                 "tosUrl": tos_url,
                 "lastChecked": last_checked,
                 "latestSummary": latest_summary,
                 "score": company_score,
+                "scores": calculate_diversified_scores({"score": company_score, "history": history}),
                 "history": history,
-            })
+            }
+            company_results.append(company_entry)
             continue
 
         # Raw text changed – determine substantive change
@@ -902,15 +1061,17 @@ def monitor() -> dict:
             # but we do NOT add a history entry or regenerate the summary.
             latest_summary = read_tos_summary(name) or "Initial snapshot created. Monitoring active."
             company_score = calculate_score(history[-1]) if history else 100
-            company_results.append({
+            company_entry = {
                 "name": name,
                 "category": category,
                 "tosUrl": tos_url,
                 "lastChecked": last_checked,
                 "latestSummary": latest_summary,
                 "score": company_score,
+                "scores": calculate_diversified_scores({"score": company_score, "history": history}),
                 "history": history,
-            })
+            }
+            company_results.append(company_entry)
             continue
 
         # Substantive change – generate structured diff summary
@@ -965,7 +1126,7 @@ def monitor() -> dict:
         history.append(new_entry)
 
         company_score = calculate_score(history[-1]) if history else 100
-        company_results.append({
+        company_entry = {
             "name": name,
             "category": category,
             "tosUrl": tos_url,
@@ -973,14 +1134,21 @@ def monitor() -> dict:
             "latestSummary": latest_summary,
             "summaryPoints": summary_points,
             "score": company_score,
+            "scores": calculate_diversified_scores({
+                "score": company_score,
+                "history": history,
+                "summaryPoints": summary_points,
+            }),
             "history": history,
-        })
+        }
+        company_results.append(company_entry)
 
     results = {
         "schemaVersion": SCHEMA_VERSION,
         "updatedAt": now,
         "companies": company_results,
     }
+    add_benchmark_ranks(results)
     return results
 
 
@@ -1011,7 +1179,9 @@ def re_rate_existing_results() -> dict:
             updated_count += 1
         if history:
             company["score"] = calculate_score(history[-1])
+        company["scores"] = calculate_diversified_scores(company)
 
+    add_benchmark_ranks(existing)
     existing["updatedAt"] = datetime.now(timezone.utc).isoformat()
     write_results(existing)
     write_summary_index(existing)
@@ -1085,6 +1255,7 @@ def write_summary_index(results: dict) -> None:
             "latestSummary": company.get("latestSummary"),
             "summaryPoints": company.get("summaryPoints"),
             "score": score,
+            "scores": company.get("scores"),
             "latest_verdict": latest_verdict,
             "favicon_url": favicon_url,
             "history": [latest_entry] if latest_entry else [],
@@ -1139,8 +1310,8 @@ def fetch_and_store_favicons(companies_config: list[dict]) -> None:
 def validate_results(results: dict) -> None:
     assert isinstance(results, dict), "results must be a dict"
     assert "companies" in results, "results must have 'companies' key"
-    assert results.get("schemaVersion") in ("2.0", "2.1"), \
-        f"schemaVersion must be '2.0' or '2.1', got: {results.get('schemaVersion')!r}"
+    assert results.get("schemaVersion") in ("2.0", "2.1", "2.2"), \
+        f"schemaVersion must be '2.0', '2.1', or '2.2', got: {results.get('schemaVersion')!r}"
     for company in results["companies"]:
         assert "name" in company, f"company missing 'name': {company}"
         assert "history" in company, f"company '{company.get('name')}' missing 'history'"

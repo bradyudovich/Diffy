@@ -1114,10 +1114,10 @@ class TestLoadCases:
         monkeypatch.setattr(monitor, "CASES_PATH", tmp_path / "nonexistent.json")
         assert monitor.load_cases() == []
 
-    def test_real_cases_json_has_10_cases(self):
-        """Validate that the shipped cases.json has exactly 10 starter cases."""
+    def test_real_cases_json_has_12_cases(self):
+        """Validate that the shipped cases.json has exactly 12 cases."""
         cases = monitor.load_cases()
-        assert len(cases) == 10
+        assert len(cases) == 12
 
     def test_each_case_has_required_fields(self):
         """Every case in cases.json must have id, title, rating, weight, and topic."""
