@@ -16,11 +16,11 @@ import {
   Info,
   ChevronDown,
   ChevronUp,
-  AlertTriangle,
 } from "lucide-react";
 import type { CompanyResult, SummaryPoint } from "../types";
 import { getGlossaryDefinition } from "../LegalGlossary";
 import ScoreBreakdownPanel from "./ScoreBreakdownPanel";
+import { Card, Badge, SectionHeader } from "./ui";
 
 interface Props {
   company: CompanyResult;
@@ -95,9 +95,11 @@ function ClauseRow({ point }: { point: SummaryPoint }) {
     <li className="rounded-lg border border-gray-100 bg-white/70 px-3 py-2">
       <button
         type="button"
-        className={`flex items-start gap-2 text-left w-full ${
-          hasQuote ? "cursor-pointer" : "cursor-default"
-        }`}
+        className={[
+          "flex items-start gap-2 text-left w-full",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-1 rounded",
+          hasQuote ? "cursor-pointer" : "cursor-default",
+        ].join(" ")}
         onClick={() => hasQuote && setQuoteOpen((v) => !v)}
         aria-expanded={hasQuote ? quoteOpen : undefined}
         disabled={!hasQuote}
@@ -151,27 +153,18 @@ export default function CurrentTosReportCard({ company }: Props) {
   if (!hasOverview && !hasClauses && !hasFlags && !hasScores) return null;
 
   return (
-    <div
-      className="rounded-xl border border-indigo-200 bg-gradient-to-br from-white to-indigo-50 shadow-sm overflow-hidden mb-6"
-      data-testid="current-tos-report-card"
-    >
-      {/* ── Header ── */}
-      <div className="px-4 py-3 border-b border-indigo-100 bg-gradient-to-r from-indigo-50 to-purple-50">
-        <h3 className="text-sm font-semibold text-indigo-900 flex items-center gap-1.5">
-          <span aria-hidden="true">📋</span> Current ToS Report Card
-        </h3>
-        <p className="text-xs text-indigo-600 mt-0.5">
-          Live snapshot of {company.name}'s current Terms of Service posture
-        </p>
-      </div>
+    <Card testId="current-tos-report-card" className="mb-6">
+      <Card.Header
+        icon="📋"
+        title="Current ToS Report Card"
+        subtitle={`Live snapshot of ${company.name}'s current Terms of Service posture`}
+      />
 
-      <div className="p-4 space-y-4">
+      <Card.Body>
         {/* ── Overview ── */}
         {hasOverview && (
           <section aria-label="Overview">
-            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
-              🔍 Overview
-            </p>
+            <SectionHeader icon="🔍" label="Overview" />
             <p className="text-sm text-gray-800 leading-relaxed bg-white/80 rounded-lg border border-gray-100 px-3 py-2">
               {currentOverview}
             </p>
@@ -181,9 +174,7 @@ export default function CurrentTosReportCard({ company }: Props) {
         {/* ── Key Clauses ── */}
         {hasClauses && (
           <section aria-label="Key Clauses">
-            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
-              📌 Key Clauses
-            </p>
+            <SectionHeader icon="📌" label="Key Clauses" />
             {/* Impact legend */}
             <div className="flex items-center gap-3 mb-2 text-[10px] text-gray-400">
               <span className="flex items-center gap-1">
@@ -210,13 +201,7 @@ export default function CurrentTosReportCard({ company }: Props) {
         {/* ── Watchlist Flags ── */}
         {hasFlags && (
           <section aria-label="Watchlist Flags">
-            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5 flex items-center gap-1">
-              <AlertTriangle
-                className="h-3.5 w-3.5 text-amber-500"
-                aria-hidden="true"
-              />
-              Watchlist Flags
-            </p>
+            <SectionHeader icon="⚠️" label="Watchlist Flags" />
             <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2">
               <p className="text-xs text-amber-700 mb-1.5">
                 High-risk terms found in the currently-live ToS:
@@ -225,12 +210,9 @@ export default function CurrentTosReportCard({ company }: Props) {
                 {currentWatchlistHits.map((term) => {
                   const definition = getGlossaryDefinition(term);
                   const badge = (
-                    <span
-                      key={term}
-                      className="rounded-full bg-amber-100 border border-amber-300 px-2 py-0.5 text-xs font-medium text-amber-800 cursor-help"
-                    >
+                    <Badge key={term} intent="warning" className="cursor-help">
                       {term}
-                    </span>
+                    </Badge>
                   );
                   return definition ? (
                     <Tooltip key={term} content={definition}>
@@ -251,7 +233,7 @@ export default function CurrentTosReportCard({ company }: Props) {
             <ScoreBreakdownPanel scores={scores} />
           </section>
         )}
-      </div>
-    </div>
+      </Card.Body>
+    </Card>
   );
 }
