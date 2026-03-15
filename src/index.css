@@ -1,1 +1,38 @@
 @import "tailwindcss";
+
+/* ── Entrance animations ─────────────────────────────────────────────────── */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Respect prefers-reduced-motion: fall back to a simple fade */
+@media (prefers-reduced-motion: reduce) {
+  @keyframes slideUp  { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes scaleIn  { from { opacity: 0; } to { opacity: 1; } }
+}
+
+.animate-fade-in  { animation: fadeIn  0.25s ease both; }
+.animate-slide-up { animation: slideUp 0.3s ease both; }
+.animate-scale-in { animation: scaleIn 0.25s ease both; }
+
+/* Staggered children */
+.animate-slide-up > *:nth-child(1) { animation-delay: 0ms;  }
+.animate-slide-up > *:nth-child(2) { animation-delay: 60ms; }
+.animate-slide-up > *:nth-child(3) { animation-delay: 120ms; }
+.animate-slide-up > *:nth-child(4) { animation-delay: 180ms; }
+
+/* Hide browser scrollbar on the category pill row */
+.scrollbar-none::-webkit-scrollbar { display: none; }
+.scrollbar-none { scrollbar-width: none; }
