@@ -60,7 +60,11 @@ function PointRow({ point }: { point: SummaryPoint }) {
     <li className="flex flex-col gap-0.5">
       <button
         type="button"
-        className={`flex items-start gap-1.5 text-left w-full group/point ${hasQuote ? "cursor-pointer" : "cursor-default"}`}
+        className={[
+          "flex items-start gap-1.5 text-left w-full group/point",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-1 rounded",
+          hasQuote ? "cursor-pointer" : "cursor-default",
+        ].join(" ")}
         onClick={() => hasQuote && setQuoteOpen((v) => !v)}
         aria-expanded={hasQuote ? quoteOpen : undefined}
         disabled={!hasQuote}
@@ -157,8 +161,23 @@ export default function ServiceCard({ company, onSelectCompany }: Props) {
 
   return (
     <li
-      className={`group relative rounded-xl border shadow-sm cursor-pointer transition-all duration-200 hover:shadow-xl hover:-translate-y-1 overflow-hidden ${bg} ${border}`}
+      className={[
+        "group relative rounded-xl border shadow-sm cursor-pointer transition-all duration-200",
+        "hover:shadow-xl hover:-translate-y-1 overflow-hidden",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2",
+        bg,
+        border,
+      ].join(" ")}
+      tabIndex={0}
+      role="button"
+      aria-label={`View details for ${company.name}`}
       onClick={() => onSelectCompany(company)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onSelectCompany(company);
+        }
+      }}
     >
       {/* Coloured left accent strip */}
       <div className={`absolute left-0 top-0 bottom-0 w-1 ${accent}`} aria-hidden="true" />
@@ -260,7 +279,7 @@ export default function ServiceCard({ company, onSelectCompany }: Props) {
               href={company.tosUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-300 hover:text-gray-600 transition-colors"
+              className="text-gray-300 hover:text-gray-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-1 rounded"
               onClick={(e) => e.stopPropagation()}
               aria-label="View Terms of Service"
               title="View Terms of Service"

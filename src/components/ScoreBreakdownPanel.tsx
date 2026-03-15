@@ -8,6 +8,7 @@
  */
 
 import type { DiversifiedScores } from "../types";
+import { Card } from "./ui";
 
 interface Props {
   /** Backend-computed multi-dimensional scores (preferred). */
@@ -142,20 +143,16 @@ export default function ScoreBreakdownPanel({ scores, derived, compact = false }
   }
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
-      <div className="px-4 py-3 border-b border-gray-100 bg-gradient-to-r from-indigo-50 to-purple-50">
-        <h3 className="text-sm font-semibold text-indigo-900 flex items-center gap-1.5">
-          <span aria-hidden="true">📊</span> Score Breakdown
-        </h3>
-        {benchmarkRank && (
-          <p className="text-xs text-indigo-600 mt-0.5">
-            Industry rank: <strong>{benchmarkRank}</strong>
-            {industryAvg !== undefined && (
-              <span className="text-gray-400 ml-1">(avg {Math.round(industryAvg)})</span>
-            )}
-          </p>
-        )}
-      </div>
+    <Card>
+      <Card.Header
+        icon="📊"
+        title="Score Breakdown"
+        subtitle={
+          benchmarkRank
+            ? `Industry rank: ${benchmarkRank}${industryAvg !== undefined ? ` (avg ${Math.round(industryAvg)})` : ""}`
+            : undefined
+        }
+      />
 
       <div className="px-4 py-3 space-y-3">
         {DIMENSIONS.map((dim) => (
@@ -174,6 +171,6 @@ export default function ScoreBreakdownPanel({ scores, derived, compact = false }
           * Scores estimated from TOS summary text. Run the scraper to get precise backend-computed values.
         </p>
       )}
-    </div>
+    </Card>
   );
 }
