@@ -2,6 +2,14 @@ import { useState } from "react";
 import { CheckCircle, XCircle, Info, ChevronDown, ChevronUp } from "lucide-react";
 import type { CompanyResult, SummaryPoint } from "../types";
 import ScoreBadge, { scoreToGrade } from "./ScoreBadge";
+import ScoreBreakdownPanel from "./ScoreBreakdownPanel";
+import {
+  parseSummary,
+  deriveDataScore,
+  deriveUserRightsScore,
+  deriveReadabilityScore,
+  deriveOverallScore,
+} from "../utils/scoreUtils";
 
 interface Props {
   company: CompanyResult;
@@ -12,15 +20,19 @@ function getCompanyScore(company: CompanyResult): number {
   if (typeof company.score === "number") return company.score;
   const history = company.history ?? [];
   const latest = history[history.length - 1];
-  return latest?.trustScore ?? 100;
+  if (latest?.trustScore !== undefined) return latest.trustScore;
+  // Derive a score from the TOS summary text for legacy data
+  const summary = company.latestSummary ?? company.summary ?? "";
+  if (summary) return deriveOverallScore(summary);
+  return 75; // neutral default when no data at all
 }
 
-function getScoreCardStyle(score: number): { bg: string; border: string } {
+function getScoreCardStyle(score: number): { bg: string; border: string; accent: string } {
   // Thresholds match the A–E grade scale: A≥90, B≥70, C≥50, D≥30, E<30
-  if (score >= 70) return { bg: "bg-gray-50", border: "border-gray-200" };
-  if (score >= 50) return { bg: "bg-amber-50/50", border: "border-amber-200" };
-  if (score >= 30) return { bg: "bg-orange-50/50", border: "border-orange-200" };
-  return { bg: "bg-rose-50/50", border: "border-rose-200" };
+  if (score >= 70) return { bg: "bg-white", border: "border-gray-200", accent: "bg-emerald-500" };
+  if (score >= 50) return { bg: "bg-amber-50/40", border: "border-amber-200", accent: "bg-amber-400" };
+  if (score >= 30) return { bg: "bg-orange-50/40", border: "border-orange-200", accent: "bg-orange-400" };
+  return { bg: "bg-rose-50/40", border: "border-rose-200", accent: "bg-rose-500" };
 }
 
 /** Pick the top 3 most impactful points: negatives first, then positives, then neutrals. */
@@ -112,11 +124,11 @@ function CompanyLogo({ tosUrl, name }: { tosUrl: string; name: string }) {
 
 export default function ServiceCard({ company, onSelectCompany }: Props) {
   const latestEntry = company.history?.[company.history.length - 1];
-  const trustScore = latestEntry?.trustScore ?? company.score ?? 100;
+  const trustScore = latestEntry?.trustScore ?? company.score ?? undefined;
   const score = getCompanyScore(company);
-  const { bg, border } = getScoreCardStyle(score);
+  const { bg, border, accent } = getScoreCardStyle(score);
   const grade =
-    latestEntry?.letterGrade ?? scoreToGrade(trustScore);
+    latestEntry?.letterGrade ?? scoreToGrade(score);
 
   // Prefer summaryPoints from the company root, then from the latest history entry
   const rawPoints =
@@ -125,14 +137,35 @@ export default function ServiceCard({ company, onSelectCompany }: Props) {
     [];
   const displayPoints = topPoints(rawPoints);
 
+  // Summary text for legacy v1 data
+  const summaryText = company.latestSummary ?? company.summary ?? "";
+  const parsedSections = summaryText ? parseSummary(summaryText) : {};
+  const sectionKeys = Object.keys(parsedSections).slice(0, 2);
+
+  // Derived multi-dimensional scores (used when backend scores not available)
+  const derivedScores =
+    !company.scores && summaryText
+      ? {
+          dataPractices: deriveDataScore(summaryText),
+          userRights: deriveUserRightsScore(summaryText),
+          readability: deriveReadabilityScore(summaryText),
+          overall: score,
+        }
+      : undefined;
+
+  const hasScoreBreakdown = !!(company.scores || derivedScores);
+
   return (
     <li
-      className={`group relative rounded-lg border shadow-sm cursor-pointer transition-all duration-150 hover:shadow-lg hover:-translate-y-1 ${bg} ${border}`}
+      className={`group relative rounded-xl border shadow-sm cursor-pointer transition-all duration-200 hover:shadow-xl hover:-translate-y-1 overflow-hidden ${bg} ${border}`}
       onClick={() => onSelectCompany(company)}
     >
-      <div className="p-4">
+      {/* Coloured left accent strip */}
+      <div className={`absolute left-0 top-0 bottom-0 w-1 ${accent}`} aria-hidden="true" />
+
+      <div className="pl-5 pr-4 pt-4 pb-3">
         {/* Header row */}
-        <div className="flex items-center gap-2 mb-2 pr-14">
+        <div className="flex items-center gap-2 mb-2 pr-10">
           <CompanyLogo tosUrl={company.tosUrl} name={company.name} />
           <h2 className="text-sm font-semibold truncate font-[Inter,system-ui,sans-serif]">
             {company.name}
@@ -144,10 +177,17 @@ export default function ServiceCard({ company, onSelectCompany }: Props) {
           <ScoreBadge grade={grade} size="sm" />
         </span>
 
-        {/* Category */}
-        {company.category && (
-          <p className="text-xs text-gray-500 mb-2">{company.category}</p>
-        )}
+        {/* Category + score numeric */}
+        <div className="flex items-center gap-2 mb-2">
+          {company.category && (
+            <span className="text-xs text-gray-500">{company.category}</span>
+          )}
+          {trustScore !== undefined && (
+            <span className="text-xs font-semibold text-gray-400">
+              · {Math.round(trustScore)}/100
+            </span>
+          )}
+        </div>
 
         {/* Summary points – top 3, with impact icons and expandable quotes */}
         {displayPoints.length > 0 ? (
@@ -156,63 +196,96 @@ export default function ServiceCard({ company, onSelectCompany }: Props) {
               <PointRow key={i} point={point} />
             ))}
           </ul>
-        ) : company.latestSummary ? (
-          /* Fallback for data without summaryPoints yet */
+        ) : sectionKeys.length > 0 ? (
+          /* Parsed legacy summary sections */
+          <ul className="space-y-1 mt-1">
+            {sectionKeys.map((key) => (
+              <li key={key} className="flex items-start gap-1.5">
+                <Info className="h-3.5 w-3.5 text-sky-400 flex-shrink-0 mt-0.5" aria-hidden="true" />
+                <span className="text-xs text-gray-600 leading-tight font-[Inter,system-ui,sans-serif]">
+                  <strong className="text-gray-700">{key}:</strong>{" "}
+                  {parsedSections[key]}
+                </span>
+              </li>
+            ))}
+          </ul>
+        ) : summaryText ? (
+          /* Plain-text fallback */
           <p className="text-xs text-gray-600 line-clamp-2 mt-1 font-[Inter,system-ui,sans-serif]">
-            {company.latestSummary}
+            {summaryText}
           </p>
         ) : null}
 
-        {/* Last Changed timestamp */}
-        {latestEntry && (
-          <p className="text-xs text-gray-400 mt-2">
-            Last Changed:{" "}
-            {new Date(latestEntry.timestamp).toLocaleDateString(undefined, {
-              year: "numeric",
-              month: "short",
-              day: "numeric",
-            })}
-          </p>
+        {/* Score breakdown bars (compact) */}
+        {hasScoreBreakdown && (
+          <ScoreBreakdownPanel
+            scores={company.scores}
+            derived={derivedScores}
+            compact
+          />
         )}
 
-        {/* Change count */}
-        {company.history && company.history.length > 0 && (
-          <p className="text-xs text-indigo-500 mt-1">
-            {company.history.length} change{company.history.length !== 1 ? "s" : ""} tracked
-          </p>
-        )}
+        {/* Footer row */}
+        <div className="flex items-center justify-between mt-2">
+          <div>
+            {latestEntry ? (
+              <p className="text-xs text-gray-400">
+                Changed{" "}
+                {new Date(latestEntry.timestamp).toLocaleDateString(undefined, {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })}
+              </p>
+            ) : company.lastChecked ? (
+              <p className="text-xs text-gray-400">
+                Checked{" "}
+                {new Date(company.lastChecked).toLocaleDateString(undefined, {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })}
+              </p>
+            ) : null}
+            {company.history && company.history.length > 0 && (
+              <p className="text-xs text-indigo-500">
+                {company.history.length} change{company.history.length !== 1 ? "s" : ""} tracked
+              </p>
+            )}
+          </div>
+
+          {/* ToS link */}
+          {company.tosUrl && (
+            <a
+              href={company.tosUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-300 hover:text-gray-600 transition-colors"
+              onClick={(e) => e.stopPropagation()}
+              aria-label="View Terms of Service"
+              title="View Terms of Service"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="w-4 h-4"
+              >
+                <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" />
+              </svg>
+            </a>
+          )}
+        </div>
       </div>
 
-      {/* ToS link */}
-      {company.tosUrl && (
-        <a
-          href={company.tosUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="absolute bottom-3 right-3 text-gray-400 hover:text-gray-700 transition-colors"
-          onClick={(e) => e.stopPropagation()}
-          aria-label="View Terms of Service"
-          title="View Terms of Service"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="w-4 h-4"
-          >
-            <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" />
-          </svg>
-        </a>
-      )}
-
-      {/* View History button – fades in on hover */}
+      {/* View Details button – fades in on hover */}
       <div className="absolute bottom-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none group-hover:pointer-events-auto">
-        <span className="inline-flex items-center gap-1 rounded-full bg-indigo-600 px-3 py-1 text-xs font-semibold text-white shadow-sm">
-          View History
+        <span className="inline-flex items-center gap-1 rounded-full bg-indigo-600 px-3 py-1 text-xs font-semibold text-white shadow-sm whitespace-nowrap">
+          View Details →
         </span>
       </div>
     </li>
