@@ -1363,3 +1363,277 @@ class TestNewCases:
     def test_total_case_count_is_12(self):
         cases = scraper_monitor.load_cases()
         assert len(cases) == 12
+
+
+# ---------------------------------------------------------------------------
+# compute_current_fields / get_company_current_fields
+# ---------------------------------------------------------------------------
+
+class TestComputeCurrentFields:
+    """Tests for compute_current_fields() helper."""
+
+    def test_returns_all_required_keys(self, monkeypatch):
+        monkeypatch.setattr(scraper_monitor, "call_openai_overview", lambda t: "Overview text.")
+        monkeypatch.setattr(scraper_monitor, "call_openai_points_summary", lambda t: [
+            {"text": "Point one", "impact": "negative", "case_id": "data-training", "quote": "q1"},
+        ])
+        result = scraper_monitor.compute_current_fields("sample tos text", ["Arbitration"])
+        for key in ("currentOverview", "currentSummaryPoints", "currentWatchlistHits",
+                    "currentCaseIds", "currentWordCount"):
+            assert key in result, f"Missing key: {key}"
+
+    def test_current_overview_uses_openai(self, monkeypatch):
+        monkeypatch.setattr(scraper_monitor, "call_openai_overview", lambda t: "My overview.")
+        monkeypatch.setattr(scraper_monitor, "call_openai_points_summary", lambda t: [])
+        result = scraper_monitor.compute_current_fields("text", [])
+        assert result["currentOverview"] == "My overview."
+
+    def test_current_summary_points_from_openai(self, monkeypatch):
+        points = [{"text": "Sells data", "impact": "negative", "case_id": "data-sold", "quote": ""}]
+        monkeypatch.setattr(scraper_monitor, "call_openai_overview", lambda t: "")
+        monkeypatch.setattr(scraper_monitor, "call_openai_points_summary", lambda t: points)
+        result = scraper_monitor.compute_current_fields("text", [])
+        assert result["currentSummaryPoints"] == points
+
+    def test_watchlist_hits_scans_full_text(self, monkeypatch):
+        monkeypatch.setattr(scraper_monitor, "call_openai_overview", lambda t: "")
+        monkeypatch.setattr(scraper_monitor, "call_openai_points_summary", lambda t: [])
+        result = scraper_monitor.compute_current_fields(
+            "We may use arbitration to resolve disputes.", ["Arbitration", "Class Action"]
+        )
+        assert "Arbitration" in result["currentWatchlistHits"]
+        assert "Class Action" not in result["currentWatchlistHits"]
+
+    def test_case_ids_derived_from_points(self, monkeypatch):
+        points = [
+            {"text": "A", "impact": "negative", "case_id": "data-training", "quote": ""},
+            {"text": "B", "impact": "negative", "case_id": "arbitration-clause", "quote": ""},
+            {"text": "C", "impact": "positive", "case_id": "other", "quote": ""},
+            {"text": "D", "impact": "negative", "case_id": "data-training", "quote": ""},  # duplicate
+        ]
+        monkeypatch.setattr(scraper_monitor, "call_openai_overview", lambda t: "")
+        monkeypatch.setattr(scraper_monitor, "call_openai_points_summary", lambda t: points)
+        result = scraper_monitor.compute_current_fields("text", [])
+        # "other" is excluded; duplicates deduplicated; order preserved
+        assert result["currentCaseIds"] == ["data-training", "arbitration-clause"]
+
+    def test_word_count_matches_split(self, monkeypatch):
+        monkeypatch.setattr(scraper_monitor, "call_openai_overview", lambda t: "")
+        monkeypatch.setattr(scraper_monitor, "call_openai_points_summary", lambda t: [])
+        text = "one two three four five"
+        result = scraper_monitor.compute_current_fields(text, [])
+        assert result["currentWordCount"] == 5
+
+    def test_word_count_empty_text(self, monkeypatch):
+        monkeypatch.setattr(scraper_monitor, "call_openai_overview", lambda t: "")
+        monkeypatch.setattr(scraper_monitor, "call_openai_points_summary", lambda t: [])
+        result = scraper_monitor.compute_current_fields("", [])
+        assert result["currentWordCount"] == 0
+
+
+class TestGetCompanyCurrentFields:
+    """Tests for get_company_current_fields() helper."""
+
+    def test_returns_stored_fields_for_known_company(self):
+        existing = {
+            "companies": [
+                {
+                    "name": "Acme",
+                    "currentOverview": "Overview",
+                    "currentSummaryPoints": [],
+                    "currentWatchlistHits": ["Arbitration"],
+                    "currentCaseIds": ["data-training"],
+                    "currentWordCount": 500,
+                }
+            ]
+        }
+        result = scraper_monitor.get_company_current_fields(existing, "Acme")
+        assert result["currentOverview"] == "Overview"
+        assert result["currentWatchlistHits"] == ["Arbitration"]
+        assert result["currentCaseIds"] == ["data-training"]
+        assert result["currentWordCount"] == 500
+
+    def test_returns_empty_dict_for_unknown_company(self):
+        existing = {"companies": [{"name": "Other", "currentOverview": "X"}]}
+        result = scraper_monitor.get_company_current_fields(existing, "Acme")
+        assert result == {}
+
+    def test_returns_only_current_field_keys(self):
+        existing = {
+            "companies": [
+                {
+                    "name": "Acme",
+                    "currentOverview": "Overview",
+                    "score": 80,
+                    "latestSummary": "old summary",
+                }
+            ]
+        }
+        result = scraper_monitor.get_company_current_fields(existing, "Acme")
+        assert "score" not in result
+        assert "latestSummary" not in result
+        assert "currentOverview" in result
+
+    def test_partial_fields_returned_when_some_missing(self):
+        existing = {
+            "companies": [
+                {"name": "Acme", "currentOverview": "Overview"}
+            ]
+        }
+        result = scraper_monitor.get_company_current_fields(existing, "Acme")
+        assert result == {"currentOverview": "Overview"}
+
+    def test_returns_empty_dict_when_no_companies_key(self):
+        result = scraper_monitor.get_company_current_fields({}, "Acme")
+        assert result == {}
+
+
+class TestMonitorCurrentFields:
+    """Integration-style tests verifying monitor() writes current* fields."""
+
+    def test_current_fields_present_on_first_run(self, tmp_env, monkeypatch):
+        """First run: text archived as first version → current* fields computed."""
+        monkeypatch.setattr(scraper_monitor, "fetch_text", lambda url: "hello world terms of service")
+        monkeypatch.setattr(scraper_monitor, "strip_navigation_preamble", lambda t: t)
+        monkeypatch.setattr(scraper_monitor, "call_openai_overview", lambda t: "First overview.")
+        monkeypatch.setattr(scraper_monitor, "call_openai_points_summary", lambda t: [
+            {"text": "Data sold", "impact": "negative", "case_id": "data-training", "quote": "q"},
+        ])
+        monkeypatch.setattr(scraper_monitor, "call_openai_diff_summary", lambda t: {
+            "Privacy": "OK", "DataOwnership": "OK", "UserRights": "OK"
+        })
+        monkeypatch.setattr(scraper_monitor, "load_config", lambda: [
+            {"name": "TestCo", "tosUrl": "https://example.com/tos", "category": "Test"}
+        ])
+
+        results = scraper_monitor.monitor()
+        company = results["companies"][0]
+        assert "currentOverview" in company
+        assert "currentSummaryPoints" in company
+        assert "currentWatchlistHits" in company
+        assert "currentCaseIds" in company
+        assert "currentWordCount" in company
+
+    def test_current_fields_present_when_text_unchanged(self, tmp_env, monkeypatch):
+        """Second run with identical text: cached current* fields carried forward."""
+        tos_text = "hello world terms of service"
+
+        # Pre-populate both the snapshot and the ToS archive so monitor() sees
+        # no change and takes the "not archived" (content unchanged) branch.
+        scraper_monitor.ensure_dirs()
+        scraper_monitor.write_snapshot("TestCo", tos_text)
+        scraper_monitor.archive_tos_if_changed("TestCo", tos_text)
+
+        # Pre-populate existing results with current* fields
+        existing = {
+            "schemaVersion": "2.2",
+            "updatedAt": "2026-01-01T00:00:00+00:00",
+            "companies": [
+                {
+                    "name": "TestCo",
+                    "category": "Test",
+                    "tosUrl": "https://example.com/tos",
+                    "lastChecked": "2026-01-01T00:00:00+00:00",
+                    "history": [],
+                    "currentOverview": "Cached overview.",
+                    "currentSummaryPoints": [],
+                    "currentWatchlistHits": [],
+                    "currentCaseIds": [],
+                    "currentWordCount": 5,
+                }
+            ],
+        }
+        scraper_monitor.write_results(existing)
+
+        monkeypatch.setattr(scraper_monitor, "fetch_text", lambda url: tos_text)
+        monkeypatch.setattr(scraper_monitor, "strip_navigation_preamble", lambda t: t)
+        monkeypatch.setattr(scraper_monitor, "load_config", lambda: [
+            {"name": "TestCo", "tosUrl": "https://example.com/tos", "category": "Test"}
+        ])
+        # AI should NOT be called when text is unchanged and fields exist
+        monkeypatch.setattr(scraper_monitor, "call_openai_overview",
+                            lambda t: (_ for _ in ()).throw(AssertionError("Should not call OpenAI")))
+
+        results = scraper_monitor.monitor()
+        company = results["companies"][0]
+        assert company["currentOverview"] == "Cached overview."
+        assert "currentSummaryPoints" in company
+        assert "currentWordCount" in company
+
+    def test_current_fields_recomputed_on_text_change(self, tmp_env, monkeypatch):
+        """When the ToS text changes, current* fields are recomputed fresh."""
+        old_text = "old terms of service version one"
+        new_text = "new terms of service version two"
+
+        scraper_monitor.ensure_dirs()
+        scraper_monitor.write_snapshot("TestCo", old_text)
+
+        existing = {
+            "schemaVersion": "2.2",
+            "updatedAt": "2026-01-01T00:00:00+00:00",
+            "companies": [
+                {
+                    "name": "TestCo",
+                    "category": "Test",
+                    "tosUrl": "https://example.com/tos",
+                    "lastChecked": "2026-01-01T00:00:00+00:00",
+                    "history": [],
+                    "currentOverview": "Old overview.",
+                    "currentSummaryPoints": [],
+                    "currentWatchlistHits": [],
+                    "currentCaseIds": [],
+                    "currentWordCount": 6,
+                }
+            ],
+        }
+        scraper_monitor.write_results(existing)
+
+        monkeypatch.setattr(scraper_monitor, "fetch_text", lambda url: new_text)
+        monkeypatch.setattr(scraper_monitor, "strip_navigation_preamble", lambda t: t)
+        monkeypatch.setattr(scraper_monitor, "call_openai_overview", lambda t: "New overview.")
+        monkeypatch.setattr(scraper_monitor, "call_openai_points_summary", lambda t: [])
+        monkeypatch.setattr(scraper_monitor, "call_openai_diff_summary", lambda t: {
+            "Privacy": "Changed", "DataOwnership": "OK", "UserRights": "OK"
+        })
+        monkeypatch.setattr(scraper_monitor, "load_config", lambda: [
+            {"name": "TestCo", "tosUrl": "https://example.com/tos", "category": "Test"}
+        ])
+
+        results = scraper_monitor.monitor()
+        company = results["companies"][0]
+        assert company["currentOverview"] == "New overview."
+        assert company["currentWordCount"] == len(new_text.split())
+
+    def test_current_fields_preserved_on_fetch_error(self, tmp_env, monkeypatch):
+        """When fetching fails, existing current* fields are preserved."""
+        existing = {
+            "schemaVersion": "2.2",
+            "updatedAt": "2026-01-01T00:00:00+00:00",
+            "companies": [
+                {
+                    "name": "TestCo",
+                    "category": "Test",
+                    "tosUrl": "https://example.com/tos",
+                    "lastChecked": "2026-01-01T00:00:00+00:00",
+                    "history": [],
+                    "currentOverview": "Preserved overview.",
+                    "currentSummaryPoints": [],
+                    "currentWatchlistHits": ["Arbitration"],
+                    "currentCaseIds": [],
+                    "currentWordCount": 100,
+                }
+            ],
+        }
+        scraper_monitor.write_results(existing)
+
+        monkeypatch.setattr(scraper_monitor, "fetch_text",
+                            lambda url: (_ for _ in ()).throw(ConnectionError("timeout")))
+        monkeypatch.setattr(scraper_monitor, "load_config", lambda: [
+            {"name": "TestCo", "tosUrl": "https://example.com/tos", "category": "Test"}
+        ])
+
+        results = scraper_monitor.monitor()
+        company = results["companies"][0]
+        assert company["currentOverview"] == "Preserved overview."
+        assert company["currentWatchlistHits"] == ["Arbitration"]
+        assert company["currentWordCount"] == 100

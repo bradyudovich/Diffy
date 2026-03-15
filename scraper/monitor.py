@@ -984,6 +984,82 @@ def get_company_history(existing_results: dict, company_name: str) -> list[dict]
 
 
 # ---------------------------------------------------------------------------
+# Current ToS insights helpers
+# ---------------------------------------------------------------------------
+
+_CURRENT_FIELD_KEYS = (
+    "currentOverview",
+    "currentSummaryPoints",
+    "currentWatchlistHits",
+    "currentCaseIds",
+    "currentWordCount",
+)
+
+
+def compute_current_fields(tos_text: str, watchlist: list[str]) -> dict:
+    """Compute current-state insight fields from the latest fetched ToS text.
+
+    These fields are always written for every company on every scraper run so
+    that consumers can display up-to-date insights even when the ToS hasn't
+    changed substantively enough to append a new history entry.
+
+    Args:
+        tos_text: The full text of the currently-live Terms of Service.
+        watchlist: List of high-risk terms loaded from watchlist.json.
+
+    Returns:
+        A dict with the following keys:
+          - currentOverview        – plain-text AI summary (≤30 words)
+          - currentSummaryPoints   – list of {text, impact, case_id?, quote?}
+          - currentWatchlistHits   – list of matched high-risk terms
+          - currentCaseIds         – deduplicated list of case ids from points
+          - currentWordCount       – integer word count of the full ToS text
+    """
+    current_overview = call_openai_overview(tos_text)
+    current_summary_points = call_openai_points_summary(tos_text)
+    current_watchlist_hits = scan_watchlist(tos_text, watchlist)
+
+    # Derive case IDs from summary points (preserve insertion order, skip "other")
+    seen_ids: set[str] = set()
+    current_case_ids: list[str] = []
+    for point in current_summary_points:
+        cid = point.get("case_id", "")
+        if cid and cid != "other" and cid not in seen_ids:
+            seen_ids.add(cid)
+            current_case_ids.append(cid)
+
+    current_word_count = len(tos_text.split())
+
+    return {
+        "currentOverview": current_overview,
+        "currentSummaryPoints": current_summary_points,
+        "currentWatchlistHits": current_watchlist_hits,
+        "currentCaseIds": current_case_ids,
+        "currentWordCount": current_word_count,
+    }
+
+
+def get_company_current_fields(existing_results: dict, company_name: str) -> dict:
+    """Return the stored current* fields for a company from previously-saved results.
+
+    Used to carry forward cached insight fields when the ToS text hasn't changed
+    so that every company entry always contains the current* block without
+    incurring redundant OpenAI API calls.
+
+    Args:
+        existing_results: The dict loaded from the on-disk results.json.
+        company_name:     The company ``name`` to look up.
+
+    Returns:
+        A (possibly empty) dict containing whichever current* keys were stored.
+    """
+    for c in existing_results.get("companies", []):
+        if c.get("name") == company_name:
+            return {k: c[k] for k in _CURRENT_FIELD_KEYS if k in c}
+    return {}
+
+
+# ---------------------------------------------------------------------------
 # Main monitoring loop
 # ---------------------------------------------------------------------------
 
@@ -1012,6 +1088,9 @@ def monitor() -> dict:
             print(f"Error fetching {name}: {exc}")
             latest_summary = read_tos_summary(name) or f"Connection Error: {exc}"
             company_score = calculate_score(history[-1]) if history else 100
+            # Preserve previously-computed current* fields so the schema block
+            # is always present even when the network request fails.
+            current_fields = get_company_current_fields(existing_results, name)
             company_entry: dict = {
                 "name": name,
                 "category": category,
@@ -1021,6 +1100,7 @@ def monitor() -> dict:
                 "score": company_score,
                 "scores": calculate_diversified_scores({"score": company_score, "history": history}),
                 "history": history,
+                **current_fields,
             }
             company_results.append(company_entry)
             continue
@@ -1033,9 +1113,13 @@ def monitor() -> dict:
         archived = archive_tos_if_changed(name, new_text)
 
         if not archived:
-            # Content unchanged – no new history entry needed
+            # Content unchanged – no new history entry needed.
+            # Re-use cached current* fields; compute fresh if not yet stored.
             latest_summary = read_tos_summary(name) or "Initial snapshot created. Monitoring active."
             company_score = calculate_score(history[-1]) if history else 100
+            current_fields = get_company_current_fields(existing_results, name)
+            if not current_fields:
+                current_fields = compute_current_fields(new_text, watchlist)
             company_entry = {
                 "name": name,
                 "category": category,
@@ -1045,6 +1129,7 @@ def monitor() -> dict:
                 "score": company_score,
                 "scores": calculate_diversified_scores({"score": company_score, "history": history}),
                 "history": history,
+                **current_fields,
             }
             company_results.append(company_entry)
             continue
@@ -1056,9 +1141,13 @@ def monitor() -> dict:
             is_significant = True
             change_reason = "first version archived"
 
+        # Text changed (even non-substantively) – always refresh current* fields
+        # so they stay in sync with the live ToS.
+        current_fields = compute_current_fields(new_text, watchlist)
+
         if not is_significant:
             # Non-substantive change (whitespace / cosmetic) – archive written,
-            # but we do NOT add a history entry or regenerate the summary.
+            # but we do NOT add a history entry or regenerate the diff summary.
             latest_summary = read_tos_summary(name) or "Initial snapshot created. Monitoring active."
             company_score = calculate_score(history[-1]) if history else 100
             company_entry = {
@@ -1070,6 +1159,7 @@ def monitor() -> dict:
                 "score": company_score,
                 "scores": calculate_diversified_scores({"score": company_score, "history": history}),
                 "history": history,
+                **current_fields,
             }
             company_results.append(company_entry)
             continue
@@ -1105,7 +1195,7 @@ def monitor() -> dict:
         })
         letter_grade = get_letter_grade(trust_score)
 
-        # Generate point-based summary for the card UI
+        # Generate point-based summary for the card UI (diff-focused)
         summary_points = call_openai_points_summary(scan_target)
 
         # Append new history entry (chronological; oldest first)
@@ -1140,6 +1230,7 @@ def monitor() -> dict:
                 "summaryPoints": summary_points,
             }),
             "history": history,
+            **current_fields,
         }
         company_results.append(company_entry)
 

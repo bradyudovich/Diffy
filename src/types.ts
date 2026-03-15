@@ -84,6 +84,23 @@ export interface CompanyResult {
   /** Relative URL to the cached favicon, e.g. "/favicons/openai.com.png". */
   favicon_url?: string;
 
+  // -------------------------------------------------------------------------
+  // Current ToS insights – always written on every scraper run so that
+  // consumers can display up-to-date information even when the ToS hasn't
+  // changed substantively enough to append a new history entry.
+  // -------------------------------------------------------------------------
+
+  /** Plain-text AI overview of the currently-live ToS (≤30 words). */
+  currentOverview?: string;
+  /** AI-generated key-clause summary points derived from the current full ToS text. */
+  currentSummaryPoints?: SummaryPoint[];
+  /** High-risk terms found in the currently-live ToS text. */
+  currentWatchlistHits?: string[];
+  /** Deduplicated case ids derived from currentSummaryPoints. */
+  currentCaseIds?: string[];
+  /** Word count of the currently-live ToS text. */
+  currentWordCount?: number;
+
   // Legacy v1 fields kept for backward compat when loading old data
   changed?: boolean;
   changeIsSubstantial?: boolean;
