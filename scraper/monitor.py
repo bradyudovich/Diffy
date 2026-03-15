@@ -287,6 +287,11 @@ _TOPIC_DIMENSION: dict[str, str] = {
 
 # Default sub-score used when no relevant summary points are available
 _DEFAULT_SUBSCORE: int = 70
+# Word count thresholds for the length-based readability adjustment
+_WORD_COUNT_SHORT_THRESHOLD: int = 1_000
+_WORD_COUNT_LONG_THRESHOLD: int = 10_000
+# Readability penalty applied for documents outside the normal word-count range
+_WORD_COUNT_READABILITY_PENALTY: int = 5
 
 
 def calculate_score_from_cases(case_ids: list[str]) -> int:
@@ -407,8 +412,7 @@ def get_letter_grade(score: int) -> str:
 def calculate_diversified_scores(company: dict) -> dict:
     """Compute multiple scoring dimensions for a company.
 
-    Aggregates summaryPoints from all history entries (and the top-level
-    ``summaryPoints`` field) to produce four sub-scores:
+    Produces four sub-scores:
 
     - ``dataPractices`` (0–100): Quality of data handling, derived from
       cases with topic "Privacy" or "DataOwnership".
@@ -418,13 +422,25 @@ def calculate_diversified_scores(company: dict) -> dict:
       from the balance of positive vs negative summary points.
     - ``overall`` (0–100): The company's existing top-level score.
 
+    **Primary sources** (used when present – always written by ``compute_current_fields()``):
+
+    - ``currentCaseIds``      → dataPractices and userRights
+    - ``currentSummaryPoints`` → readability ratio
+    - ``currentWordCount``    → small length-based readability adjustment
+      (very short < 1 000 words or very long > 10 000 words each apply −5)
+
+    **Fallback sources** (used only when the current* fields are absent):
+    case ids and impact counts are aggregated from all history entries and
+    the top-level ``summaryPoints`` field.
+
     All sub-scores default to ``_DEFAULT_SUBSCORE`` (70) when no relevant
-    summary points are available, providing a slightly cautious baseline
-    rather than a misleading perfect score.
+    data is available, providing a cautious baseline rather than a
+    misleading perfect score.
 
     Args:
         company: A company result dict (may include ``score``, ``history``,
-                 and ``summaryPoints``).
+                 ``summaryPoints``, ``currentCaseIds``, ``currentSummaryPoints``,
+                 and ``currentWordCount``).
 
     Returns:
         Dict with keys: ``overall``, ``dataPractices``, ``userRights``,
@@ -434,38 +450,43 @@ def calculate_diversified_scores(company: dict) -> dict:
 
     data_case_ids: list[str] = []
     user_rights_case_ids: list[str] = []
-    total_positive = 0
-    total_negative = 0
-    all_case_ids_seen: set[str] = set()
 
-    # Collect all summary points from every history entry plus top-level
-    all_points: list[dict] = []
-    for entry in company.get("history", []):
-        all_points.extend(entry.get("summaryPoints") or [])
-    all_points.extend(company.get("summaryPoints") or [])
+    # --- dataPractices / userRights -----------------------------------------
+    # Primary: use currentCaseIds when present (always available after PR 1 run)
+    current_case_ids = company.get("currentCaseIds")
+    if current_case_ids is not None:
+        for case_id in current_case_ids:
+            case = cases_index.get(case_id)
+            if not case:
+                continue
+            topic = case.get("topic", "")
+            if topic in ("Privacy", "DataOwnership"):
+                data_case_ids.append(case_id)
+            elif topic == "UserRights":
+                user_rights_case_ids.append(case_id)
+    else:
+        # Fallback: aggregate case ids from all history entries + top-level summaryPoints
+        all_case_ids_seen: set[str] = set()
+        all_points: list[dict] = []
+        for entry in company.get("history", []):
+            all_points.extend(entry.get("summaryPoints") or [])
+        all_points.extend(company.get("summaryPoints") or [])
 
-    for point in all_points:
-        if not isinstance(point, dict):
-            continue
-        impact = point.get("impact", "neutral")
-        if impact == "positive":
-            total_positive += 1
-        elif impact == "negative":
-            total_negative += 1
-
-        case_id = point.get("case_id", "")
-        if not case_id or case_id == "other" or case_id in all_case_ids_seen:
-            continue
-        all_case_ids_seen.add(case_id)
-
-        case = cases_index.get(case_id)
-        if not case:
-            continue
-        topic = case.get("topic", "")
-        if topic in ("Privacy", "DataOwnership"):
-            data_case_ids.append(case_id)
-        elif topic == "UserRights":
-            user_rights_case_ids.append(case_id)
+        for point in all_points:
+            if not isinstance(point, dict):
+                continue
+            case_id = point.get("case_id", "")
+            if not case_id or case_id == "other" or case_id in all_case_ids_seen:
+                continue
+            all_case_ids_seen.add(case_id)
+            case = cases_index.get(case_id)
+            if not case:
+                continue
+            topic = case.get("topic", "")
+            if topic in ("Privacy", "DataOwnership"):
+                data_case_ids.append(case_id)
+            elif topic == "UserRights":
+                user_rights_case_ids.append(case_id)
 
     data_practices = (
         calculate_score_from_cases(data_case_ids)
@@ -478,6 +499,27 @@ def calculate_diversified_scores(company: dict) -> dict:
         else _DEFAULT_SUBSCORE
     )
 
+    # --- readability ---------------------------------------------------------
+    # Primary: use currentSummaryPoints when present
+    current_summary_points = company.get("currentSummaryPoints")
+    if current_summary_points is not None:
+        points_for_readability: list[dict] = list(current_summary_points)
+    else:
+        # Fallback: collect impact counts from all history entries + top-level summaryPoints
+        points_for_readability = []
+        for entry in company.get("history", []):
+            points_for_readability.extend(entry.get("summaryPoints") or [])
+        points_for_readability.extend(company.get("summaryPoints") or [])
+
+    total_positive = sum(
+        1 for p in points_for_readability
+        if isinstance(p, dict) and p.get("impact") == "positive"
+    )
+    total_negative = sum(
+        1 for p in points_for_readability
+        if isinstance(p, dict) and p.get("impact") == "negative"
+    )
+
     # Readability: proportion of positive vs negative points mapped to 0–100.
     # 50% positive  → 50, all positive → 100, all negative → 0.
     total_points = total_positive + total_negative
@@ -488,6 +530,14 @@ def calculate_diversified_scores(company: dict) -> dict:
         )
     else:
         readability = _DEFAULT_SUBSCORE
+
+    # --- Length criterion (word count bucket) --------------------------------
+    # Very short documents may be incomplete; very long ones are harder to parse.
+    # Each out-of-range bucket applies a small adjustment to readability.
+    current_word_count = company.get("currentWordCount")
+    if current_word_count is not None:
+        if current_word_count < _WORD_COUNT_SHORT_THRESHOLD or current_word_count > _WORD_COUNT_LONG_THRESHOLD:
+            readability = max(0, readability - _WORD_COUNT_READABILITY_PENALTY)
 
     return {
         "overall": company.get("score", 100),

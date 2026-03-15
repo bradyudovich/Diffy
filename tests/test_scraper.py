@@ -1159,6 +1159,187 @@ class TestCalculateDiversifiedScores:
         for key in ("overall", "dataPractices", "userRights", "readability"):
             assert key in scores, f"Missing key: {key}"
 
+    # ------------------------------------------------------------------
+    # currentCaseIds as primary source
+    # ------------------------------------------------------------------
+
+    def test_current_case_ids_used_for_data_practices(self):
+        """currentCaseIds drives dataPractices when present."""
+        company = {
+            "score": 80,
+            "history": [],
+            "currentCaseIds": ["data-sold-third-parties"],  # Blocker (-50) → 50
+        }
+        scores = scraper_monitor.calculate_diversified_scores(company)
+        assert scores["dataPractices"] == 50
+        assert scores["userRights"] == scraper_monitor._DEFAULT_SUBSCORE
+
+    def test_current_case_ids_used_for_user_rights(self):
+        """currentCaseIds drives userRights when present."""
+        company = {
+            "score": 80,
+            "history": [],
+            "currentCaseIds": ["arbitration-clause"],  # Blocker (-50) → 50
+        }
+        scores = scraper_monitor.calculate_diversified_scores(company)
+        assert scores["userRights"] == 50
+        assert scores["dataPractices"] == scraper_monitor._DEFAULT_SUBSCORE
+
+    def test_current_case_ids_overrides_history_case_ids(self):
+        """currentCaseIds is preferred over history-derived case ids."""
+        company = {
+            "score": 70,
+            # History would drive dataPractices to 50 (data-sold-third-parties = Blocker)
+            "history": [
+                {
+                    "summaryPoints": [
+                        {"text": "Sold data", "impact": "negative",
+                         "case_id": "data-sold-third-parties"},
+                    ]
+                }
+            ],
+            # currentCaseIds has only a Good DataOwnership case → 100+10 clamped to 100
+            "currentCaseIds": ["data-retention-limit"],
+        }
+        scores = scraper_monitor.calculate_diversified_scores(company)
+        # data-retention-limit is Good (+10) → 100+10 = 110 → 100
+        assert scores["dataPractices"] == 100
+
+    def test_empty_current_case_ids_returns_default_not_history(self):
+        """An explicit empty currentCaseIds list yields the default subscore
+        even when history has matching cases."""
+        company = {
+            "score": 70,
+            "history": [
+                {
+                    "summaryPoints": [
+                        {"text": "Sold data", "impact": "negative",
+                         "case_id": "data-sold-third-parties"},
+                    ]
+                }
+            ],
+            "currentCaseIds": [],  # explicitly no current cases
+        }
+        scores = scraper_monitor.calculate_diversified_scores(company)
+        assert scores["dataPractices"] == scraper_monitor._DEFAULT_SUBSCORE
+        assert scores["userRights"] == scraper_monitor._DEFAULT_SUBSCORE
+
+    # ------------------------------------------------------------------
+    # currentSummaryPoints as primary source for readability
+    # ------------------------------------------------------------------
+
+    def test_current_summary_points_used_for_readability(self):
+        """currentSummaryPoints drives readability when present."""
+        company = {
+            "score": 80,
+            "history": [],
+            "currentSummaryPoints": [
+                {"text": "p1", "impact": "positive", "case_id": "other"},
+                {"text": "p2", "impact": "positive", "case_id": "other"},
+            ],
+        }
+        scores = scraper_monitor.calculate_diversified_scores(company)
+        assert scores["readability"] == 100
+
+    def test_current_summary_points_overrides_history_for_readability(self):
+        """currentSummaryPoints is preferred over history summary points for readability."""
+        company = {
+            "score": 70,
+            # History has all-negative points (readability=0 via history path)
+            "history": [
+                {
+                    "summaryPoints": [
+                        {"text": "n1", "impact": "negative", "case_id": "other"},
+                        {"text": "n2", "impact": "negative", "case_id": "other"},
+                    ]
+                }
+            ],
+            # currentSummaryPoints are all positive → readability=100
+            "currentSummaryPoints": [
+                {"text": "p1", "impact": "positive", "case_id": "other"},
+            ],
+        }
+        scores = scraper_monitor.calculate_diversified_scores(company)
+        assert scores["readability"] == 100
+
+    def test_empty_current_summary_points_returns_default_readability(self):
+        """An explicit empty currentSummaryPoints list yields the default subscore
+        even when history has negative points."""
+        company = {
+            "score": 70,
+            "history": [
+                {
+                    "summaryPoints": [
+                        {"text": "n1", "impact": "negative", "case_id": "other"},
+                    ]
+                }
+            ],
+            "currentSummaryPoints": [],  # explicitly empty
+        }
+        scores = scraper_monitor.calculate_diversified_scores(company)
+        assert scores["readability"] == scraper_monitor._DEFAULT_SUBSCORE
+
+    # ------------------------------------------------------------------
+    # Word count bucket (length criterion)
+    # ------------------------------------------------------------------
+
+    def test_word_count_very_short_reduces_readability(self):
+        """A document with < 1,000 words applies a −5 readability adjustment."""
+        company = {
+            "score": 80,
+            "history": [],
+            "currentSummaryPoints": [],   # → default subscore (70) before adjustment
+            "currentWordCount": 500,
+        }
+        scores = scraper_monitor.calculate_diversified_scores(company)
+        assert scores["readability"] == scraper_monitor._DEFAULT_SUBSCORE - scraper_monitor._WORD_COUNT_READABILITY_PENALTY
+
+    def test_word_count_very_long_reduces_readability(self):
+        """A document with > 10,000 words applies a −5 readability adjustment."""
+        company = {
+            "score": 80,
+            "history": [],
+            "currentSummaryPoints": [],   # → default subscore (70) before adjustment
+            "currentWordCount": 15000,
+        }
+        scores = scraper_monitor.calculate_diversified_scores(company)
+        assert scores["readability"] == scraper_monitor._DEFAULT_SUBSCORE - scraper_monitor._WORD_COUNT_READABILITY_PENALTY
+
+    def test_word_count_normal_range_no_adjustment(self):
+        """A document within 1,000–10,000 words has no readability adjustment."""
+        company = {
+            "score": 80,
+            "history": [],
+            "currentSummaryPoints": [],   # → default subscore (70)
+            "currentWordCount": 3000,
+        }
+        scores = scraper_monitor.calculate_diversified_scores(company)
+        assert scores["readability"] == scraper_monitor._DEFAULT_SUBSCORE
+
+    def test_word_count_adjustment_clamped_to_zero(self):
+        """readability cannot go below 0 even with the word count adjustment."""
+        company = {
+            "score": 40,
+            "history": [],
+            # All-negative points → readability=0 before adjustment
+            "currentSummaryPoints": [
+                {"text": "n1", "impact": "negative", "case_id": "other"},
+            ],
+            "currentWordCount": 500,  # very short → would subtract 5
+        }
+        scores = scraper_monitor.calculate_diversified_scores(company)
+        assert scores["readability"] == 0
+
+    def test_no_word_count_field_no_adjustment(self):
+        """When currentWordCount is absent no length adjustment is applied."""
+        company = {
+            "score": 80,
+            "history": [],
+            "currentSummaryPoints": [],
+        }
+        scores = scraper_monitor.calculate_diversified_scores(company)
+        assert scores["readability"] == scraper_monitor._DEFAULT_SUBSCORE
+
 
 # ---------------------------------------------------------------------------
 # add_benchmark_ranks
