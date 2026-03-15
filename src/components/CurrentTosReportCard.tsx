@@ -1,0 +1,257 @@
+/**
+ * CurrentTosReportCard.tsx – "Current ToS Report Card" panel for the company detail view.
+ *
+ * Displays a first-class snapshot of a company's current Terms of Service posture
+ * so users can understand the key risks without first selecting a change entry:
+ *   • currentOverview   – plain-text AI overview (≤30 words)
+ *   • currentSummaryPoints – AI key clauses with positive/negative/neutral icons
+ *   • currentWatchlistHits – high-risk legal terms found in the live ToS
+ *   • Scores breakdown + industry benchmark (via ScoreBreakdownPanel)
+ */
+
+import { useState, useId } from "react";
+import {
+  CheckCircle,
+  XCircle,
+  Info,
+  ChevronDown,
+  ChevronUp,
+  AlertTriangle,
+} from "lucide-react";
+import type { CompanyResult, SummaryPoint } from "../types";
+import { getGlossaryDefinition } from "../LegalGlossary";
+import ScoreBreakdownPanel from "./ScoreBreakdownPanel";
+
+interface Props {
+  company: CompanyResult;
+}
+
+// ---------------------------------------------------------------------------
+// Shared sub-components (styled to match DiffViewer patterns)
+// ---------------------------------------------------------------------------
+
+/** Lightweight hover tooltip without external dependencies. */
+function Tooltip({ content, children }: { content: string; children: React.ReactNode }) {
+  const [visible, setVisible] = useState(false);
+  const uid = useId();
+  const id = `tos-tt-${uid}`;
+  return (
+    <span
+      className="relative inline-block"
+      onMouseEnter={() => setVisible(true)}
+      onMouseLeave={() => setVisible(false)}
+      onFocus={() => setVisible(true)}
+      onBlur={() => setVisible(false)}
+      aria-describedby={visible ? id : undefined}
+    >
+      {children}
+      {visible && (
+        <span
+          id={id}
+          role="tooltip"
+          className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-1.5 -translate-x-1/2 w-56 rounded-lg bg-gray-900 px-2.5 py-1.5 text-xs text-white shadow-lg"
+        >
+          {content}
+          <span
+            className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"
+            aria-hidden="true"
+          />
+        </span>
+      )}
+    </span>
+  );
+}
+
+/** Impact icon for a key-clause row. */
+function PointIcon({ impact }: { impact: SummaryPoint["impact"] }) {
+  if (impact === "positive")
+    return (
+      <CheckCircle
+        className="h-3.5 w-3.5 text-emerald-500 flex-shrink-0 mt-0.5"
+        aria-hidden="true"
+      />
+    );
+  if (impact === "negative")
+    return (
+      <XCircle
+        className="h-3.5 w-3.5 text-rose-500 flex-shrink-0 mt-0.5"
+        aria-hidden="true"
+      />
+    );
+  return (
+    <Info
+      className="h-3.5 w-3.5 text-sky-500 flex-shrink-0 mt-0.5"
+      aria-hidden="true"
+    />
+  );
+}
+
+/** Expandable key-clause row with optional verbatim quote reveal. */
+function ClauseRow({ point }: { point: SummaryPoint }) {
+  const [quoteOpen, setQuoteOpen] = useState(false);
+  const hasQuote = !!point.quote;
+
+  return (
+    <li className="rounded-lg border border-gray-100 bg-white/70 px-3 py-2">
+      <button
+        type="button"
+        className={`flex items-start gap-2 text-left w-full ${
+          hasQuote ? "cursor-pointer" : "cursor-default"
+        }`}
+        onClick={() => hasQuote && setQuoteOpen((v) => !v)}
+        aria-expanded={hasQuote ? quoteOpen : undefined}
+        disabled={!hasQuote}
+      >
+        <PointIcon impact={point.impact} />
+        <span className="text-xs text-gray-800 leading-snug flex-1">{point.text}</span>
+        {hasQuote && (
+          <span className="flex-shrink-0 mt-0.5 text-gray-400 hover:text-gray-600 transition-colors">
+            {quoteOpen ? (
+              <ChevronUp className="h-3.5 w-3.5" aria-hidden="true" />
+            ) : (
+              <ChevronDown className="h-3.5 w-3.5" aria-hidden="true" />
+            )}
+          </span>
+        )}
+      </button>
+
+      {hasQuote && quoteOpen && (
+        <blockquote className="mt-2 rounded-md border-l-2 border-amber-300 bg-amber-50 px-3 py-2 text-xs text-amber-900 italic leading-snug">
+          "{point.quote}"
+        </blockquote>
+      )}
+
+      {point.case_id && point.case_id !== "other" && (
+        <span className="mt-1 inline-block rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-500 font-mono">
+          {point.case_id}
+        </span>
+      )}
+    </li>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Main component
+// ---------------------------------------------------------------------------
+
+export default function CurrentTosReportCard({ company }: Props) {
+  const {
+    currentOverview,
+    currentSummaryPoints = [],
+    currentWatchlistHits = [],
+    scores,
+  } = company;
+
+  const hasOverview = !!currentOverview;
+  const hasClauses = currentSummaryPoints.length > 0;
+  const hasFlags = currentWatchlistHits.length > 0;
+  const hasScores = !!scores;
+
+  // Nothing to show – caller should gate on hasCurrentTosData() before rendering
+  if (!hasOverview && !hasClauses && !hasFlags && !hasScores) return null;
+
+  return (
+    <div
+      className="rounded-xl border border-indigo-200 bg-gradient-to-br from-white to-indigo-50 shadow-sm overflow-hidden mb-6"
+      data-testid="current-tos-report-card"
+    >
+      {/* ── Header ── */}
+      <div className="px-4 py-3 border-b border-indigo-100 bg-gradient-to-r from-indigo-50 to-purple-50">
+        <h3 className="text-sm font-semibold text-indigo-900 flex items-center gap-1.5">
+          <span aria-hidden="true">📋</span> Current ToS Report Card
+        </h3>
+        <p className="text-xs text-indigo-600 mt-0.5">
+          Live snapshot of {company.name}'s current Terms of Service posture
+        </p>
+      </div>
+
+      <div className="p-4 space-y-4">
+        {/* ── Overview ── */}
+        {hasOverview && (
+          <section aria-label="Overview">
+            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
+              🔍 Overview
+            </p>
+            <p className="text-sm text-gray-800 leading-relaxed bg-white/80 rounded-lg border border-gray-100 px-3 py-2">
+              {currentOverview}
+            </p>
+          </section>
+        )}
+
+        {/* ── Key Clauses ── */}
+        {hasClauses && (
+          <section aria-label="Key Clauses">
+            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
+              📌 Key Clauses
+            </p>
+            {/* Impact legend */}
+            <div className="flex items-center gap-3 mb-2 text-[10px] text-gray-400">
+              <span className="flex items-center gap-1">
+                <CheckCircle className="h-3 w-3 text-emerald-500" aria-hidden="true" />
+                Positive
+              </span>
+              <span className="flex items-center gap-1">
+                <XCircle className="h-3 w-3 text-rose-500" aria-hidden="true" />
+                Negative
+              </span>
+              <span className="flex items-center gap-1">
+                <Info className="h-3 w-3 text-sky-500" aria-hidden="true" />
+                Neutral
+              </span>
+            </div>
+            <ul className="space-y-2">
+              {currentSummaryPoints.map((point, i) => (
+                <ClauseRow key={`${point.case_id ?? "point"}-${i}`} point={point} />
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {/* ── Watchlist Flags ── */}
+        {hasFlags && (
+          <section aria-label="Watchlist Flags">
+            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5 flex items-center gap-1">
+              <AlertTriangle
+                className="h-3.5 w-3.5 text-amber-500"
+                aria-hidden="true"
+              />
+              Watchlist Flags
+            </p>
+            <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2">
+              <p className="text-xs text-amber-700 mb-1.5">
+                High-risk terms found in the currently-live ToS:
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {currentWatchlistHits.map((term) => {
+                  const definition = getGlossaryDefinition(term);
+                  const badge = (
+                    <span
+                      key={term}
+                      className="rounded-full bg-amber-100 border border-amber-300 px-2 py-0.5 text-xs font-medium text-amber-800 cursor-help"
+                    >
+                      {term}
+                    </span>
+                  );
+                  return definition ? (
+                    <Tooltip key={term} content={definition}>
+                      {badge}
+                    </Tooltip>
+                  ) : (
+                    badge
+                  );
+                })}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* ── Scores Breakdown + Benchmark ── */}
+        {hasScores && (
+          <section aria-label="Score Breakdown">
+            <ScoreBreakdownPanel scores={scores} />
+          </section>
+        )}
+      </div>
+    </div>
+  );
+}

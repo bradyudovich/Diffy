@@ -6,6 +6,8 @@
  * (legacy v1 data) so the UI can still surface meaningful information.
  */
 
+import type { CompanyResult } from "../types";
+
 /** Parsed sections from a "[Category]: text" summary string. */
 export type ParsedSummary = Record<string, string>;
 
@@ -158,4 +160,17 @@ export function benchmarkLabel(score: number, industryAvg: number): string {
 export function mean(values: number[]): number {
   if (values.length === 0) return 0;
   return values.reduce((s, v) => s + v, 0) / values.length;
+}
+
+/**
+ * Returns true when the company has at least one "current ToS" field so the
+ * CurrentTosReportCard has something to render.
+ */
+export function hasCurrentTosData(company: CompanyResult): boolean {
+  return !!(
+    company.currentOverview ||
+    (company.currentSummaryPoints && company.currentSummaryPoints.length > 0) ||
+    (company.currentWatchlistHits && company.currentWatchlistHits.length > 0) ||
+    company.scores
+  );
 }

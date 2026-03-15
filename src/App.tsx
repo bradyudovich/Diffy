@@ -9,6 +9,8 @@ import About from "./components/About";
 import Leaderboard from "./components/Leaderboard";
 import ScoreBreakdownPanel from "./components/ScoreBreakdownPanel";
 import TrendChart from "./components/TrendChart";
+import CurrentTosReportCard from "./components/CurrentTosReportCard";
+import { hasCurrentTosData } from "./utils/scoreUtils";
 import {
   parseSummary,
   deriveDataScore,
@@ -442,6 +444,11 @@ export default function App() {
                 </div>
               )}
             </div>
+
+            {/* Current ToS Report Card – shown before the history grid */}
+            {hasCurrentTosData(selectedCompany) && (
+              <CurrentTosReportCard company={selectedCompany} />
+            )}
 
             <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
               {/* Left: timeline */}
