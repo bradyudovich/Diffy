@@ -6,8 +6,4 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   base: '/Diffy/',
   plugins: [react(), tailwindcss()],
-  test: {
-    environment: 'node',
-    include: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
-  },
 })
