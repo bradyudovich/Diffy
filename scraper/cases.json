@@ -79,6 +79,22 @@
       "rating": "Good",
       "weight": 10,
       "topic": "Privacy"
+    },
+    {
+      "id": "unilateral-changes",
+      "title": "Company can modify terms without notice",
+      "description": "The service reserves the right to modify the terms at any time without prior notice to users.",
+      "rating": "Bad",
+      "weight": -20,
+      "topic": "UserRights"
+    },
+    {
+      "id": "data-retention-limit",
+      "title": "Explicit limit on data retention period",
+      "description": "The service explicitly commits to retaining personal data for only a defined, limited period of time.",
+      "rating": "Good",
+      "weight": 10,
+      "topic": "Privacy"
     }
   ]
 }

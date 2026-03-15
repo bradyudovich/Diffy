@@ -4,6 +4,23 @@ export type Verdict = "Good" | "Neutral" | "Caution";
 /** Impact level for a summary point. */
 export type PointImpact = "positive" | "negative" | "neutral";
 
+/** Multi-dimensional scoring breakdown for a company. */
+export interface DiversifiedScores {
+  /** Overall Diffy score (0–100), same as the top-level `score` field. */
+  overall: number;
+  /** Data handling quality score (0–100), based on Privacy and DataOwnership cases. */
+  dataPractices: number;
+  /** User rights protection score (0–100), based on UserRights cases. */
+  userRights: number;
+  /** Clarity / user-friendliness score (0–100), derived from the ratio of positive
+   *  to negative summary points. */
+  readability: number;
+  /** Qualitative comparison to the industry average (e.g. "Top Tier", "Average"). */
+  benchmarkRank?: string;
+  /** Industry-average overall score across all tracked companies. */
+  industryAvg?: number;
+}
+
 /** A single actionable point from the AI analysis. */
 export interface SummaryPoint {
   text: string;
@@ -59,6 +76,11 @@ export interface CompanyResult {
    * Computed by calculate_score() in scraper/monitor.py.
    */
   score?: number;
+  /**
+   * Multi-dimensional scoring breakdown.
+   * Computed by calculate_diversified_scores() in scraper/monitor.py.
+   */
+  scores?: DiversifiedScores;
   /** Relative URL to the cached favicon, e.g. "/favicons/openai.com.png". */
   favicon_url?: string;
 
