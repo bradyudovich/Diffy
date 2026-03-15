@@ -78,7 +78,7 @@ function ScoreBar({
   if (compact) {
     return (
       <div className="flex items-center gap-1.5" title={`${label}: ${clamped}/100 – ${description}`}>
-        <span className="text-[10px] text-gray-500 w-16 shrink-0 truncate">{icon} {label}</span>
+        <span className="text-[10px] text-gray-500 w-24 shrink-0">{icon} {label}</span>
         <div className="flex-1 h-1.5 rounded-full bg-gray-100 overflow-hidden">
           <div className={`h-full rounded-full ${bar} transition-all duration-500`} style={{ width: `${clamped}%` }} />
         </div>

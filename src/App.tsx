@@ -12,6 +12,7 @@ import TrendChart from "./components/TrendChart";
 import CurrentTosReportCard from "./components/CurrentTosReportCard";
 import DashboardStats from "./components/DashboardStats";
 import TopMovers from "./components/TopMovers";
+import CompareView from "./components/CompareView";
 import { hasCurrentTosData } from "./utils/scoreUtils";
 import {
   parseSummary,
@@ -81,6 +82,9 @@ export default function App() {
 
   // About / FAQ page
   const [showAbout, setShowAbout] = useState(false);
+
+  // Compare tab
+  const [showCompare, setShowCompare] = useState(false);
 
   // Toggle sub-score lines in the TrendChart
   const [showSubScores, setShowSubScores] = useState(false);
@@ -172,23 +176,49 @@ export default function App() {
 
   function handleShowAbout() {
     setShowAbout(true);
+    setShowCompare(false);
     setSelectedCompany(null);
     setSelectedEntry(null);
   }
 
+  function handleShowCompare() {
+    setShowCompare(true);
+    setShowAbout(false);
+    setSelectedCompany(null);
+    setSelectedEntry(null);
+  }
+
+  function handleGoHome() {
+    setSelectedCompany(null);
+    setSelectedEntry(null);
+    setShowAbout(false);
+    setShowCompare(false);
+  }
+
   const pageTitle = selectedCompany
     ? `See what changed in ${selectedCompany.name}'s Terms of Service - Diffy`
+    : showCompare
+    ? "Compare Companies – Diffy"
+    : showAbout
+    ? "About Diffy – TOS Change Tracker"
     : "Diffy – Terms of Service Change Tracker";
 
   const pageDescription = selectedCompany
     ? `Stay informed about ${selectedCompany.name} Terms of Service updates. Diffy monitors ToS changes and alerts you to high-risk legal terms.`
-    : "Diffy monitors Terms of Service changes across popular platforms and alerts you when important policies are updated.";
+    : showCompare
+    ? "Compare two companies' Terms of Service side-by-side with Diffy's AI-powered analysis."
+    : "Diffy monitors Terms of Service changes across 500+ popular platforms and alerts you when important policies are updated.";
 
   return (
     <HelmetProvider>
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDescription} />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={pageDescription} />
       </Helmet>
 
       {/* Skip-to-content link – visually hidden until focused (WCAG 2.4.1) */}
@@ -217,7 +247,7 @@ export default function App() {
                            hover:bg-white/20 transition-colors duration-150
                            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white
                            focus-visible:ring-offset-2 focus-visible:ring-offset-indigo-800"
-                onClick={() => { setSelectedCompany(null); setSelectedEntry(null); setShowAbout(false); }}
+                onClick={handleGoHome}
               >
                 D
               </button>
@@ -228,7 +258,7 @@ export default function App() {
                   className="text-2xl font-bold leading-none hover:text-indigo-200 transition-colors
                              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white
                              focus-visible:ring-offset-1 focus-visible:ring-offset-indigo-800 rounded"
-                  onClick={() => { setSelectedCompany(null); setSelectedEntry(null); setShowAbout(false); }}
+                  onClick={handleGoHome}
                 >
                   Diffy
                 </button>
@@ -239,22 +269,54 @@ export default function App() {
             </div>
 
             {/* Site-level navigation */}
-            <nav aria-label="Site navigation">
+            <nav aria-label="Site navigation" className="flex items-center gap-1">
               <button
+                type="button"
+                onClick={handleGoHome}
+                aria-current={!showAbout && !showCompare && !selectedCompany ? "page" : undefined}
+                className={`text-sm px-3 py-1.5 rounded-lg transition-colors
+                           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white
+                           focus-visible:ring-offset-1 focus-visible:ring-offset-indigo-800
+                           ${!showAbout && !showCompare && !selectedCompany
+                             ? "bg-white/20 text-white font-semibold"
+                             : "text-indigo-200 hover:text-white hover:bg-white/10"
+                           }`}
+              >
+                Dashboard
+              </button>
+              <button
+                type="button"
+                onClick={handleShowCompare}
+                aria-current={showCompare ? "page" : undefined}
+                className={`text-sm px-3 py-1.5 rounded-lg transition-colors
+                           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white
+                           focus-visible:ring-offset-1 focus-visible:ring-offset-indigo-800
+                           ${showCompare
+                             ? "bg-white/20 text-white font-semibold"
+                             : "text-indigo-200 hover:text-white hover:bg-white/10"
+                           }`}
+              >
+                Compare
+              </button>
+              <button
+                type="button"
                 onClick={handleShowAbout}
                 aria-current={showAbout ? "page" : undefined}
-                className="text-sm text-indigo-200 hover:text-white transition-colors
-                           underline-offset-2 hover:underline
+                className={`text-sm px-3 py-1.5 rounded-lg transition-colors
                            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white
-                           focus-visible:ring-offset-1 focus-visible:ring-offset-indigo-800 rounded px-1"
+                           focus-visible:ring-offset-1 focus-visible:ring-offset-indigo-800
+                           ${showAbout
+                             ? "bg-white/20 text-white font-semibold"
+                             : "text-indigo-200 hover:text-white hover:bg-white/10"
+                           }`}
               >
-                About / FAQ
+                About
               </button>
             </nav>
           </div>
 
           {/* Stats bar – shown on the main dashboard view only */}
-          {globalStats && !selectedCompany && !showAbout && (
+          {globalStats && !selectedCompany && !showAbout && !showCompare && (
             <DashboardStats stats={globalStats} />
           )}
         </div>
@@ -264,11 +326,25 @@ export default function App() {
       <main id="main-content" className="max-w-6xl mx-auto px-4 py-8">
         {/* About / FAQ page */}
         {showAbout && (
-          <About onBack={() => setShowAbout(false)} />
+          <About onBack={handleGoHome} />
+        )}
+
+        {/* Compare page */}
+        {showCompare && results && (
+          <CompareView
+            companies={results.companies}
+            onSelectCompany={(company) => {
+              handleSelectCompany(company);
+              setShowCompare(false);
+            }}
+          />
+        )}
+        {showCompare && !results && !loading && (
+          <p className="text-sm text-gray-500">No data loaded yet.</p>
         )}
 
         {/* Loading */}
-        {!showAbout && loading && (
+        {!showAbout && !showCompare && loading && (
           <div
             className="flex items-center justify-center py-16 text-indigo-600"
             role="status"
@@ -289,7 +365,7 @@ export default function App() {
         )}
 
         {/* Error */}
-        {!showAbout && error && (
+        {!showAbout && !showCompare && error && (
           <div
             className="rounded-lg bg-red-50 border border-red-200 p-6 text-red-700"
             role="alert"
@@ -303,7 +379,7 @@ export default function App() {
         )}
 
         {/* ── Dashboard (main list view) ──────────────────────────────────── */}
-        {!showAbout && results && !selectedCompany && (
+        {!showAbout && !showCompare && results && !selectedCompany && (
           <div className="animate-fade-in">
             {results.updatedAt && (
               <p className="text-xs text-gray-500 mb-4">
@@ -402,7 +478,7 @@ export default function App() {
         )}
 
         {/* ── Company detail view ─────────────────────────────────────────── */}
-        {!showAbout && results && selectedCompany && (
+        {!showAbout && !showCompare && results && selectedCompany && (
           <div className="animate-fade-in">
             {/* Back button */}
             <button
@@ -411,7 +487,7 @@ export default function App() {
               aria-label="Back to all companies"
               className="mb-4 text-sm text-indigo-600 hover:text-indigo-800 flex items-center gap-1
                          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500
-                         focus-visible:ring-offset-1 rounded transition-colors"
+                         focus-visible:ring-offset-1 rounded transition-colors no-print"
             >
               ← Back to all companies
             </button>
@@ -567,6 +643,43 @@ export default function App() {
           </div>
         )}
       </main>
+
+      {/* ── Site footer ──────────────────────────────────────────────────── */}
+      <footer className="mt-12 border-t border-gray-200 bg-white no-print">
+        <div className="max-w-6xl mx-auto px-4 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-400">
+          <p>
+            © {new Date().getFullYear()} Diffy · Open-source TOS intelligence platform
+          </p>
+          <div className="flex items-center gap-4">
+            <button
+              type="button"
+              onClick={handleShowCompare}
+              className="hover:text-indigo-600 transition-colors focus-visible:outline-none focus-visible:ring-2
+                         focus-visible:ring-indigo-500 focus-visible:ring-offset-1 rounded"
+            >
+              Compare
+            </button>
+            <button
+              type="button"
+              onClick={handleShowAbout}
+              className="hover:text-indigo-600 transition-colors focus-visible:outline-none focus-visible:ring-2
+                         focus-visible:ring-indigo-500 focus-visible:ring-offset-1 rounded"
+            >
+              About / FAQ
+            </button>
+            <a
+              href="https://github.com/bradyudovich/Diffy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-indigo-600 transition-colors focus-visible:outline-none focus-visible:ring-2
+                         focus-visible:ring-indigo-500 focus-visible:ring-offset-1 rounded"
+              aria-label="View Diffy source code on GitHub (opens in new tab)"
+            >
+              GitHub
+            </a>
+          </div>
+        </div>
+      </footer>
     </div>
     </HelmetProvider>
   );
