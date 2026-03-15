@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+/* ── Base typography ─────────────────────────────────────────────────────── */
+
+body {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 /* ── Entrance animations ─────────────────────────────────────────────────── */
 
 @keyframes fadeIn {
@@ -36,3 +44,21 @@
 /* Hide browser scrollbar on the category pill row */
 .scrollbar-none::-webkit-scrollbar { display: none; }
 .scrollbar-none { scrollbar-width: none; }
+
+/* ── Print styles for shareable reports ─────────────────────────────────── */
+
+@media print {
+  /* Hide navigation, search, filters and sidebar during print */
+  .no-print { display: none !important; }
+
+  /* Remove shadows and borders that look bad on paper */
+  .shadow-sm,
+  .shadow-md,
+  .shadow-lg,
+  .shadow-xl { box-shadow: none !important; }
+
+  body { background: white; }
+
+  /* Expand any collapsed sections */
+  .print-expand { height: auto !important; overflow: visible !important; }
+}
