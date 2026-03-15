@@ -352,6 +352,8 @@ interface Props {
 export default function CompareView({ companies, onSelectCompany }: Props) {
   const [companyA, setCompanyA] = useState<CompanyResult | null>(null);
   const [companyB, setCompanyB] = useState<CompanyResult | null>(null);
+  const [shareStatus, setShareStatus] = useState<"idle" | "copied" | "shown">("idle");
+  const [shareUrl, setShareUrl] = useState("");
 
   const handlePrint = useCallback(() => {
     window.print();
@@ -362,11 +364,13 @@ export default function CompareView({ companies, onSelectCompany }: Props) {
     if (companyA) params.set("compareA", companyA.name);
     if (companyB) params.set("compareB", companyB.name);
     const url = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+    setShareUrl(url);
     try {
       await navigator.clipboard.writeText(url);
-      alert("Comparison link copied to clipboard!");
+      setShareStatus("copied");
+      setTimeout(() => setShareStatus("idle"), 3000);
     } catch {
-      prompt("Copy this link to share:", url);
+      setShareStatus("shown");
     }
   }, [companyA, companyB]);
 
@@ -436,6 +440,46 @@ export default function CompareView({ companies, onSelectCompany }: Props) {
               Share Link
             </button>
           </div>
+
+          {/* Share notification – accessible inline message */}
+          {shareStatus === "copied" && (
+            <div
+              role="status"
+              aria-live="polite"
+              className="mb-4 flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs text-emerald-800 no-print"
+            >
+              <CheckCircle className="h-3.5 w-3.5 text-emerald-600 flex-shrink-0" aria-hidden="true" />
+              Link copied to clipboard!
+            </div>
+          )}
+          {shareStatus === "shown" && (
+            <div
+              role="status"
+              aria-live="polite"
+              className="mb-4 rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-2 no-print"
+            >
+              <p className="text-xs text-indigo-700 mb-1 font-medium">Copy this link to share:</p>
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  readOnly
+                  value={shareUrl}
+                  className="flex-1 text-xs bg-white border border-indigo-200 rounded px-2 py-1 text-indigo-900 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                  aria-label="Shareable comparison link"
+                  onFocus={(e) => e.target.select()}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShareStatus("idle")}
+                  className="text-xs text-indigo-500 hover:text-indigo-700 transition-colors
+                             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded"
+                  aria-label="Dismiss share link"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* Side-by-side columns */}
           <div className="flex flex-col sm:flex-row gap-4 mb-6">

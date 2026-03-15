@@ -643,6 +643,43 @@ export default function App() {
           </div>
         )}
       </main>
+
+      {/* ── Site footer ──────────────────────────────────────────────────── */}
+      <footer className="mt-12 border-t border-gray-200 bg-white no-print">
+        <div className="max-w-6xl mx-auto px-4 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-400">
+          <p>
+            © {new Date().getFullYear()} Diffy · Open-source TOS intelligence platform
+          </p>
+          <div className="flex items-center gap-4">
+            <button
+              type="button"
+              onClick={handleShowCompare}
+              className="hover:text-indigo-600 transition-colors focus-visible:outline-none focus-visible:ring-2
+                         focus-visible:ring-indigo-500 focus-visible:ring-offset-1 rounded"
+            >
+              Compare
+            </button>
+            <button
+              type="button"
+              onClick={handleShowAbout}
+              className="hover:text-indigo-600 transition-colors focus-visible:outline-none focus-visible:ring-2
+                         focus-visible:ring-indigo-500 focus-visible:ring-offset-1 rounded"
+            >
+              About / FAQ
+            </button>
+            <a
+              href="https://github.com/bradyudovich/Diffy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-indigo-600 transition-colors focus-visible:outline-none focus-visible:ring-2
+                         focus-visible:ring-indigo-500 focus-visible:ring-offset-1 rounded"
+              aria-label="View Diffy source code on GitHub (opens in new tab)"
+            >
+              GitHub
+            </a>
+          </div>
+        </div>
+      </footer>
     </div>
     </HelmetProvider>
   );
