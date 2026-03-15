@@ -174,3 +174,69 @@ export function hasCurrentTosData(company: CompanyResult): boolean {
     company.scores
   );
 }
+
+/**
+ * Returns true when the company is considered to be missing meaningful TOS
+ * tracking data: no history entries have been captured AND no current AI
+ * summary is available.  These companies are shown in a distinct
+ * "Missing TOS Data" section instead of the main card grid.
+ */
+export function hasMissingTosData(company: CompanyResult): boolean {
+  const hasHistory = Array.isArray(company.history) && company.history.length > 0;
+  const hasCurrent = !!(
+    company.currentOverview ||
+    (company.currentSummaryPoints && company.currentSummaryPoints.length > 0)
+  );
+  return !hasHistory && !hasCurrent;
+}
+
+/**
+ * Returns a structured description of the scoring methodology used by Diffy.
+ * This is the single source of truth referenced by the HowRatingsModal.
+ */
+export function getRatingMethodology() {
+  return {
+    dimensions: [
+      {
+        name: "Data Practices",
+        weight: "1/3",
+        description:
+          "Measures how a company handles your personal data. Penalises terms like 'sell', 'third-party sharing', 'surveillance', and 'biometric'. Rewards terms like 'retain ownership', 'not sell', 'opt-out', and 'encrypted'.",
+        baseScore: 75,
+        negativeAdjustment: -7,
+        positiveAdjustment: +5,
+      },
+      {
+        name: "User Rights",
+        weight: "1/3",
+        description:
+          "Measures how well user rights are protected. Penalises forced arbitration, class-action waivers, and indemnification clauses. Rewards GDPR/CCPA compliance, right-to-delete provisions, and appeal mechanisms.",
+        baseScore: 75,
+        negativeAdjustment: -10,
+        positiveAdjustment: +5,
+      },
+      {
+        name: "Readability",
+        weight: "1/3",
+        description:
+          "Measures how plain-English and concise the ToS document is. Penalises legalese words ('notwithstanding', 'hereinafter', 'pursuant', etc.) and length.",
+        baseScore: 80,
+        negativeAdjustment: -8,
+        positiveAdjustment: 0,
+      },
+    ],
+    grades: [
+      { grade: "A", range: "90–100", label: "Excellent", color: "emerald" },
+      { grade: "B", range: "70–89",  label: "Good",      color: "teal" },
+      { grade: "C", range: "50–69",  label: "Fair",      color: "amber" },
+      { grade: "D", range: "30–49",  label: "Poor",      color: "orange" },
+      { grade: "E", range: "0–29",   label: "Very Poor", color: "rose" },
+    ],
+    notes: [
+      "Scores are derived from AI-generated summary points or, for legacy data, from keyword analysis of the plain-text summary.",
+      "The overall score is the unweighted average of the three dimension scores.",
+      "Scores are not legal advice. They are automated estimates for informational purposes only.",
+      "Source data comes from Diffy's automated scraper which monitors each company's ToS URL daily.",
+    ],
+  } as const;
+}

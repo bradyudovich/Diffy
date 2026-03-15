@@ -12,6 +12,8 @@ import {
   deriveOverallScore,
   benchmarkLabel,
   mean,
+  hasMissingTosData,
+  getRatingMethodology,
 } from "./scoreUtils";
 
 // ---------------------------------------------------------------------------
@@ -208,5 +210,86 @@ describe("mean", () => {
   it("correctly computes the mean of multiple values", () => {
     expect(mean([10, 20, 30])).toBeCloseTo(20);
     expect(mean([100, 80, 60])).toBeCloseTo(80);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// hasMissingTosData
+// ---------------------------------------------------------------------------
+describe("hasMissingTosData", () => {
+  it("returns true when company has no history and no current summary", () => {
+    const company = { name: "Acme", tosUrl: "https://acme.com/tos", history: [] };
+    expect(hasMissingTosData(company)).toBe(true);
+  });
+
+  it("returns false when company has history entries", () => {
+    const company = {
+      name: "Acme",
+      tosUrl: "https://acme.com/tos",
+      history: [
+        {
+          previous_hash: null,
+          current_hash: "abc",
+          timestamp: "2024-01-01T00:00:00Z",
+          verdict: "Neutral" as const,
+          diffSummary: { Privacy: "", DataOwnership: "", UserRights: "" },
+          changeIsSubstantial: false,
+          changeReason: "Initial snapshot",
+        },
+      ],
+    };
+    expect(hasMissingTosData(company)).toBe(false);
+  });
+
+  it("returns false when company has a currentOverview", () => {
+    const company = {
+      name: "Acme",
+      tosUrl: "https://acme.com/tos",
+      history: [],
+      currentOverview: "Users retain ownership of their data.",
+    };
+    expect(hasMissingTosData(company)).toBe(false);
+  });
+
+  it("returns false when company has currentSummaryPoints", () => {
+    const company = {
+      name: "Acme",
+      tosUrl: "https://acme.com/tos",
+      history: [],
+      currentSummaryPoints: [{ text: "Data is not sold.", impact: "positive" as const }],
+    };
+    expect(hasMissingTosData(company)).toBe(false);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// getRatingMethodology
+// ---------------------------------------------------------------------------
+describe("getRatingMethodology", () => {
+  it("returns an object with dimensions, grades, and notes arrays", () => {
+    const methodology = getRatingMethodology();
+    expect(Array.isArray(methodology.dimensions)).toBe(true);
+    expect(Array.isArray(methodology.grades)).toBe(true);
+    expect(Array.isArray(methodology.notes)).toBe(true);
+  });
+
+  it("has exactly 3 scoring dimensions", () => {
+    const { dimensions } = getRatingMethodology();
+    expect(dimensions).toHaveLength(3);
+  });
+
+  it("has exactly 5 grade thresholds (A–E)", () => {
+    const { grades } = getRatingMethodology();
+    expect(grades).toHaveLength(5);
+    const letters = grades.map((g) => g.grade);
+    expect(letters).toEqual(["A", "B", "C", "D", "E"]);
+  });
+
+  it("dimensions include Data Practices, User Rights, and Readability", () => {
+    const { dimensions } = getRatingMethodology();
+    const names = dimensions.map((d) => d.name);
+    expect(names).toContain("Data Practices");
+    expect(names).toContain("User Rights");
+    expect(names).toContain("Readability");
   });
 });

@@ -90,6 +90,12 @@ export interface CompanyResult {
   // changed substantively enough to append a new history entry.
   // -------------------------------------------------------------------------
 
+  /**
+   * Version string or URL representing which specific ToS document was analyzed.
+   * May be a date string, a version tag, or the canonical URL with query params.
+   */
+  tosVersion?: string;
+
   /** Plain-text AI overview of the currently-live ToS (≤30 words). */
   currentOverview?: string;
   /** AI-generated key-clause summary points derived from the current full ToS text. */

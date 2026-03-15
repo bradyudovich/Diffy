@@ -142,6 +142,9 @@ export default function CurrentTosReportCard({ company }: Props) {
     currentSummaryPoints = [],
     currentWatchlistHits = [],
     scores,
+    tosUrl,
+    tosVersion,
+    lastChecked,
   } = company;
 
   const hasOverview = !!currentOverview;
@@ -161,6 +164,41 @@ export default function CurrentTosReportCard({ company }: Props) {
       />
 
       <Card.Body>
+        {/* ── Versioning / source attribution ── */}
+        {(tosUrl || lastChecked || tosVersion) && (
+          <section aria-label="TOS version and source">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-500 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2">
+              {tosUrl && (
+                <a
+                  href={tosUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800 transition-colors"
+                  title="View the Terms of Service document this analysis is based on"
+                >
+                  📄 View source ToS
+                </a>
+              )}
+              {tosVersion && (
+                <span>
+                  Version: <strong className="text-gray-700">{tosVersion}</strong>
+                </span>
+              )}
+              {lastChecked && (
+                <span>
+                  Last analysed:{" "}
+                  <strong className="text-gray-700">
+                    {new Date(lastChecked).toLocaleDateString(undefined, {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </strong>
+                </span>
+              )}
+            </div>
+          </section>
+        )}
         {/* ── Overview ── */}
         {hasOverview && (
           <section aria-label="Overview">
