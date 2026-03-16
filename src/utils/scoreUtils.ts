@@ -178,8 +178,9 @@ export function hasCurrentTosData(company: CompanyResult): boolean {
 /**
  * Returns true when the company is considered to be missing meaningful TOS
  * tracking data: no history entries have been captured AND no current AI
- * summary is available.  These companies are shown in a distinct
- * "Missing TOS Data" section instead of the main card grid.
+ * summary is available (including legacy v1 summary fields).  These companies
+ * are shown in a distinct "Missing TOS Data" section instead of the main card
+ * grid.
  */
 export function hasMissingTosData(company: CompanyResult): boolean {
   const hasHistory = Array.isArray(company.history) && company.history.length > 0;
@@ -187,7 +188,13 @@ export function hasMissingTosData(company: CompanyResult): boolean {
     company.currentOverview ||
     (company.currentSummaryPoints && company.currentSummaryPoints.length > 0)
   );
-  return !hasHistory && !hasCurrent;
+  // Legacy v1 fields: summary / latestSummary (plain-text) and summaryPoints
+  const hasLegacy = !!(
+    company.summary ||
+    company.latestSummary ||
+    (company.summaryPoints && company.summaryPoints.length > 0)
+  );
+  return !hasHistory && !hasCurrent && !hasLegacy;
 }
 
 /**
