@@ -260,6 +260,36 @@ describe("hasMissingTosData", () => {
     };
     expect(hasMissingTosData(company)).toBe(false);
   });
+
+  it("returns false when company has a legacy summary field", () => {
+    const company = {
+      name: "Acme",
+      tosUrl: "https://acme.com/tos",
+      history: [],
+      summary: "[Data Rights]: Users retain ownership. [AI Usage]: Outputs may be inaccurate.",
+    };
+    expect(hasMissingTosData(company)).toBe(false);
+  });
+
+  it("returns false when company has a latestSummary field", () => {
+    const company = {
+      name: "Acme",
+      tosUrl: "https://acme.com/tos",
+      history: [],
+      latestSummary: "Users retain ownership of their data.",
+    };
+    expect(hasMissingTosData(company)).toBe(false);
+  });
+
+  it("returns false when company has legacy summaryPoints", () => {
+    const company = {
+      name: "Acme",
+      tosUrl: "https://acme.com/tos",
+      history: [],
+      summaryPoints: [{ text: "Data is not sold.", impact: "positive" as const }],
+    };
+    expect(hasMissingTosData(company)).toBe(false);
+  });
 });
 
 // ---------------------------------------------------------------------------
