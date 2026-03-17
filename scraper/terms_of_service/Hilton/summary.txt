@@ -1,1 +1,1 @@
-[Privacy]: Expanded details on personal information collection and sharing practices. | [DataOwnership]: No significant changes detected | [UserRights]: Updated terms for Points forfeiture and inactivity policies.
+[Privacy]: Added cookie policy details regarding usage and management of cookies. | [DataOwnership]: No significant changes detected | [UserRights]: No significant changes detected
