@@ -1,3 +1,1 @@
-[Privacy]: [Data Rights]: Users do not own Licensed Products; they are granted a limited, personal, non-transferable, revocable license.  
-[AI Usage]: No specific provisions for AI usage mentioned.  
-[Liability]: Epic limits liability; arbitration required for disputes.
+[Privacy]: No significant changes detected | [DataOwnership]: Clarified that Licensed Products are licensed, not owned, and outlined ownership rights of Epic and its licensors. | [UserRights]: No significant changes detected
