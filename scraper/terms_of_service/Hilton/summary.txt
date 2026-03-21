@@ -1,1 +1,1 @@
-[Privacy]: Cookie policy section removed, affecting user consent for cookies. | [DataOwnership]: No significant changes detected | [UserRights]: No significant changes detected
+[Privacy]: Added cookie policy detailing usage and management options. | [DataOwnership]: No significant changes detected | [UserRights]: No significant changes detected
